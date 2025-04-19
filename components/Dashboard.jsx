@@ -28,7 +28,7 @@ export default function Dashboard() {
   };
 
   const handleEdit = (id) => {
-    router.push(`/edit?id=${id}`);
+    router.push(`/edit/${id}`);
   };
 
   return (
