@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 const algorithm = "aes-256-cbc";
-const secretKey = 12345678901234567890123456789012; // Must be 32 bytes (e.g., a secure random string)
+const secretKey = process.env.SECRET_KEY; // Must be 32 bytes (e.g., a secure random string)
 const iv = crypto.randomBytes(16); // Initialization vector
 
 export function encrypt(text) {
