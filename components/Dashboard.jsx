@@ -23,22 +23,21 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchVaults = async () => {
       try {
-        console.log(user.id);
-        while (!isLoaded)
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        const res = await axios.post("/api/get/vaults", {
-          clerkUserId: user.id,
-        });
-        console.log(res);
-        const data = await res.data;
-        setData(data.vaults);
+        if (isLoaded) {
+          const res = await axios.post("/api/get/vaults", {
+            clerkUserId: user.id,
+          });
+          console.log(res);
+          const data = await res.data;
+          setData(data.vaults);
+        }
       } catch (err) {
         console.error("Error fetching vaults:", err);
       }
     };
 
     fetchVaults();
-  }, []);
+  }, [isLoaded]);
 
   const handleViewContent = (id) => {
     setSelectedId(id === selectedId ? null : id);
@@ -73,9 +72,15 @@ export default function Dashboard() {
         >
           <button
             onClick={handleAddNew}
-            className="w-full bg-[#111827] border border-gray-800 rounded-xl py-5 text-white font-semibold hover:bg-gray-800 transition-all shadow-md"
+            className="w-full my-1 bg-[#111827] border border-gray-800 rounded-xl py-5 text-white font-semibold hover:bg-gray-800 transition-all shadow-md"
           >
             Add New Password
+          </button>
+          <button
+            onClick={() => router.push("/add-new-legacy/trustedcontact")}
+            className="w-full my-1 bg-[#111827] border border-gray-800 rounded-xl py-5 text-white font-semibold hover:bg-gray-800 transition-all shadow-md"
+          >
+            Add New Trusted Contact
           </button>
         </motion.div>
 

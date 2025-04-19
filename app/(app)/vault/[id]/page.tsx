@@ -37,7 +37,7 @@ const TriggerNow = () => {
     customMessage?: string;
   }) => {
     try {
-      const res = await axios.post("/api/add-vaultRecipient", {
+      const res = await axios.post("/api/add/add-vaultRecipient", {
         vaultId,
         contactId,
         customMessage,

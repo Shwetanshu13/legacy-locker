@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useUser, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function OnboardingPage() {
         fullName,
       });
       console.log(res);
-      const { getToken } = useAuth();
+      const { getToken } = useUser();
       await getToken({ template: "default" }); // this will refresh session under the hood
 
       //   // 3. Redirect or reload

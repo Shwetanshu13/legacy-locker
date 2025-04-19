@@ -1,6 +1,6 @@
 // /api/get/vault-recipients/route.js
 import db from "@/db";
-import { vaultRecipients, vaults } from "@/schema";
+import { vaultRecipients, vaults } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 
 export async function POST(req) {

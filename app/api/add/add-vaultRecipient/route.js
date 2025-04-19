@@ -1,5 +1,5 @@
 // app/api/add-vaultRecipient/route.ts
-import { vaultRecipients } from "@/schema";
+import { vaultRecipients } from "@/db/schema";
 import db from "@/db";
 
 export async function POST(req) {

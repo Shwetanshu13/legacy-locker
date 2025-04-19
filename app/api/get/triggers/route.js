@@ -1,6 +1,6 @@
 // /api/get/triggers/route.js
 import db from "@/db";
-import { triggers, vaults } from "@/schema";
+import { triggers, vaults } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 
 export async function POST(req) {

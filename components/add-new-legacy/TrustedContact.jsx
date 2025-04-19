@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 function TrustedContactForm({ onSubmit }) {
   const [name, setName] = useState("");
@@ -110,12 +110,14 @@ function TrustedContactForm({ onSubmit }) {
 
 export default function TrustedContact({ userId }) {
   const [loading, setLoading] = useState(false);
+  const { user, isLoaded } = useUser();
 
   const handleAddContact = async (contact) => {
     try {
       setLoading(true);
-      const res = await axios.post("/api/add-trustedContact", {
-        userId,
+      console.log(user);
+      const res = await axios.post("/api/add/add-trustedContact", {
+        clerkUserId: user.id,
         ...contact,
       });
 
@@ -128,6 +130,8 @@ export default function TrustedContact({ userId }) {
       setLoading(false);
     }
   };
+
+  if (!isLoaded) return null;
 
   return (
     <div className="min-h-screen bg-black p-4 flex items-center justify-center">
