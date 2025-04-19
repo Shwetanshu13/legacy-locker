@@ -1,5 +1,6 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { encrypt,decrypt} from "@/utils/encrypt";
 
 export default function Password() {
   const [formData, setFormData] = useState({
@@ -8,11 +9,16 @@ export default function Password() {
     content: "",
     visibility: "private",
   });
-
+  
   function handleFormSubmit(event) {
     event.preventDefault();
+    const encryptedContent = encrypt(formData.content);
+    const decryptedContent = decrypt(encryptedContent);
+  
+    console.log("Encrypted:", encryptedContent);
+    console.log("Decrypted:", decryptedContent);
     console.log("Form Submitted:", formData);
-    // You can handle form submission logic here
+    
   }
 
   function handleChange(e) {
