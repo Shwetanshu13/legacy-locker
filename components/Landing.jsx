@@ -3,41 +3,45 @@
 import { motion } from "framer-motion";
 
 const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 40 },
     visible: (i = 1) => ({
         opacity: 1,
         y: 0,
-        transition: { delay: i * 0.2 },
+        transition: {
+            delay: i * 0.2,
+            duration: 0.6,
+            ease: "easeOut",
+        },
     }),
 };
 
 export default function Landing() {
     return (
-        <div className="relative bg-black text-white overflow-x-hidden">
+        <div className="relative bg-black text-white overflow-x-hidden font-sans">
             {/* Decorative background shapes */}
-            <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-purple-500 rounded-full opacity-20 blur-3xl transform -translate-x-1/2 -z-10" />
-            <div className="absolute bottom-[-200px] right-[-100px] w-[400px] h-[400px] bg-blue-500 rounded-full opacity-10 blur-2xl -z-10" />
+            <div className="absolute top-[-100px] left-1/2 w-[700px] h-[700px] bg-purple-600 opacity-20 blur-[180px] rounded-full transform -translate-x-1/2 -z-10" />
+            <div className="absolute bottom-[-150px] right-[-100px] w-[400px] h-[400px] bg-blue-500 opacity-10 blur-3xl rounded-full -z-10" />
 
             {/* Hero Section */}
-            <section className="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-20 gap-12">
+            <section className="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-28 gap-12">
                 <motion.div
                     variants={fadeUp}
                     initial="hidden"
                     animate="visible"
                     className="flex-1 text-center md:text-left"
                 >
-                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-purple-400 to-blue-400 text-transparent bg-clip-text">
                         Your Legacy, <br /> Locked & Secured
                     </h1>
-                    <p className="text-gray-300 text-lg md:text-xl mb-8">
+                    <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md mx-auto md:mx-0">
                         Manage, protect and pass on your digital life with
                         confidence.
                     </p>
-                    <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                        <button className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <button className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all duration-300 shadow-md">
                             Get Started
                         </button>
-                        <button className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition">
+                        <button className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all duration-300 shadow-md">
                             Learn More
                         </button>
                     </div>
@@ -48,41 +52,47 @@ export default function Landing() {
                     initial="hidden"
                     animate="visible"
                     custom={2}
-                    className="flex-1 h-80 md:h-[400px] w-full bg-black border border-gray-700 rounded-xl shadow-lg"
+                    className="flex-1 h-80 md:h-[420px] w-full bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-2xl"
                 >
-                    {/* Placeholder for visual */}
+                    {/* Replace with actual visual */}
                 </motion.div>
             </section>
 
             {/* Features Section */}
-            {["Secure Storage", "Easy Management", "24/7 Support"].map(
-                (title, i) => (
-                    <motion.div
-                        key={title}
-                        custom={i + 1}
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="p-6 border border-gray-700 rounded-lg bg-gray-900/50 backdrop-blur-md transform-gpu transition-transform duration-300 hover:rotate-x-3 hover:rotate-y-3 hover:scale-105"
-                    >
-                        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-                        <p className="text-sm">
-                            {title === "Secure Storage"
-                                ? "Encrypted vaults to keep your data safe forever."
-                                : title === "Easy Management"
-                                ? "User-friendly dashboard for peace of mind."
-                                : "Our team is here to help anytime, anywhere."}
-                        </p>
-                    </motion.div>
-                )
-            )}
+            <section className="py-24 bg-gradient-to-b from-black to-gray-950">
+                <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {["Secure Storage", "Easy Management", "24/7 Support"].map(
+                        (title, i) => (
+                            <motion.div
+                                key={title}
+                                custom={i + 1}
+                                variants={fadeUp}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                className="p-6 border border-gray-700 rounded-xl bg-white/5 backdrop-blur-md text-white transform-gpu transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl"
+                            >
+                                <h3 className="text-xl font-semibold mb-2">
+                                    {title}
+                                </h3>
+                                <p className="text-sm text-gray-300">
+                                    {title === "Secure Storage"
+                                        ? "Encrypted vaults to keep your data safe forever."
+                                        : title === "Easy Management"
+                                        ? "User-friendly dashboard for peace of mind."
+                                        : "Our team is here to help anytime, anywhere."}
+                                </p>
+                            </motion.div>
+                        )
+                    )}
+                </div>
+            </section>
 
             {/* How It Works Section */}
-            <section className="py-24 bg-gray-950 text-white">
+            <section className="py-24 bg-gray-950">
                 <div className="max-w-5xl mx-auto px-6">
                     <motion.h2
-                        className="text-3xl font-bold mb-10 text-center"
+                        className="text-3xl md:text-4xl font-bold mb-14 text-center"
                         variants={fadeUp}
                         initial="hidden"
                         whileInView="visible"
@@ -90,7 +100,7 @@ export default function Landing() {
                     >
                         How It Works
                     </motion.h2>
-                    <div className="space-y-10">
+                    <div className="space-y-12">
                         {[
                             {
                                 step: "Create your digital locker",
@@ -128,6 +138,7 @@ export default function Landing() {
                     </div>
                 </div>
             </section>
+
             {/* Testimonials */}
             <section className="py-24 bg-black text-white">
                 <div className="max-w-6xl mx-auto px-6 text-center">
@@ -158,7 +169,7 @@ export default function Landing() {
                         ].map((t, i) => (
                             <motion.div
                                 key={i}
-                                className="p-6 bg-gray-900/50 border border-gray-700 rounded-xl text-left shadow-md"
+                                className="p-6 bg-gray-900 border border-gray-700 rounded-xl text-left shadow-md hover:shadow-lg transition-shadow duration-300"
                                 variants={fadeUp}
                                 initial="hidden"
                                 whileInView="visible"
@@ -166,16 +177,16 @@ export default function Landing() {
                                 custom={i + 1}
                             >
                                 <p className="text-gray-300 italic mb-4">
-                                    &quot;{t.quote}&quot;
+                                    "{t.quote}"
                                 </p>
                                 <div className="flex items-center">
-                                    <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-sm font-bold text-white mr-3">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-sm font-bold text-white mr-3">
                                         {t.name
                                             .split(" ")
                                             .map((n) => n[0])
                                             .join("")}
                                     </div>
-                                    <span className="text-sm font-medium text-white">
+                                    <span className="text-sm font-medium">
                                         {t.name}
                                     </span>
                                 </div>
@@ -186,7 +197,7 @@ export default function Landing() {
             </section>
 
             {/* Footer */}
-            <footer className="py-8 text-center text-gray-500 border-t border-gray-800">
+            <footer className="py-10 text-center text-gray-500 border-t border-gray-800 text-sm">
                 &copy; {new Date().getFullYear()} Legacy Locker. All rights
                 reserved.
             </footer>
