@@ -9,7 +9,10 @@ import Dashboard from "@/components/Dashboard";
 export default function Home() {
     return (
         <main>
-            <Landing />
+            {/* <Landing />
+             */}
+            {/* <Dashboard /> */}
+            <Password />
         </main>
     );
 }
