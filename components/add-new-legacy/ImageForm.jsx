@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import Image from "next/image";
 
 export default function ImageForm() {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -40,13 +41,13 @@ export default function ImageForm() {
                             </p>
                         </div>
                         {selectedImage && (
-                            <div className="mt-4">
-                                <img
-                                    src={selectedImage}
-                                    alt="Selected"
-                                    className="w-full h-auto rounded-lg shadow-md"
-                                />
-                            </div>
+                            <Image
+                                src={selectedImage}
+                                alt="Selected"
+                                className="w-full h-auto rounded-lg shadow-md"
+                                width={500}
+                                height={500}
+                            />
                         )}
                     </div>
 
