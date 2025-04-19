@@ -14,11 +14,11 @@ export default function Dashboard() {
   };
 
   const handleAddNew = () => {
-    router.push("/add-new-legacy/Password");
+    router.push("/add-new-legacy/password");
   };
 
   const handleEdit = (id) => {
-    router.push(`/edit?id=${id}`); 
+    router.push(`/edit?id=${id}`);
   };
 
   const handleDelete = (id) => {
@@ -54,7 +54,9 @@ export default function Dashboard() {
 
               {selectedId === item.id && (
                 <div className="mt-2 space-y-2">
-                  <p className="whitespace-pre-line text-gray-700">{item.content}</p>
+                  <p className="whitespace-pre-line text-gray-700">
+                    {item.content}
+                  </p>
                   <div className="flex gap-4 mt-3">
                     <button
                       onClick={() => handleEdit(item.id)}

@@ -10,24 +10,6 @@ export default function EditContentPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  useEffect(() => {
-    // Simulating fetch — replace with API call like fetch(`/api/content/${id}`)
-    const dummyData = {
-      1: {
-        title: "My Facebook Account",
-        content: "Email: abc@gmail.com\nPassword: ****",
-      },
-      2: {
-        title: "Bank Info",
-        content: "Account No: 123456789\nIFSC: ABCD0123456",
-      },
-    };
-    if (id && dummyData[id]) {
-      setTitle(dummyData[id].title);
-      setContent(dummyData[id].content);
-    }
-  }, [id]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +53,6 @@ export default function EditContentPage() {
           <textarea
             rows={6}
             value={content}
-            
             onChange={(e) => setContent(e.target.value)}
             placeholder="Enter your content"
             className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
