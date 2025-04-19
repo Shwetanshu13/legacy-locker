@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { encrypt, decrypt } from "@/utils/encrypt";
+import { encrypt } from "@/utils/encrypt";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,20 +17,38 @@ const fadeUp = {
 
 export default function Password() {
   const [formData, setFormData] = useState({
-    email: "",
     title: "",
     content: "",
     visibility: "private",
   });
+  const { user } = useUser();
+  const router = useRouter();
 
-  function handleFormSubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
-    const encryptedContent = encrypt(formData.content);
-    const decryptedContent = decrypt(encryptedContent);
 
-    console.log("Encrypted:", encryptedContent);
-    console.log("Decrypted:", decryptedContent);
-    console.log("Form Submitted:", formData);
+    try {
+      // console.log(formData);
+
+      const payload = {
+        clerkUserId: user.id,
+        title: formData.title,
+        content: formData.content,
+        visibility: formData.visibility,
+      };
+
+      const response = await axios.post("/api/add/add-vault", payload);
+      console.log("Vault added successfully:", response.data);
+
+      if (response.status === 200) {
+        router.push(`/vault/${response?.data?.data?.id}`);
+      }
+
+      // Optionally reset form or show toast
+    } catch (error) {
+      console.error("Error adding vault:", error);
+      // Optionally show error toast
+    }
   }
 
   function handleChange(e) {
@@ -71,22 +92,7 @@ export default function Password() {
         {/* Right Section */}
         <div className="col-span-2 p-8 md:p-12 bg-gray-900/50 backdrop-blur-md">
           <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-            >
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
-            </motion.div>
+            {/* Input fields */}
 
             <motion.div
               variants={fadeUp}
