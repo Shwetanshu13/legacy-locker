@@ -11,7 +11,7 @@ export default clerkMiddleware(async (auth, req) => {
     if (isPublicRoute(req)) {
         // 🚫 If user is logged in, redirect them away from "/"
         if (userId) {
-            return NextResponse.redirect(new URL("/dashboard", req.url)); // or any other page
+            return NextResponse.redirect(new URL("/home", req.url)); // or any other page
         }
 
         // ✅ Allow access to "/" if not logged in

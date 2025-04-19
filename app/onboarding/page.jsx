@@ -34,7 +34,7 @@ export default function OnboardingPage() {
       console.error("Failed onboarding:", err);
     } finally {
       setLoading(false);
-      router.replace("/dashboard");
+      router.replace("/home");
     }
   };
 
