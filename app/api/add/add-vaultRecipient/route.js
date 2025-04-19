@@ -1,14 +1,13 @@
-import { db } from "@/db";
+// app/api/add-vaultRecipient/route.ts
 import { vaultRecipients } from "@/schema";
+import db from "@/db";
 
 export async function POST(req) {
     try {
         const { vaultId, contactId, customMessage } = await req.json();
-        console.log("POST /api/add-vaultRecipient");
-        console.log(vaultId, contactId, customMessage);
 
         if (!vaultId || !contactId) {
-            return Response.json({ message: "Missing required fields" }, { status: 400 });
+            return Response.json({ message: "Missing vaultId or contactId" }, { status: 400 });
         }
 
         await db.insert(vaultRecipients).values({
@@ -19,7 +18,7 @@ export async function POST(req) {
 
         return Response.json({ message: "Vault recipient added successfully" }, { status: 200 });
     } catch (error) {
-        console.error("Error adding vault recipient:", error);
-        return Response.json({ message: "Error adding vault recipient" }, { status: 500 });
+        console.error("Error assigning vault recipient:", error);
+        return Response.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

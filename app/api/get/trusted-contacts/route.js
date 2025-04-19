@@ -1,15 +1,23 @@
 // /api/get/trusted-contacts/route.js
 import db from "@/db";
-import { trustedContacts } from "@/schema";
+import { trustedContacts, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(req) {
     try {
-        const { userId } = await req.json();
+        const { clerkUserId } = await req.json();
 
-        if (!userId) {
+        if (!clerkUserId) {
             return Response.json({ message: "Missing userId" }, { status: 400 });
         }
+
+        const regUsers = await db.select().from(users).where(eq(users.clerkUserId, clerkUserId));
+
+        if (regUsers.length === 0) {
+            return Response.json({ message: "User not found" }, { status: 404 });
+        }
+
+        const userId = regUsers[0].id;
 
         const contacts = await db
             .select()
