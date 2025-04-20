@@ -25,11 +25,10 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
 
   const checkManualTrigger = async () => {
     try {
-      const res = await axios.post(`/api/vault/check-trigger/`, {
+      const res = await axios.post("/api/vault/check-trigger/", {
         vaultId: vault.id,
       });
-      console.log(res.data?.triggerType?.type);
-      console.log(res.data);
+
       if (res.data?.triggerType?.type === "manual") {
         setHasManualTrigger(true);
       }
@@ -42,8 +41,6 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
     checkManualTrigger();
   }, []);
 
-  // console.log(vault);
-
   if (!isLoaded) return null;
 
   return (
@@ -51,42 +48,44 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
       key={vault.id}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-      className="border-b border-gray-700 pb-6"
+      transition={{ delay: 0.1 }}
+      className="border border-gray-700 bg-[#0d1117] rounded-xl px-5 py-4 transition hover:shadow-md"
     >
       <div
-        className="flex items-center cursor-pointer"
+        className="flex items-center justify-between cursor-pointer"
         onClick={() => onSelect(vault.id)}
       >
-        <h3 className="text-lg font-semibold text-white hover:text-gray-300">
+        <h3 className="text-xl font-semibold text-white hover:text-gray-300 transition">
           {vault.title}
         </h3>
         <span className="ml-2 text-gray-400 text-sm">
           {selectedId === vault.id ? "▼" : "▶"}
         </span>
       </div>
+
       {selectedId === vault.id && (
-        <div className="mt-4">
-          <div className="bg-[#0c1119] rounded-lg p-4 mb-4 text-gray-300 whitespace-pre-wrap">
+        <div className="mt-4 space-y-4">
+          <div className="bg-[#0c1119] rounded-lg p-4 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap border border-gray-800">
             {vault.content}
           </div>
-          <div className="flex gap-4">
+
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={() => router.push(`/edit/${vault.id}`)}
-              className="bg-white text-black px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-200"
+              className="bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(vault.id)}
-              className="border border-white text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-black"
+              className="border border-white text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:text-black transition"
             >
               Delete
             </button>
             {hasManualTrigger && (
               <button
                 onClick={handleManualTrigger}
-                className="bg-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-purple-700"
+                className="bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-purple-700 transition"
               >
                 Manual Trigger
               </button>

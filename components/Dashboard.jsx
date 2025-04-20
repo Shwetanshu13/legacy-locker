@@ -19,7 +19,6 @@ export default function Dashboard() {
         const res = await axios.post("/api/get/vaults", {
           clerkUserId: user.id,
         });
-        // console.log(res.data.vaults);
         setData(res.data.vaults);
       } catch (err) {
         console.error("Error fetching vaults:", err);
@@ -31,41 +30,35 @@ export default function Dashboard() {
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
-    // Optionally add backend call here
+    // Optionally call backend delete here
   };
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-12">
       <div className="max-w-4xl mx-auto">
-        <button
-          onClick={() => router.push("/add-new-legacy/password")}
-          className="w-full my-1 bg-[#111827] border border-gray-800 rounded-xl py-5 font-semibold hover:bg-gray-800"
-        >
-          Add New Password
-        </button>
-        <button
-          onClick={() => router.push("/add-new-legacy/trustedcontact")}
-          className="w-full my-1 bg-[#111827] border border-gray-800 rounded-xl py-5 font-semibold hover:bg-gray-800"
-        >
-          Add New Trusted Contact
-        </button>
+        <div className="bg-[#111827] border border-gray-800 rounded-2xl p-8 shadow-xl">
+          <h1 className="text-3xl font-bold mb-6 text-center">
+            Your Saved Vaults
+          </h1>
 
-        <div className="bg-[#111827] border border-gray-800 rounded-xl mt-6 p-6 shadow-lg">
-          <h1 className="text-2xl font-bold mb-6">Your Saved Titles</h1>
           {data.length === 0 ? (
-            <p className="text-gray-400 text-center py-8">
-              No passwords saved yet
+            <p className="text-gray-400 text-center py-8 text-sm">
+              No passwords saved yet.
             </p>
           ) : (
-            data.map((vault) => (
-              <VaultCard
-                key={vault.id}
-                vault={vault}
-                selectedId={selectedId}
-                onSelect={(id) => setSelectedId(id === selectedId ? null : id)}
-                onDelete={handleDelete}
-              />
-            ))
+            <div className="space-y-6">
+              {data.map((vault) => (
+                <VaultCard
+                  key={vault.id}
+                  vault={vault}
+                  selectedId={selectedId}
+                  onSelect={(id) =>
+                    setSelectedId(id === selectedId ? null : id)
+                  }
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 import TrustedContact from "@/components/add-new-legacy/TrustedContact";
+import TrustedContacts from "@/components/TrustedContacts";
 import { useUser } from "@clerk/nextjs";
 
 function page() {
@@ -10,6 +11,7 @@ function page() {
 
   return (
     <div>
+      <TrustedContacts clerkUserId={userId} />
       <TrustedContact userId={userId} />
     </div>
   );
