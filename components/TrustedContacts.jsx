@@ -67,22 +67,24 @@ export default function TrustedContacts({ clerkUserId }) {
                         {contacts.map((contact, index) => (
                             <motion.div
                                 key={contact.id}
-                                className="p-4 bg-gray-900/70 border border-gray-700 rounded-lg shadow hover:shadow-md transition backdrop-blur"
+                                className="p-4 bg-gray-900/70 border border-gray-700 rounded-xl shadow hover:shadow-lg transition backdrop-blur h-full flex flex-col justify-between"
                                 variants={fadeUp}
                                 custom={index + 1}
                                 initial="hidden"
                                 animate="visible"
                             >
-                                <h4 className="text-lg font-semibold text-white mb-1">
-                                    {contact.name}
-                                </h4>
-                                <p className="text-gray-300 text-sm">
-                                    📞 {contact.phone}
-                                </p>
-                                <p className="text-gray-300 text-sm">
-                                    📧 {contact.email}
-                                </p>
-                                <p className="text-gray-500 italic text-xs mt-2">
+                                <div>
+                                    <h4 className="text-lg font-semibold text-white mb-1">
+                                        {contact.name}
+                                    </h4>
+                                    <p className="text-gray-300 text-sm">
+                                        📞 {contact.phone}
+                                    </p>
+                                    <p className="text-gray-300 text-sm">
+                                        📧 {contact.email}
+                                    </p>
+                                </div>
+                                <p className="text-gray-500 italic text-xs mt-4">
                                     Relationship: {contact.relationship}
                                 </p>
                             </motion.div>
