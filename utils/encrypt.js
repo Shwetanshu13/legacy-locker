@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 const algorithm = "aes-256-cbc";
 const secretKey = process.env.SECRET_KEY || "";
-console.log("Secret key is ", secretKey);
+// console.log("Secret key is ", secretKey);
 
 // Decode from base64 instead of hex
 const key = Buffer.from(secretKey, "base64");

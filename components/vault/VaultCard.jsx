@@ -2,19 +2,49 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
   const router = useRouter();
+  const [hasManualTrigger, setHasManualTrigger] = useState(false);
+  const { user, isLoaded } = useUser();
 
   const handleManualTrigger = async () => {
     try {
-      await axios.post("/api/vault/manual-trigger", { vaultId: vault.id });
+      await axios.post("/api/vault/manual-trigger", {
+        vaultId: vault.id,
+        clerkUserId: user.id,
+      });
       alert("Manual trigger email sent successfully.");
     } catch (err) {
       console.error(err);
       alert("Error triggering manual email.");
     }
   };
+
+  const checkManualTrigger = async () => {
+    try {
+      const res = await axios.post(`/api/vault/check-trigger/`, {
+        vaultId: vault.id,
+      });
+      console.log(res.data?.triggerType?.type);
+      console.log(res.data);
+      if (res.data?.triggerType?.type === "manual") {
+        setHasManualTrigger(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    checkManualTrigger();
+  }, []);
+
+  // console.log(vault);
+
+  if (!isLoaded) return null;
 
   return (
     <motion.div
@@ -53,7 +83,7 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
             >
               Delete
             </button>
-            {vault.hasManualTrigger && (
+            {hasManualTrigger && (
               <button
                 onClick={handleManualTrigger}
                 className="bg-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-purple-700"

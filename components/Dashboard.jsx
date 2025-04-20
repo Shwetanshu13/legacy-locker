@@ -19,6 +19,7 @@ export default function Dashboard() {
         const res = await axios.post("/api/get/vaults", {
           clerkUserId: user.id,
         });
+        // console.log(res.data.vaults);
         setData(res.data.vaults);
       } catch (err) {
         console.error("Error fetching vaults:", err);
