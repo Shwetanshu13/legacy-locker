@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -16,46 +17,74 @@ const fadeUp = {
 };
 
 export default function Landing() {
+    useEffect(() => {
+        // Load Spline viewer script
+        const splineScript = document.createElement("script");
+        splineScript.src =
+            "https://unpkg.com/@splinetool/viewer@0.9.490/build/spline-viewer.js";
+        splineScript.type = "module";
+        document.head.appendChild(splineScript);
+
+        return () => {
+            // Clean up script when component unmounts
+            document.head.removeChild(splineScript);
+        };
+    }, []);
+
     return (
         <div className="relative bg-black text-white overflow-x-hidden font-sans">
             {/* Decorative background shapes */}
             <div className="absolute top-[-100px] left-1/2 w-[700px] h-[700px] bg-purple-600 opacity-20 blur-[180px] rounded-full transform -translate-x-1/2 -z-10" />
             <div className="absolute bottom-[-150px] right-[-100px] w-[400px] h-[400px] bg-blue-500 opacity-10 blur-3xl rounded-full -z-10" />
 
-            {/* Hero Section */}
-            <section className="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-28 gap-12">
-                <motion.div
-                    variants={fadeUp}
-                    initial="hidden"
-                    animate="visible"
-                    className="flex-1 text-center md:text-left"
-                >
-                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-purple-400 to-blue-400 text-transparent bg-clip-text">
-                        Your Legacy, <br /> Locked & Secured
-                    </h1>
-                    <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md mx-auto md:mx-0">
-                        Manage, protect and pass on your digital life with
-                        confidence.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                        <button className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all duration-300 shadow-md">
-                            Get Started
-                        </button>
-                        <button className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all duration-300 shadow-md">
-                            Learn More
-                        </button>
-                    </div>
-                </motion.div>
+            {/* Hero Section with Spline Background */}
+            <section className="relative min-h-screen max-w-7xl mx-auto px-6 py-28">
+                {/* Spline Viewer as background */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden -z-5">
+                    <spline-viewer
+                        url="https://prod.spline.design/YjKP74MlhtyCYk-6/scene.splinecode"
+                        className="w-full h-full"
+                    ></spline-viewer>
+                </div>
 
-                <motion.div
-                    variants={fadeUp}
-                    initial="hidden"
-                    animate="visible"
-                    custom={2}
-                    className="flex-1 h-80 md:h-[420px] w-full bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-2xl"
-                >
-                    {/* Replace with actual visual */}
-                </motion.div>
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-black bg-opacity-40 -z-5"></div>
+
+                {/* Content - maintaining original flex layout */}
+                <div className="relative z-10 h-full flex flex-col md:flex-row items-center justify-between gap-12">
+                    <motion.div
+                        variants={fadeUp}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex-1 text-center md:text-left"
+                    >
+                        <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-purple-400 to-blue-400 text-transparent bg-clip-text">
+                            Your Legacy, <br /> Locked & Secured
+                        </h1>
+                        <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md mx-auto md:mx-0">
+                            Manage, protect and pass on your digital life with
+                            confidence.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <button className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all duration-300 shadow-md">
+                                Get Started
+                            </button>
+                            <button className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all duration-300 shadow-md">
+                                Learn More
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        variants={fadeUp}
+                        initial="hidden"
+                        animate="visible"
+                        custom={2}
+                        className="flex-1"
+                    >
+                        {/* This is an empty div that preserves the original layout spacing */}
+                    </motion.div>
+                </div>
             </section>
 
             {/* Features Section */}
@@ -88,9 +117,20 @@ export default function Landing() {
                 </div>
             </section>
 
-            {/* How It Works Section */}
-            <section className="py-24 bg-gray-950">
-                <div className="max-w-5xl mx-auto px-6">
+            {/* How It Works Section with Spline Background */}
+            <section className="relative py-24 bg-gray-950">
+                {/* Spline Viewer as background for How It Works section */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden opacity-60">
+                    <spline-viewer
+                        url="https://prod.spline.design/wTCpAdDX34stWPdK/scene.splinecode"
+                        className="w-full h-full"
+                    ></spline-viewer>
+                </div>
+
+                {/* Semi-transparent overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-gray-950 bg-opacity-70"></div>
+
+                <div className="relative z-10 max-w-5xl mx-auto px-6">
                     <motion.h2
                         className="text-3xl md:text-4xl font-bold mb-14 text-center"
                         variants={fadeUp}
@@ -177,7 +217,7 @@ export default function Landing() {
                                 custom={i + 1}
                             >
                                 <p className="text-gray-300 italic mb-4">
-                                    "{t.quote}"
+                                    {t.quote}
                                 </p>
                                 <div className="flex items-center">
                                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-sm font-bold text-white mr-3">
