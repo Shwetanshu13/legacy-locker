@@ -53,7 +53,7 @@ const TriggerNow = () => {
 
   return (
     <div>
-      {triggerSet ? (
+      {!triggerSet ? (
         <Trigger vaultId={vaultId} setTriggerSet={setTriggerSet} />
       ) : (
         <VaultRecipientForm
