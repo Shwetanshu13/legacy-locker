@@ -28,9 +28,14 @@ export default function Dashboard() {
     fetchVaults();
   }, [isLoaded]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-    // Optionally call backend delete here
+  const handleDelete = async (id) => {
+    try {
+      await axios.post("/api/vault/delete", { vaultId: id });
+      setData(data.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting vault:", error);
+      alert("Failed to delete vault.");
+    }
   };
 
   return (
