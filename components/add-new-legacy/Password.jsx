@@ -182,11 +182,12 @@
 //   );
 // }
 
-
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { encrypt, decrypt } from "@/utils/encrypt";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -199,22 +200,40 @@ const fadeUp = {
 
 export default function Password() {
   const [formData, setFormData] = useState({
-    email: "",
     title: "",
     content: "",
     visibility: "private",
   });
 
   const [suggestions, setSuggestions] = useState([]);
+  const { user } = useUser();
+  const router = useRouter();
 
-  function handleFormSubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
-    const encryptedContent = encrypt(formData.content);
-    const decryptedContent = decrypt(encryptedContent);
 
-    console.log("Encrypted:", encryptedContent);
-    console.log("Decrypted:", decryptedContent);
-    console.log("Form Submitted:", formData);
+    try {
+      // console.log(formData);
+
+      const payload = {
+        clerkUserId: user.id,
+        title: formData.title,
+        content: formData.content,
+        visibility: formData.visibility,
+      };
+
+      const response = await axios.post("/api/add/add-vault", payload);
+      console.log("Vault added successfully:", response.data);
+
+      if (response.status === 200) {
+        router.push(`/vault/${response?.data?.data?.id}`);
+      }
+
+      // Optionally reset form or show toast
+    } catch (error) {
+      console.error("Error adding vault:", error);
+      // Optionally show error toast
+    }
   }
 
   function handleChange(e) {
@@ -234,17 +253,16 @@ export default function Password() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input }),
       });
-  
+
       if (res.ok) {
         const data = await res.json();
-        console.log("Received suggestions:", data.suggestions);  // Check the suggestions in the console
+        console.log("Received suggestions:", data.suggestions); // Check the suggestions in the console
         setSuggestions(data.suggestions);
       }
     } catch (err) {
       console.error("Error fetching suggestions:", err);
     }
   }
-  
 
   function applySuggestion(suggestion) {
     setFormData((prev) => ({
@@ -253,7 +271,6 @@ export default function Password() {
     }));
     setSuggestions([]);
   }
-  
 
   return (
     <div className="relative bg-black text-white overflow-x-hidden min-h-screen flex items-center justify-center p-4">
@@ -291,7 +308,12 @@ export default function Password() {
         <div className="col-span-2 p-8 md:p-12 bg-gray-900/50 backdrop-blur-md">
           <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
             {/* Email */}
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={1}>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={1}
+            >
               <input
                 type="email"
                 name="email"
@@ -304,7 +326,12 @@ export default function Password() {
             </motion.div>
 
             {/* Title */}
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={2}>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={2}
+            >
               <input
                 type="text"
                 name="title"
@@ -316,7 +343,12 @@ export default function Password() {
             </motion.div>
 
             {/* Content with autocomplete */}
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
+            >
               <textarea
                 name="content"
                 placeholder="Add your password details here..."
@@ -343,7 +375,12 @@ export default function Password() {
             </motion.div>
 
             {/* Visibility dropdown */}
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={4}>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={4}
+            >
               <select
                 name="visibility"
                 value={formData.visibility}

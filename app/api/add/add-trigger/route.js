@@ -1,26 +1,22 @@
-import { db } from "@/db";
-import { triggers } from "@/schema";
+import db from "@/db"; // adjust based on your setup
+import { triggers } from "@/db/schema"; // assuming this exists
 
 export async function POST(req) {
     try {
-        const { vaultId, type, scheduledAt, inactivityDays } = await req.json();
-        console.log("POST /api/add-trigger");
-        console.log(type, scheduledAt, inactivityDays);
+        const body = await req.json();
+        const { vaultId, type, scheduledAt, inactivityDays } = body;
 
-        if (!vaultId || !type) {
-            return Response.json({ message: "Missing required fields" }, { status: 400 });
-        }
-
-        await db.insert(triggers).values({
+        // Validate, then insert trigger
+        const result = await db.insert(triggers).values({
             vaultId,
             type,
-            scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-            inactivityDays,
+            scheduledAt: scheduledAt || null,
+            inactivityDays: inactivityDays ? Number(inactivityDays) : null,
         });
 
-        return Response.json({ message: "Trigger added successfully" }, { status: 200 });
+        return Response.json({ success: true, data: result });
     } catch (error) {
-        console.error("Error adding trigger:", error);
-        return Response.json({ message: "Error adding trigger" }, { status: 500 });
+        console.log(error);
+        return Response.json({ success: false, error: error.message });
     }
 }
