@@ -10,6 +10,11 @@ const mockData = [
       title: "Bank Info",
       content: "Account No: 123456789\nIFSC: ABCD0123456",
     },
+    {
+      id: 3,
+      title: "verfiy Facebook password",
+      content: "Email: abc@gmail.com\nPassword: ****",
+    },
   ];
   
   export default mockData;

@@ -7,9 +7,7 @@ const isOnboardingRoute = createRouteMatcher(["/onboarding"]);
 export default clerkMiddleware(async (auth, req) => {
     const { userId, sessionClaims, redirectToSignIn } = await auth();
 
-    // 1. If the route is "/" (public route)
     if (isPublicRoute(req)) {
-        // 🚫 If user is logged in, redirect them away from "/"
         if (userId) {
             return NextResponse.redirect(new URL("/dashboard", req.url)); // or any other page
         }
