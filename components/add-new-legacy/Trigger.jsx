@@ -124,7 +124,7 @@ function TriggerForm({ onSubmit }) {
   );
 }
 
-export default function Trigger({ vaultId }) {
+export default function Trigger({ vaultId, setTriggerSet }) {
   const handleFormSubmit = async (data) => {
     if (!vaultId) return;
 
@@ -135,6 +135,7 @@ export default function Trigger({ vaultId }) {
       });
 
       console.log("Trigger created successfully", response.data);
+      setTriggerSet(true);
     } catch (error) {
       console.error("Error creating trigger:", error);
     }

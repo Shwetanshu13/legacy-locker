@@ -3,16 +3,18 @@ import Trigger from "@/components/add-new-legacy/Trigger";
 import VaultRecipientForm from "@/components/add-new-legacy/VaultRecipientForm";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const TriggerNow = () => {
   const params = useParams();
   const vaultId = params?.id as string;
+  const router = useRouter();
 
   const { user } = useUser();
 
   const [trustedContacts, setTrustedContacts] = useState([]);
+  const [triggerSet, setTriggerSet] = useState(false);
 
   const getTrustedContacts = async () => {
     try {
@@ -43,6 +45,7 @@ const TriggerNow = () => {
         customMessage,
       });
       console.log("Recipient assigned:", res.data);
+      router.push("/home");
     } catch (error) {
       console.log(error);
     }
@@ -50,12 +53,15 @@ const TriggerNow = () => {
 
   return (
     <div>
-      <Trigger vaultId={vaultId} />
-      <VaultRecipientForm
-        vaultId={vaultId}
-        trustedContacts={trustedContacts}
-        onSuccess={assignVault}
-      />
+      {triggerSet ? (
+        <Trigger vaultId={vaultId} setTriggerSet={setTriggerSet} />
+      ) : (
+        <VaultRecipientForm
+          vaultId={vaultId}
+          trustedContacts={trustedContacts}
+          onSuccess={assignVault}
+        />
+      )}
     </div>
   );
 };
