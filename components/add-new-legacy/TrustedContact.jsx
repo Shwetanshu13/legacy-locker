@@ -4,7 +4,6 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 
-// Define animations consistent with Password component
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 1) => ({
@@ -153,6 +152,7 @@ export default function TrustedContact({ userId }) {
   const [loading, setLoading] = useState(false);
   const { user, isLoaded } = useUser();
 
+<<<<<<< HEAD
   const handleAddContact = async (contact) => {
     try {
       setLoading(true);
@@ -171,9 +171,29 @@ export default function TrustedContact({ userId }) {
       setLoading(false);
     }
   };
+=======
+    const handleAddContact = async (contact) => {
+        try {
+            setLoading(true);
+            const res = await axios.post("/api/add/add-trustedContact", {
+                clerkUserId: user.id,
+                ...contact,
+            });
+            alert("Trusted Contact added successfully.");
+        } catch (err) {
+            console.error("Axios error:", err.response?.data || err.message);
+            alert(
+                err.response?.data?.message || "Error adding trusted contact."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+>>>>>>> e86d03e (styled the trusted contact)
 
   if (!isLoaded) return null;
 
+<<<<<<< HEAD
   return (
     <div className="bg-black text-white overflow-x-hidden min-h-screen flex items-center justify-center p-4">
       <motion.div
@@ -186,4 +206,47 @@ export default function TrustedContact({ userId }) {
       </motion.div>
     </div>
   );
+=======
+    return (
+        <div className="relative bg-black text-white overflow-x-hidden min-h-screen flex items-center justify-center p-4">
+            {/* Decorative background shapes */}
+            <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-purple-500 rounded-full opacity-20 blur-3xl transform -translate-x-1/2 -z-10" />
+            <div className="absolute bottom-[-200px] right-[-100px] w-[400px] h-[400px] bg-blue-500 rounded-full opacity-10 blur-2xl -z-10" />
+
+            <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
+                className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 rounded-xl overflow-hidden shadow-lg border border-gray-700"
+            >
+                {/* Left Section */}
+                <div className="col-span-1 flex flex-col items-center justify-center p-12 bg-gray-900/80 backdrop-blur-md">
+                    <motion.h2
+                        variants={fadeUp}
+                        initial="hidden"
+                        animate="visible"
+                        className="text-3xl font-bold text-center mb-4"
+                    >
+                        Add a Trusted Contact <br /> to Your Legacy
+                    </motion.h2>
+                    <motion.p
+                        variants={fadeUp}
+                        initial="hidden"
+                        animate="visible"
+                        custom={2}
+                        className="text-gray-400 text-center"
+                    >
+                        Ensure your information is accessible to the right
+                        people
+                    </motion.p>
+                </div>
+
+                {/* Right Section */}
+                <div className="col-span-2 p-8 md:p-12 bg-gray-900/50 backdrop-blur-md">
+                    <TrustedContactForm onSubmit={handleAddContact} />
+                </div>
+            </motion.div>
+        </div>
+    );
+>>>>>>> e86d03e (styled the trusted contact)
 }
