@@ -23,23 +23,22 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
     }
   };
 
-  const checkManualTrigger = async () => {
-    try {
-      const res = await axios.post("/api/vault/check-trigger/", {
-        vaultId: vault.id,
-      });
-
-      if (res.data?.triggerType?.type === "manual") {
-        setHasManualTrigger(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const checkManualTrigger = async () => {
+      try {
+        const res = await axios.post("/api/vault/check-trigger/", {
+          vaultId: vault.id,
+        });
+
+        if (res.data?.triggerType?.type === "manual") {
+          setHasManualTrigger(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     checkManualTrigger();
-  }, []);
+  }, [vault.id]);
 
   if (!isLoaded) return null;
 

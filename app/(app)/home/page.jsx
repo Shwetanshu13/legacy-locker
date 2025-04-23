@@ -6,13 +6,14 @@ import { useEffect } from "react";
 
 function Home() {
   const { user, isLoaded } = useUser();
+
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && user?.id) {
       axios.post("/api/vault/update-activity", {
         userId: user.id,
       });
     }
-  }, [isLoaded]);
+  }, [isLoaded, user?.id]);
 
   return (
     <div>

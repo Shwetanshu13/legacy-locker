@@ -68,7 +68,7 @@ function TriggerForm({ onSubmit }) {
             Scheduled Date
           </label>
           <input
-            type="datetime-local"
+            type="date"
             value={scheduledAt}
             onChange={(e) => setScheduledAt(e.target.value)}
             required

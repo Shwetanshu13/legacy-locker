@@ -307,24 +307,6 @@ export default function Password() {
         {/* Right Section */}
         <div className="col-span-2 p-8 md:p-12 bg-gray-900/50 backdrop-blur-md">
           <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
-            {/* Email */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-            >
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
-            </motion.div>
-
             {/* Title */}
             <motion.div
               variants={fadeUp}

@@ -1,7 +1,3 @@
-Of course! Here's a clean, professional `README.md` tailored for your **Legacy Locker** project — complete with sections for description, features, tech stack, setup, and more:
-
----
-
 ```md
 # 🧾 Legacy Locker
 
@@ -130,7 +126,4 @@ Built with ❤️ by [Your Name]
 
 ```
 
----
-
-Let me know if you want to personalize it with your actual name, GitHub, or a Loom demo link — and I’ll update it for you.
 ```

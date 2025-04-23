@@ -16,18 +16,17 @@ const TriggerNow = () => {
   const [trustedContacts, setTrustedContacts] = useState([]);
   const [triggerSet, setTriggerSet] = useState(false);
 
-  const getTrustedContacts = async () => {
-    try {
-      const res = await axios.post("/api/get/trusted-contacts", {
-        clerkUserId: user.id,
-      });
-      setTrustedContacts(res.data.contacts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const getTrustedContacts = async () => {
+      try {
+        const res = await axios.post("/api/get/trusted-contacts", {
+          clerkUserId: user.id,
+        });
+        setTrustedContacts(res.data.contacts);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     if (user?.id) getTrustedContacts();
   }, [user?.id]);
 

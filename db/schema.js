@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { date, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -42,8 +42,10 @@ export const triggers = pgTable("triggers", {
     id: uuid("id").primaryKey().defaultRandom(),
     vaultId: uuid("vault_id").notNull().references(() => vaults.id, { onDelete: "cascade" }),
     type: text("type").notNull(), // "inactivity", "scheduled", "manual"
-    scheduledAt: timestamp("scheduled_at"), // if type === "scheduled"
+    triggerDate: date("trigger_date"),
     inactivityDays: text("inactivity_days"), // if type === "inactivity"
     createdAt: timestamp("created_at").defaultNow(),
 });
+
+
 

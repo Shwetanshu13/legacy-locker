@@ -10,7 +10,7 @@ export async function POST(req) {
         const result = await db.insert(triggers).values({
             vaultId,
             type,
-            scheduledAt: scheduledAt || null,
+            triggerDate: scheduledAt || null,
             inactivityDays: inactivityDays ? Number(inactivityDays) : null,
         });
 
