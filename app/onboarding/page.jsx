@@ -1,15 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function OnboardingPage() {
-  const { user, isLoaded, getToken } = useUser();
+  const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const waitForToken = async (getTokenFn, maxRetries = 5) => {
+    let retries = maxRetries;
+    let token = null;
+
+    while (!token && retries > 0) {
+      token = await getTokenFn();
+      if (!token) {
+        await new Promise((res) => setTimeout(res, 300));
+        retries--;
+      }
+    }
+
+    return token;
+  };
 
   // Save onboarding details
   const handleSubmit = async (e) => {
@@ -25,14 +41,16 @@ export default function OnboardingPage() {
         fullName,
       });
       console.log(res);
-      await getToken({ template: "default" }); // this will refresh session under the hood
+      // await getToken(); // this will refresh session under the hood
+      const token = await waitForToken(getToken);
 
-      //   // 3. Redirect or reload
-      //   //   window.location.href = "/dashboard";
+      // 3. Redirect or reload
+      // window.location.href = "/home";
     } catch (err) {
       console.error("Failed onboarding:", err);
     } finally {
       setLoading(false);
+      router.replace("/home");
       router.replace("/home");
     }
   };
