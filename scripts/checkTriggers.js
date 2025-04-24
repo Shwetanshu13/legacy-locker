@@ -53,4 +53,5 @@ export async function checkTriggers() {
     console.log("Checked and sent email notifications.");
 }
 
+// run the function
 checkTriggers();
