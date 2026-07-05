@@ -1,9 +1,9 @@
-import { date, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { date, pgTable, text, timestamp, uuid, boolean } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
     id: uuid("id").primaryKey().defaultRandom(),
-    clerkUserId: text("clerk_user_id").notNull().unique(),
-    email: text("email").notNull(),
+    email: text("email").notNull().unique(),
+    isVerified: boolean("is_verified").default(false),
     fullName: text("full_name"),
     lastActiveAt: timestamp("last_active_at").defaultNow(),
     createdAt: timestamp("created_at").defaultNow(),
@@ -47,5 +47,11 @@ export const triggers = pgTable("triggers", {
     createdAt: timestamp("created_at").defaultNow(),
 });
 
-
+export const otps = pgTable("otps", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    otp: text("otp").notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+});
 

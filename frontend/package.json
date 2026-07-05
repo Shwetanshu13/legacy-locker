@@ -1,5 +1,5 @@
 {
-  "name": "legacy-locker",
+  "name": "legacy-locker-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,28 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/backend": "^1.29.1",
-    "@clerk/nextjs": "^6.16.0",
-    "@neondatabase/serverless": "^1.0.0",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.82",
     "axios": "^1.8.4",
-    "compromise": "^14.14.4",
-    "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.42.0",
-    "express": "^5.1.0",
     "framer-motion": "^12.7.4",
-    "fuse.js": "^7.1.0",
     "lucide-react": "^0.501.0",
     "next": "14.2.28",
-    "nodemailer": "^6.10.1",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.3.8"
   },
   "devDependencies": {
     "@types/react": "19.1.2",
-    "drizzle-kit": "^0.31.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.28",
     "postcss": "^8",
