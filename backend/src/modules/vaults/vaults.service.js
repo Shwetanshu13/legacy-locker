@@ -54,6 +54,14 @@ class VaultsService {
             visibility: vaultData.visibility
         });
     }
+
+    async deleteVault(userId, vaultId) {
+        return await vaultsRepository.deleteVault(userId, vaultId);
+    }
+
+    async editVault(userId, vaultId, { title, ciphertext, iv }) {
+        return await vaultsRepository.editVault(userId, vaultId, { title, ciphertext, iv });
+    }
 }
 
 export default new VaultsService();

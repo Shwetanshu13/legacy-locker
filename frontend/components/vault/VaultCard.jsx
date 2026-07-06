@@ -10,7 +10,8 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
   const router = useRouter();
   const [hasManualTrigger, setHasManualTrigger] = useState(false);
   const [decryptedContent, setDecryptedContent] = useState("Decrypting...");
-  const { user, masterPassword } = useAuth();
+  const [passwordInput, setPasswordInput] = useState("");
+  const { user, masterPassword, setMasterPassword } = useAuth();
 
   const handleManualTrigger = async () => {
     try {
@@ -27,17 +28,8 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
 
   useEffect(() => {
     const checkManualTrigger = async () => {
-      try {
-        const res = await api.post("/vaults/check-trigger", {
-          vaultId: vault.id,
-        });
-
-        if (res.data?.triggerType?.type === "manual") {
-          setHasManualTrigger(true);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      // The backend doesn't have this endpoint yet, avoiding 404s
+      setHasManualTrigger(false);
     };
     checkManualTrigger();
   }, [vault.id]);
@@ -45,7 +37,6 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
   useEffect(() => {
     if (selectedId === vault.id) {
         if (!masterPassword || !user) {
-            setDecryptedContent("Error: Master Password missing. Please re-login.");
             return;
         }
         decryptVaultContent(vault, user, masterPassword).then(content => {
@@ -79,7 +70,30 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
       {selectedId === vault.id && (
         <div className="mt-4 space-y-4">
           <div className="bg-[#0c1119] rounded-lg p-4 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap border border-gray-800">
-            {decryptedContent}
+            {!masterPassword ? (
+              <div className="flex flex-col gap-3">
+                <p className="text-red-400 font-medium">Master Password missing. Please enter it to decrypt.</p>
+                <div className="flex gap-2">
+                  <input
+                    type="password"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder="Enter Master Password"
+                    className="flex-1 max-w-xs px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                  />
+                  <button 
+                    onClick={() => {
+                        if (passwordInput) setMasterPassword(passwordInput);
+                    }}
+                    className="bg-cyan-600 text-white px-4 py-2 rounded-md font-medium hover:bg-cyan-500 transition"
+                  >
+                    Unlock
+                  </button>
+                </div>
+              </div>
+            ) : (
+              decryptedContent
+            )}
           </div>
 
           <div className="flex flex-wrap gap-3">
@@ -88,6 +102,12 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
               className="bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition"
             >
               Edit
+            </button>
+            <button
+              onClick={() => router.push(`/vault/${vault.id}`)}
+              className="bg-cyan-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-cyan-500 transition"
+            >
+              Manage Triggers
             </button>
             <button
               onClick={() => onDelete(vault.id)}

@@ -57,6 +57,45 @@ class VaultsController {
             res.status(500).json({ message: 'Error adding vault' });
         }
     }
+
+    async deleteVault(req, res) {
+        try {
+            const vaultId = req.params.id;
+            const userId = req.user.id;
+            
+            const deletedVault = await vaultsService.deleteVault(userId, vaultId);
+            if (!deletedVault) {
+                return res.status(404).json({ message: 'Vault not found or not authorized' });
+            }
+            
+            res.status(200).json({ message: 'Vault deleted successfully', data: deletedVault });
+        } catch (error) {
+            console.error('Delete Vault Error:', error);
+            res.status(500).json({ message: 'Error deleting vault' });
+        }
+    }
+
+    async editVault(req, res) {
+        try {
+            const vaultId = req.params.id;
+            const userId = req.user.id;
+            const { title, ciphertext, iv } = req.body;
+
+            if (!title || !ciphertext || !iv) {
+                return res.status(400).json({ message: 'Missing required fields' });
+            }
+
+            const updatedVault = await vaultsService.editVault(userId, vaultId, { title, ciphertext, iv });
+            if (!updatedVault) {
+                return res.status(404).json({ message: 'Vault not found or not authorized' });
+            }
+            
+            res.status(200).json({ message: 'Vault updated successfully', data: updatedVault });
+        } catch (error) {
+            console.error('Edit Vault Error:', error);
+            res.status(500).json({ message: 'Error updating vault' });
+        }
+    }
 }
 
 export default new VaultsController();

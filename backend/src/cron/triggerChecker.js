@@ -1,8 +1,61 @@
 import cron from 'node-cron';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import db from '../db/index.js';
 import { triggers, vaultRecipients, vaults, users, trustedContacts } from '../db/schema.js';
-import { sendEmail } from '../utils/email.util.js';
+import { sendLegacyReleaseEmail, sendInactivityWarningEmail } from '../utils/email.util.js';
+
+const warnedVaults = new Set();
+
+const checkTriggerConditions = (trigger, owner) => {
+    const now = new Date();
+
+    if (trigger.type === 'inactivity' && trigger.inactivityDays && owner.lastActiveAt) {
+        const lastActive = new Date(owner.lastActiveAt);
+        const inactivityMs = parseInt(trigger.inactivityDays) * 24 * 60 * 60 * 1000;
+        return now.getTime() - lastActive.getTime() >= inactivityMs;
+    } 
+    
+    if (trigger.type === 'scheduled' && trigger.triggerDate) {
+        const scheduledDate = new Date(trigger.triggerDate);
+        return now.getTime() >= scheduledDate.getTime();
+    }
+
+    return false;
+};
+
+const isInactivityWarningWindow = (trigger, owner) => {
+    if (trigger.type !== 'inactivity' || !trigger.inactivityDays || !owner.lastActiveAt) return false;
+    
+    const now = new Date();
+    const lastActive = new Date(owner.lastActiveAt);
+    const inactivityMs = parseInt(trigger.inactivityDays) * 24 * 60 * 60 * 1000;
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    
+    const timeSinceActive = now.getTime() - lastActive.getTime();
+    const timeRemaining = inactivityMs - timeSinceActive;
+    
+    // Check if less than 24 hours remaining, but not yet triggered
+    return timeRemaining <= oneDayMs && timeRemaining > 0;
+};
+
+const releaseVault = async (recipient, vault, owner, contact) => {
+    // Mark as unlocked
+    await db.update(vaultRecipients)
+        .set({ isUnlocked: true })
+        .where(eq(vaultRecipients.id, recipient.id));
+
+    // Send email to nominee
+    const unlockLink = `http://localhost:3000/unlock-legacy/${vault.id}`;
+    
+    await sendLegacyReleaseEmail({
+        to: contact.email,
+        contactName: contact.name,
+        ownerName: owner.fullName || owner.email,
+        vaultTitle: vault.title,
+        customMessage: recipient.customMessage,
+        unlockLink
+    });
+};
 
 export const startTriggerChecker = () => {
     // Run every minute for testing, or daily in prod
@@ -28,49 +81,26 @@ export const startTriggerChecker = () => {
             const now = new Date();
 
             for (const { recipient, trigger, vault, owner, contact } of lockedRecipients) {
-                let shouldTrigger = false;
-
-                if (trigger.type === 'inactivity' && trigger.inactivityDays && owner.lastActiveAt) {
-                    const lastActive = new Date(owner.lastActiveAt);
-                    const inactivityMs = parseInt(trigger.inactivityDays) * 24 * 60 * 60 * 1000;
-                    if (now.getTime() - lastActive.getTime() >= inactivityMs) {
-                        shouldTrigger = true;
-                    }
-                } else if (trigger.type === 'scheduled' && trigger.triggerDate) {
-                    const scheduledDate = new Date(trigger.triggerDate);
-                    if (now.getTime() >= scheduledDate.getTime()) {
-                        shouldTrigger = true;
-                    }
-                }
+                const shouldTrigger = checkTriggerConditions(trigger, owner);
 
                 if (shouldTrigger) {
                     console.log(`[Cron] Trigger met for Vault ${vault.id} -> Nominee ${contact.email}`);
-                    
-                    // Mark as unlocked
-                    await db.update(vaultRecipients)
-                        .set({ isUnlocked: true })
-                        .where(eq(vaultRecipients.id, recipient.id));
-
-                    // Send email to nominee
-                    const unlockLink = `http://localhost:3000/unlock-legacy/${vault.id}`;
-                    
-                    const html = `
-                        <h2>Legacy Locker Release</h2>
-                        <p>Hello ${contact.name},</p>
-                        <p>${owner.fullName || owner.email} has shared a digital vault with you via Legacy Locker, and the release conditions have been met.</p>
-                        <p><strong>Title:</strong> ${vault.title}</p>
-                        <p><strong>Message from Owner:</strong> ${recipient.customMessage || 'None'}</p>
-                        <br/>
-                        <a href="${unlockLink}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Unlock Legacy</a>
-                        <br/><br/>
-                        <p><em>Note: You will need the Sharing PIN provided to you by the owner to decrypt the contents of this vault.</em></p>
-                    `;
-
-                    await sendEmail({
-                        to: contact.email,
-                        subject: `Legacy Release: ${vault.title}`,
-                        html: html
-                    });
+                    await releaseVault(recipient, vault, owner, contact);
+                } else if (isInactivityWarningWindow(trigger, owner)) {
+                    if (!warnedVaults.has(vault.id)) {
+                        console.log(`[Cron] Inactivity warning for Vault ${vault.id} -> Owner ${owner.email}`);
+                        await sendInactivityWarningEmail({
+                            to: owner.email,
+                            ownerName: owner.fullName || owner.email,
+                            vaultTitle: vault.title
+                        });
+                        warnedVaults.add(vault.id);
+                    }
+                } else {
+                    // Reset warning if user became active again
+                    if (warnedVaults.has(vault.id)) {
+                        warnedVaults.delete(vault.id);
+                    }
                 }
             }
         } catch (error) {

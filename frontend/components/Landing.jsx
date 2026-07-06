@@ -47,7 +47,7 @@ export default function Landing() {
                 </div>
                 <div className="flex gap-4 items-center">
                     <Link 
-                        href="/login" 
+                        href="/home"
                         className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-slate-900 px-8 font-medium text-slate-200 border border-slate-700/50 shadow-lg transition-all hover:border-indigo-500/50 hover:bg-slate-800"
                     >
                         <span className="relative z-10">{useAuth()?.user ? "Dashboard" : "Log In"}</span>

@@ -155,7 +155,7 @@ export default function TrustedContact() {
         if (!user) return;
         try {
             setLoading(true);
-            const res = await api.post("/api/contacts/add", {
+            const res = await api.post("/contacts/add", {
                 ...contact,
             });
 

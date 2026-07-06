@@ -13,5 +13,7 @@ router.use(authMiddleware);
 router.get('/', vaultsController.getVaults);
 router.get('/:id', vaultsController.getVaultById);
 router.post('/add', vaultsController.addVault);
+router.delete('/:id', vaultsController.deleteVault);
+router.put('/:id', vaultsController.editVault);
 
 export default router;

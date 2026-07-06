@@ -54,8 +54,8 @@ export default function Password() {
       console.log("Vault added successfully:", response.data);
 
       if (response.status === 201) {
-        // Redirect to dashboard or view page
-        router.push(`/home`);
+        // Redirect to trigger/nominee setup page for this vault
+        router.push(`/vault/${response.data.data.id}`);
       }
 
     } catch (error) {

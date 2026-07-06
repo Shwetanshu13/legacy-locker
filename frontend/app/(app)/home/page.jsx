@@ -9,7 +9,7 @@ function Home() {
 
   useEffect(() => {
     if (user?.id) {
-      api.post("/vault/update-activity", {
+      api.post("/auth/update-activity", {
         userId: user.id,
       }).catch(err => console.log("Activity update failed:", err));
     }
