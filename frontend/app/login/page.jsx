@@ -1,8 +1,20 @@
 "use client";
 
 import { useAuthLogic } from "@/hooks/useAuthLogic";
+import { useAuth } from "@/components/AuthProvider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Login() {
+    const { user, loading: authLoading } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!authLoading && user) {
+            router.push('/home');
+        }
+    }, [user, authLoading, router]);
+
     const {
         email, setEmail,
         otp, setOtp,

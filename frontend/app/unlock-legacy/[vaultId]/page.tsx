@@ -6,7 +6,7 @@ import { unwrapDekWithPin, decryptSymmetric } from "@/utils/crypto";
 
 export default function UnlockLegacy() {
     const params = useParams();
-    const vaultId = params?.id as string;
+    const vaultId = params?.vaultId as string;
 
     const [pin, setPin] = useState("");
     const [status, setStatus] = useState("idle"); // idle | loading | unlocked | error

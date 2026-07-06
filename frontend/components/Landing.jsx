@@ -104,9 +104,9 @@ export default function Landing() {
                     <Link href="/login" className="px-8 py-4 rounded-full bg-white text-slate-950 font-bold hover:bg-slate-200 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.1)]">
                         Create Your Vault
                     </Link>
-                    <button className="px-8 py-4 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-md text-white font-medium hover:bg-slate-800 transition-colors">
+                    <Link href="/how-it-works" className="px-8 py-4 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-md text-white font-medium hover:bg-slate-800 transition-colors">
                         Learn How It Works
-                    </button>
+                    </Link>
                 </motion.div>
                 
                 {/* Visual element representing a vault/shield */}
