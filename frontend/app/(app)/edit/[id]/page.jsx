@@ -26,7 +26,7 @@ export default function EditContentPage() {
 
       if (res.ok) {
         alert("Content updated!");
-        router.push("/dashboard");
+        router.push("/home");
       } else {
         alert("Error updating content");
       }
@@ -68,7 +68,7 @@ export default function EditContentPage() {
             </button>
             <button
               type="button"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/home")}
               className="bg-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-400 transition"
             >
               Cancel

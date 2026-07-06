@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
         setMasterPassword(password);
         localStorage.setItem("token", newToken);
         localStorage.setItem("user", JSON.stringify(userData));
-        router.push("/dashboard"); // Redirect to dashboard or home
+        router.push("/home"); // Redirect to dashboard or home
     };
 
     const logout = () => {

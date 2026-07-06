@@ -11,7 +11,7 @@ export function useContacts(userId, fetchOnMount = false) {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get("/trusted-contacts");
+            const response = await api.get("/api/contacts");
             setContacts(response.data.contacts);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch contacts");

@@ -127,18 +127,7 @@ function TriggerForm({ onSubmit }) {
 export default function Trigger({ vaultId, setTriggerSet }) {
   const handleFormSubmit = async (data) => {
     if (!vaultId) return;
-
-    try {
-      const response = await axios.post("/api/add/add-trigger", {
-        vaultId,
-        ...data,
-      });
-
-      console.log("Trigger created successfully", response.data);
-      setTriggerSet(true);
-    } catch (error) {
-      console.error("Error creating trigger:", error);
-    }
+    setTriggerSet(data);
   };
 
   return (

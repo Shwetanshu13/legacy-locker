@@ -26,13 +26,7 @@ export default function RootLayout({ children }) {
                 className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
             >
                 <AuthProvider>
-                    <header className="flex justify-end items-center p-4 gap-4">
-                        <div className="flex gap-4 items-center">
-                            <Link href="/login" className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2 rounded-lg text-sm transition duration-200">
-                                Login / Sign Up
-                            </Link>
-                        </div>
-                    </header>
+
                     {children}
                 </AuthProvider>
             </body>

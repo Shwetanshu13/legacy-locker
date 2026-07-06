@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import Spline from "@splinetool/react-spline";
+import Link from "next/link";
+import { useAuth } from "@/components/AuthProvider";
 
 const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -17,19 +19,6 @@ const fadeUp = {
 };
 
 export default function Landing() {
-    useEffect(() => {
-        // Load Spline viewer script
-        const splineScript = document.createElement("script");
-        splineScript.src =
-            "https://unpkg.com/@splinetool/viewer@0.9.490/build/spline-viewer.js";
-        splineScript.type = "module";
-        document.head.appendChild(splineScript);
-
-        return () => {
-            // Clean up script when component unmounts
-            document.head.removeChild(splineScript);
-        };
-    }, []);
 
     return (
         <div className="relative bg-black text-white overflow-x-hidden font-sans">
@@ -37,14 +26,23 @@ export default function Landing() {
             <div className="absolute top-[-100px] left-1/2 w-[700px] h-[700px] bg-purple-600 opacity-20 blur-[180px] rounded-full transform -translate-x-1/2 -z-10" />
             <div className="absolute bottom-[-150px] right-[-100px] w-[400px] h-[400px] bg-blue-500 opacity-10 blur-3xl rounded-full -z-10" />
 
+            {/* Header */}
+            <header className="absolute top-0 left-0 right-0 z-50 flex justify-end items-center p-6 gap-4">
+                <div className="flex gap-4 items-center">
+                    <Link href="/login" className="bg-purple-600 hover:bg-purple-500 text-white font-medium px-6 py-2 rounded-full text-sm transition duration-300 shadow-lg shadow-purple-500/30">
+                        {useAuth().user ? "Go to Dashboard" : "Login / Sign Up"}
+                    </Link>
+                </div>
+            </header>
+
             {/* Hero Section with Spline Background */}
             <section className="relative min-h-screen max-w-7xl mx-auto px-6 py-28">
                 {/* Spline Viewer as background */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden -z-5">
-                    <spline-viewer
-                        url="https://prod.spline.design/YjKP74MlhtyCYk-6/scene.splinecode"
+                    <Spline
+                        scene="https://prod.spline.design/YjKP74MlhtyCYk-6/scene.splinecode"
                         className="w-full h-full"
-                    ></spline-viewer>
+                    />
                 </div>
 
                 {/* Semi-transparent overlay to ensure text readability */}
@@ -121,10 +119,10 @@ export default function Landing() {
             <section className="relative py-24 bg-gray-950">
                 {/* Spline Viewer as background for How It Works section */}
                 <div className="absolute inset-0 w-full h-full overflow-hidden opacity-60">
-                    <spline-viewer
-                        url="https://prod.spline.design/wTCpAdDX34stWPdK/scene.splinecode"
+                    <Spline
+                        scene="https://prod.spline.design/wTCpAdDX34stWPdK/scene.splinecode"
                         className="w-full h-full"
-                    ></spline-viewer>
+                    />
                 </div>
 
                 {/* Semi-transparent overlay to ensure text readability */}

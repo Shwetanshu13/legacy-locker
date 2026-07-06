@@ -19,7 +19,7 @@ export default function Password() {
     visibility: "private",
   });
 
-  const [suggestions, setSuggestions] = useState([]);
+
   const { user, token } = useAuth();
   const router = useRouter();
 
@@ -55,7 +55,7 @@ export default function Password() {
 
       if (response.status === 201) {
         // Redirect to dashboard or view page
-        router.push(`/dashboard`);
+        router.push(`/home`);
       }
 
     } catch (error) {
@@ -66,37 +66,6 @@ export default function Password() {
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (name === "content") {
-      getSuggestions(value);
-    }
-  }
-
-  async function getSuggestions(input) {
-    if (!input.trim()) return;
-    try {
-      const res = await fetch("http://localhost:8000/autocomplete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        console.log("Received suggestions:", data.suggestions); // Check the suggestions in the console
-        setSuggestions(data.suggestions);
-      }
-    } catch (err) {
-      console.error("Error fetching suggestions:", err);
-    }
-  }
-
-  function applySuggestion(suggestion) {
-    setFormData((prev) => ({
-      ...prev,
-      content: prev.content.trim() + " " + suggestion + " ",
-    }));
-    setSuggestions([]);
   }
 
   return (
@@ -167,20 +136,6 @@ export default function Password() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
               />
-              {/* Suggestions list */}
-              {suggestions.length > 0 && (
-                <ul className="mt-2 bg-gray-800 border border-gray-700 rounded-lg max-h-40 overflow-y-auto text-sm">
-                  {suggestions.map((s, index) => (
-                    <li
-                      key={index}
-                      onClick={() => applySuggestion(s)}
-                      className="p-2 hover:bg-gray-700 cursor-pointer"
-                    >
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </motion.div>
 
             {/* Visibility dropdown */}
