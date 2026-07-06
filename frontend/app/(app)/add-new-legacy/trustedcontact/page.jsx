@@ -1,14 +1,14 @@
 "use client";
 import TrustedContact from "@/components/add-new-legacy/TrustedContact";
 import TrustedContacts from "@/components/TrustedContacts";
-import { useUser } from "@clerk/nextjs";
+import { useAuth } from "@/components/AuthProvider";
 import { motion } from "framer-motion";
 
 function Page() {
-  const { user, isLoaded } = useUser();
+  const { user } = useAuth();
   const userId = user?.id;
 
-  if (!isLoaded) return null;
+  if (!user) return null;
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: (i = 1) => ({

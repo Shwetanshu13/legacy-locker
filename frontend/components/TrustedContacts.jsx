@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/utils/animations";
 import { useContacts } from "@/hooks/useContacts";
 
-export default function TrustedContacts({ clerkUserId }) {
-    const { contacts, loading, error } = useContacts(clerkUserId, true);
+export default function TrustedContacts({ userId }) {
+    const { contacts, loading, error } = useContacts(userId, true);
 
     if (loading)
         return (

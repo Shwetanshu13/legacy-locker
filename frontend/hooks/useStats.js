@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
+import api from '@/utils/api';
 
 export function useStats(userId, fetchOnMount = false) {
     const [stats, setStats] = useState({
@@ -15,8 +15,7 @@ export function useStats(userId, fetchOnMount = false) {
         setLoading(true);
         setError(null);
         try {
-            // Note: Currently calling Next.js API route. Update to Express api instance when ready.
-            const response = await axios.post("/api/get/stats", { clerkUserId: userId });
+            const response = await api.get("/stats");
             setStats(response.data);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch stats");

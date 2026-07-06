@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import axios from "axios";
-import { useUser } from "@clerk/nextjs";
+import api from "@/utils/api";
+import { useAuth } from "@/components/AuthProvider";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -148,16 +148,15 @@ function TrustedContactForm({ onSubmit }) {
     );
 }
 
-export default function TrustedContact({ userId }) {
+export default function TrustedContact() {
     const [loading, setLoading] = useState(false);
-    const { user, isLoaded } = useUser();
+    const { user } = useAuth();
 
     const handleAddContact = async (contact) => {
+        if (!user) return;
         try {
             setLoading(true);
-            console.log(user);
-            const res = await axios.post("/api/add/add-trustedContact", {
-                clerkUserId: user.id,
+            const res = await api.post("/trusted-contacts/add", {
                 ...contact,
             });
 
@@ -173,7 +172,7 @@ export default function TrustedContact({ userId }) {
         }
     };
 
-    if (!isLoaded) return null;
+    if (!user) return null;
 
     return (
         <div className="bg-black text-white overflow-x-hidden min-h-screen flex items-center justify-center p-4">

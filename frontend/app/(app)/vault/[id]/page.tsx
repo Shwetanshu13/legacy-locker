@@ -1,8 +1,8 @@
 "use client";
 import Trigger from "@/components/add-new-legacy/Trigger";
 import VaultRecipientForm from "@/components/add-new-legacy/VaultRecipientForm";
-import { useUser } from "@clerk/nextjs";
-import axios from "axios";
+import { useAuth } from "@/components/AuthProvider";
+import api from "@/utils/api";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ const TriggerNow = () => {
   const vaultId = params?.id as string;
   const router = useRouter();
 
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const [trustedContacts, setTrustedContacts] = useState([]);
   const [triggerSet, setTriggerSet] = useState(false);
@@ -19,9 +19,7 @@ const TriggerNow = () => {
   useEffect(() => {
     const getTrustedContacts = async () => {
       try {
-        const res = await axios.post("/api/get/trusted-contacts", {
-          clerkUserId: user.id,
-        });
+        const res = await api.post("/trusted-contacts"); // Wait, we can hit the backend or just change to /trusted-contacts since the token specifies the user
         setTrustedContacts(res.data.contacts);
       } catch (error) {
         console.log(error);
@@ -38,7 +36,7 @@ const TriggerNow = () => {
     customMessage?: string;
   }) => {
     try {
-      const res = await axios.post("/api/add/add-vaultRecipient", {
+      const res = await api.post("/vaults/add-recipient", {
         vaultId,
         contactId,
         customMessage,

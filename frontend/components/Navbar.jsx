@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
-import { Menu, X, Home, Lock, Users, Settings } from "lucide-react";
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { Menu, X, Home, Lock, Users, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { user, logout } = useAuth();
 
     const fadeIn = {
         hidden: { opacity: 0, y: -20 },
@@ -62,17 +63,15 @@ export default function Navbar() {
                         </motion.div>
                     ))}
                     <motion.div variants={fadeIn} custom={5}>
-                        <SignedIn>
-                            <UserButton
-                                afterSignOutUrl="/"
-                                appearance={{
-                                    elements: {
-                                        userButtonAvatarBox:
-                                            "border-2 border-purple-500",
-                                    },
-                                }}
-                            />
-                        </SignedIn>
+                        {user ? (
+                            <button
+                                onClick={logout}
+                                className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200"
+                            >
+                                <LogOut size={18} />
+                                <span>Logout</span>
+                            </button>
+                        ) : null}
                     </motion.div>
                 </div>
 
@@ -122,22 +121,12 @@ export default function Navbar() {
                         custom={5}
                         className="pt-3 border-t border-gray-700"
                     >
-                        <SignedIn>
-                            <div className="flex items-center space-x-3 py-2">
-                                <UserButton
-                                    afterSignOutUrl="/"
-                                    appearance={{
-                                        elements: {
-                                            userButtonAvatarBox:
-                                                "border-2 border-purple-500",
-                                        },
-                                    }}
-                                />
-                                <span className="text-sm text-gray-400">
-                                    Your account
-                                </span>
+                        {user && (
+                            <div className="flex items-center space-x-3 py-2 text-gray-300 hover:text-white transition-colors duration-200" onClick={logout}>
+                                <LogOut size={18} />
+                                <span>Logout</span>
                             </div>
-                        </SignedIn>
+                        )}
                     </motion.div>
                 </div>
             </div>

@@ -1,19 +1,19 @@
 "use client";
 import Dashboard from "@/components/Dashboard";
-import { useUser } from "@clerk/nextjs";
-import axios from "axios";
+import { useAuth } from "@/components/AuthProvider";
+import api from "@/utils/api";
 import { useEffect } from "react";
 
 function Home() {
-  const { user, isLoaded } = useUser();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (isLoaded && user?.id) {
-      axios.post("/api/vault/update-activity", {
+    if (user?.id) {
+      api.post("/vault/update-activity", {
         userId: user.id,
-      });
+      }).catch(err => console.log("Activity update failed:", err));
     }
-  }, [isLoaded, user?.id]);
+  }, [user?.id]);
 
   return (
     <div>

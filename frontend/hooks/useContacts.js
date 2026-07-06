@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
+import api from '@/utils/api';
 
 export function useContacts(userId, fetchOnMount = false) {
     const [contacts, setContacts] = useState([]);
@@ -11,8 +11,7 @@ export function useContacts(userId, fetchOnMount = false) {
         setLoading(true);
         setError(null);
         try {
-            // Note: Currently calling Next.js API route. Update to Express api instance when ready.
-            const response = await axios.post("/api/get/trusted-contacts", { clerkUserId: userId });
+            const response = await api.get("/trusted-contacts");
             setContacts(response.data.contacts);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to fetch contacts");
