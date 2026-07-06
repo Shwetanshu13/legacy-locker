@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { eq } from 'drizzle-orm';
 import db from '../db/index.js';
 import { triggers, vaultRecipients, vaults, users, trustedContacts } from '../db/schema.js';
-import { sendLegacyReleaseEmail, sendInactivityWarningEmail } from '../utils/email.util.js';
+import { enqueueLegacyReleaseEmail, enqueueInactivityWarningEmail } from '../queues/email.queue.js';
 
 const warnedVaults = new Set();
 
@@ -44,10 +44,10 @@ const releaseVault = async (recipient, vault, owner, contact) => {
         .set({ isUnlocked: true })
         .where(eq(vaultRecipients.id, recipient.id));
 
-    // Send email to nominee
+    // Send email to nominee using Queue
     const unlockLink = `http://localhost:3000/unlock-legacy/${vault.id}`;
     
-    await sendLegacyReleaseEmail({
+    await enqueueLegacyReleaseEmail({
         to: contact.email,
         contactName: contact.name,
         ownerName: owner.fullName || owner.email,
@@ -89,7 +89,7 @@ export const startTriggerChecker = () => {
                 } else if (isInactivityWarningWindow(trigger, owner)) {
                     if (!warnedVaults.has(vault.id)) {
                         console.log(`[Cron] Inactivity warning for Vault ${vault.id} -> Owner ${owner.email}`);
-                        await sendInactivityWarningEmail({
+                        await enqueueInactivityWarningEmail({
                             to: owner.email,
                             ownerName: owner.fullName || owner.email,
                             vaultTitle: vault.title

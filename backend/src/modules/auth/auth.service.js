@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import disposableDomains from 'disposable-email-domains' with { type: 'json' };
 import authRepository from './auth.repository.js';
-import { sendEmail } from '../../utils/email.util.js';
-import { getOtpEmailTemplate } from '../../templates/otp.template.js';
+import { enqueueOtpEmail } from '../../queues/email.queue.js';
 
 class AuthService {
     _generateOTP() {
@@ -33,11 +32,9 @@ class AuthService {
 
         await authRepository.createOtp(email, otp, expiresAt);
 
-        await sendEmail({
+        await enqueueOtpEmail({
             to: email,
-            subject: 'Legacy Locker - Your OTP Code',
-            text: `Your OTP code is ${otp}. It will expire in 10 minutes.`,
-            html: getOtpEmailTemplate(otp),
+            otp: otp
         });
 
         return { message: 'OTP sent successfully' };
