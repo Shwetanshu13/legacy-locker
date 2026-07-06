@@ -69,131 +69,140 @@ export default function Password() {
   }
 
   return (
-    <div className="relative bg-black text-white overflow-x-hidden min-h-screen flex items-center justify-center p-4">
-      <div className="absolute top-0 left-1/2 w-[600px] h-[600px] bg-purple-500 rounded-full opacity-20 blur-3xl transform -translate-x-1/2 -z-10" />
-      <div className="absolute bottom-[-200px] right-[-100px] w-[400px] h-[400px] bg-blue-500 rounded-full opacity-10 blur-2xl -z-10" />
+    <div className="relative bg-[#020617] text-slate-200 overflow-x-hidden min-h-screen flex items-center justify-center p-6">
+      {/* Background Orbs */}
+      <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-cyan-600/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="absolute bottom-[20%] left-[20%] w-[500px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
 
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 rounded-xl overflow-hidden shadow-lg border border-gray-700"
+        className="w-full max-w-6xl z-10"
       >
-        {/* Left Section */}
-        <div className="col-span-1 flex flex-col items-center justify-center p-12 bg-gray-900/80 backdrop-blur-md">
-          <motion.h2
+        <div className="flex flex-col md:flex-row bg-slate-900/40 backdrop-blur-xl rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+          
+          {/* Left Section */}
+          <motion.div
+            className="p-10 md:w-2/5 flex flex-col justify-center relative overflow-hidden bg-slate-900/60"
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-3xl font-bold text-center mb-4"
+            custom={1}
           >
-            Add a Password to <br /> Your Legacy
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-gray-400 text-center"
-          >
-            Secure your digital assets for the future
-          </motion.p>
-        </div>
+            <div className="absolute top-[-50px] left-[-50px] w-48 h-48 bg-cyan-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+            <div className="absolute bottom-[-50px] right-[-50px] w-48 h-48 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
-        {/* Right Section */}
-        <div className="col-span-2 p-8 md:p-12 bg-gray-900/50 backdrop-blur-md">
-          <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
-            {/* Title */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={2}
-            >
-              <input
-                type="text"
-                name="title"
-                placeholder="Title here..."
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
-            </motion.div>
-
-            {/* Content with autocomplete */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={3}
-            >
-              <textarea
-                name="content"
-                placeholder="Add your password details here..."
-                required
-                rows={5}
-                value={formData.content}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
-            </motion.div>
-
-            {/* Visibility dropdown */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={4}
-            >
-              <select
-                name="visibility"
-                value={formData.visibility}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all appearance-none"
-                style={{
-                  backgroundImage:
-                    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "right 0.75rem center",
-                  backgroundSize: "1rem",
-                }}
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-6">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <motion.h2
+                className="text-white text-3xl font-bold mb-4 tracking-tight"
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
               >
-                <option value="private">Private</option>
-                <option value="public">Public</option>
-                <option value="trusted">Trusted Only</option>
-              </select>
-            </motion.div>
+                Add a Password to <br /> Your Legacy
+              </motion.h2>
+              <motion.p
+                className="text-slate-400"
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
+                custom={2}
+              >
+                Secure your digital assets with AES-256 GCM encryption.
+              </motion.p>
+            </div>
+          </motion.div>
 
-            {/* Buttons */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={5}
-              className="flex flex-col md:flex-row gap-4 mt-4"
-            >
-              <button
-                type="submit"
-                className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition flex-1"
+          {/* Right Section */}
+          <div className="p-8 md:p-12 md:w-3/5 bg-slate-900/30">
+            <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
+              {/* Title */}
+              <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={2}>
+                <label className="block text-slate-400 text-sm font-medium mb-2">Vault Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="e.g. Primary Email Account"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all shadow-inner"
+                />
+              </motion.div>
+
+              {/* Content */}
+              <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}>
+                <label className="block text-slate-400 text-sm font-medium mb-2">Secret Content</label>
+                <textarea
+                  name="content"
+                  placeholder="Username, password, or sensitive notes..."
+                  required
+                  rows={5}
+                  value={formData.content}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all shadow-inner font-mono text-sm resize-none"
+                />
+              </motion.div>
+
+              {/* Visibility dropdown */}
+              <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={4} className="relative">
+                <label className="block text-slate-400 text-sm font-medium mb-2">Visibility</label>
+                <select
+                  name="visibility"
+                  value={formData.visibility}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all appearance-none shadow-inner"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 1rem center",
+                    backgroundSize: "1.2rem",
+                  }}
+                >
+                  <option value="private">Private (Only You)</option>
+                  <option value="trusted">Trusted Contacts</option>
+                  <option value="public">Public</option>
+                </select>
+              </motion.div>
+
+              {/* Buttons */}
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
+                custom={5}
+                className="flex flex-col sm:flex-row gap-4 mt-6"
               >
-                Save Password
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  setFormData({
-                    email: "",
-                    title: "",
-                    content: "",
-                    visibility: "private",
-                  })
-                }
-                className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition flex-1"
-              >
-                Reset Form
-              </button>
-            </motion.div>
-          </form>
+                <button
+                  type="submit"
+                  className="bg-cyan-600 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-cyan-500 transition-colors flex-1 shadow-lg shadow-cyan-600/20"
+                >
+                  Encrypt & Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData({
+                      email: "",
+                      title: "",
+                      content: "",
+                      visibility: "private",
+                    })
+                  }
+                  className="bg-slate-800 text-slate-300 border border-slate-700 px-6 py-3 rounded-xl text-sm font-semibold hover:bg-slate-700 hover:text-white transition-colors flex-1"
+                >
+                  Reset Form
+                </button>
+              </motion.div>
+            </form>
+          </div>
         </div>
       </motion.div>
     </div>

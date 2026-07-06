@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   }, [user, loading, router]);
 
   if (loading || !user) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-900">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-[#020617] text-slate-200">Loading...</div>;
   }
 
   return (

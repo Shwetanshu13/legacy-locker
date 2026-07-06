@@ -1,6 +1,4 @@
 "use client";
-import { useState } from "react";
-import Spline from "@splinetool/react-spline";
 import { useAuth } from "@/components/AuthProvider";
 import { useVaults } from "@/hooks/useVaults";
 import { useStats } from "@/hooks/useStats";
@@ -10,47 +8,70 @@ import EmptyState from "./dashboard/EmptyState";
 import VaultsGrid from "./dashboard/VaultsGrid";
 
 export default function Dashboard() {
-  const [splineLoading, setSplineLoading] = useState(true);
-  const { user, isLoaded } = useAuth(); // Assuming we adjusted useAuth to provide isLoaded or we just check user
+  const { user } = useAuth();
 
   const { vaults, loading: vaultsLoading, deleteVault } = useVaults(user?.id, true);
   const { stats } = useStats(user?.id, true);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="max-w-6xl mx-auto px-6 pb-12">
-        {/* 3D Spline Hero Section */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden mb-8 relative">
-          <div className="h-80 w-full relative">
-            {splineLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-10">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+    <div className="min-h-screen bg-[#020617] text-slate-200">
+      {/* Background Orbs */}
+      <div className="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="fixed top-[20%] right-[-10%] w-[600px] h-[600px] bg-cyan-600/5 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+
+      <div className="relative max-w-6xl mx-auto px-6 pb-12 pt-8 z-10">
+        
+        {/* Sleek Hero Banner */}
+        <div className="relative bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden mb-12 shadow-2xl backdrop-blur-md">
+          {/* Subtle animated gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-cyan-500/5 opacity-50"></div>
+          
+          <div className="relative p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 mb-6 text-xs font-mono text-indigo-300">
+                <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                System Secured
               </div>
-            )}
-            <Spline
-              scene="https://prod.spline.design/xJeSckXFvIStXIIz/scene.splinecode"
-              onLoad={() => setSplineLoading(false)}
-            />
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent p-8">
-            <h1 className="text-3xl font-bold mb-2 text-white">Digital Legacy</h1>
-            <p className="text-gray-300 max-w-lg">
-              Secure your digital assets and ensure they&apos;re passed on according to your wishes.
-            </p>
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight">
+                Digital Legacy
+              </h1>
+              <p className="text-slate-400 max-w-lg text-lg leading-relaxed">
+                Secure your most critical digital assets. Ensure they&apos;re preserved and passed on exactly according to your conditions.
+              </p>
+            </div>
+
+            {/* Decorative abstract shield/vault graphic */}
+            <div className="hidden md:flex flex-shrink-0 relative w-48 h-48 items-center justify-center">
+              <div className="absolute inset-0 bg-indigo-500/20 blur-2xl rounded-full"></div>
+              <div className="relative w-32 h-32 bg-slate-800/50 backdrop-blur border border-indigo-500/30 rounded-2xl flex items-center justify-center transform rotate-3 shadow-xl">
+                <div className="w-24 h-24 bg-slate-900 rounded-xl border border-slate-700 flex items-center justify-center transform -rotate-6">
+                  <svg className="w-10 h-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Stats Summary */}
-        <StatsSummary stats={stats} />
+        <div className="mb-12">
+            <StatsSummary stats={stats} />
+        </div>
 
         {/* Main Content */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
-          <h2 className="text-xl font-bold mb-6">Your Secure Vaults</h2>
+        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"></div>
+          
+          <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold text-white tracking-tight">Your Secure Vaults</h2>
+              <span className="text-sm font-mono text-slate-500 bg-slate-800/50 px-3 py-1 rounded border border-slate-700">AES-256 GCM</span>
+          </div>
 
           {vaultsLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
-              <p className="mt-4 text-gray-400">Loading your vaults...</p>
+            <div className="text-center py-20 flex flex-col items-center">
+              <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-indigo-500 border-r-transparent mb-4 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+              <p className="text-slate-400 font-medium tracking-wide">Decrypting vaults locally...</p>
             </div>
           ) : vaults.length === 0 ? (
             <EmptyState />

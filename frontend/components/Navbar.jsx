@@ -36,14 +36,16 @@ export default function Navbar() {
         <motion.div
             initial="hidden"
             animate="visible"
-            className="backdrop-blur-md bg-gray-900/80 text-white rounded-xl mx-auto my-4 max-w-6xl border border-gray-700 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
+            className="backdrop-blur-xl bg-slate-900/50 text-white rounded-2xl mx-auto my-6 max-w-6xl border border-slate-800 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden relative"
         >
-            <nav className="flex justify-between items-center p-4">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+            
+            <nav className="flex justify-between items-center p-4 px-6 relative z-10">
                 <motion.div
                     variants={fadeIn}
-                    className="text-xl font-bold text-white"
+                    className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400"
                 >
-                    <Link href="/">Digital Legacy</Link>
+                    <Link href="/home">LegacyLocker</Link>
                 </motion.div>
 
                 {/* Desktop Menu */}
@@ -56,7 +58,7 @@ export default function Navbar() {
                         >
                             <Link
                                 href={item.href}
-                                className="text-gray-300 hover:text-white transition-colors duration-200"
+                                className="text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200"
                             >
                                 {item.name}
                             </Link>
@@ -66,9 +68,9 @@ export default function Navbar() {
                         {user ? (
                             <button
                                 onClick={logout}
-                                className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200"
+                                className="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors duration-200"
                             >
-                                <LogOut size={18} />
+                                <LogOut size={16} />
                                 <span>Logout</span>
                             </button>
                         ) : null}
@@ -79,7 +81,7 @@ export default function Navbar() {
                 <motion.button
                     variants={fadeIn}
                     custom={1}
-                    className="md:hidden text-white hover:text-purple-400 transition-colors duration-300"
+                    className="md:hidden text-slate-300 hover:text-cyan-400 transition-colors duration-300"
                     onClick={() => setIsOpen(!isOpen)}
                     aria-label="Toggle menu"
                 >
@@ -104,13 +106,13 @@ export default function Navbar() {
                         >
                             <Link
                                 href={item.href}
-                                className="flex items-center space-x-3 text-gray-300 hover:text-white py-2 transition-colors duration-200"
+                                className="flex items-center space-x-3 text-slate-400 hover:text-cyan-400 py-2 transition-colors duration-200"
                                 onClick={() => setIsOpen(false)}
                             >
-                                <div className="text-purple-500">
+                                <div className="text-cyan-500">
                                     {item.icon}
                                 </div>
-                                <span>{item.name}</span>
+                                <span className="font-medium">{item.name}</span>
                             </Link>
                         </motion.div>
                     ))}
@@ -119,13 +121,13 @@ export default function Navbar() {
                         initial="hidden"
                         animate={isOpen ? "visible" : "hidden"}
                         custom={5}
-                        className="pt-3 border-t border-gray-700"
+                        className="pt-3 border-t border-slate-800"
                     >
                         {user && (
-                            <div className="flex items-center space-x-3 py-2 text-gray-300 hover:text-white transition-colors duration-200" onClick={logout}>
+                            <button className="flex w-full items-center space-x-3 py-2 text-slate-400 hover:text-cyan-400 transition-colors duration-200 font-medium" onClick={logout}>
                                 <LogOut size={18} />
                                 <span>Logout</span>
-                            </div>
+                            </button>
                         )}
                     </motion.div>
                 </div>

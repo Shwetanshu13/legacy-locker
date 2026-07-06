@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Spline from "@splinetool/react-spline";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -11,223 +10,172 @@ const fadeUp = {
         opacity: 1,
         y: 0,
         transition: {
-            delay: i * 0.2,
-            duration: 0.6,
-            ease: "easeOut",
+            delay: i * 0.15,
+            duration: 0.7,
+            ease: [0.25, 0.4, 0.25, 1],
         },
     }),
 };
 
-export default function Landing() {
+const floatingAnimation = {
+    animate: {
+        y: [0, -20, 0],
+        transition: {
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+        },
+    },
+};
 
+export default function Landing() {
     return (
-        <div className="relative bg-black text-white overflow-x-hidden font-sans">
-            {/* Decorative background shapes */}
-            <div className="absolute top-[-100px] left-1/2 w-[700px] h-[700px] bg-purple-600 opacity-20 blur-[180px] rounded-full transform -translate-x-1/2 -z-10" />
-            <div className="absolute bottom-[-150px] right-[-100px] w-[400px] h-[400px] bg-blue-500 opacity-10 blur-3xl rounded-full -z-10" />
+        <div className="relative bg-[#020617] text-slate-200 overflow-hidden font-sans min-h-screen">
+            {/* Dark Midnight Background Orbs */}
+            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+            <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-cyan-600/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+            <div className="absolute bottom-[-20%] left-[20%] w-[700px] h-[700px] bg-violet-600/15 blur-[180px] rounded-full mix-blend-screen pointer-events-none" />
+            
+            {/* Subtle Grid overlay for texture */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
             {/* Header */}
-            <header className="absolute top-0 left-0 right-0 z-50 flex justify-end items-center p-6 gap-4">
+            <header className="relative z-50 flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+                <div className="text-2xl font-bold tracking-tighter bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
+                    LegacyLocker
+                </div>
                 <div className="flex gap-4 items-center">
-                    <Link href="/login" className="bg-purple-600 hover:bg-purple-500 text-white font-medium px-6 py-2 rounded-full text-sm transition duration-300 shadow-lg shadow-purple-500/30">
-                        {useAuth().user ? "Go to Dashboard" : "Login / Sign Up"}
+                    <Link 
+                        href="/login" 
+                        className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-slate-900 px-8 font-medium text-slate-200 border border-slate-700/50 shadow-lg transition-all hover:border-indigo-500/50 hover:bg-slate-800"
+                    >
+                        <span className="relative z-10">{useAuth()?.user ? "Dashboard" : "Log In"}</span>
+                        <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                            <div className="relative h-full w-8 bg-white/5"></div>
+                        </div>
                     </Link>
                 </div>
             </header>
 
-            {/* Hero Section with Spline Background */}
-            <section className="relative min-h-screen max-w-7xl mx-auto px-6 py-28">
-                {/* Spline Viewer as background */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden -z-5">
-                    <Spline
-                        scene="https://prod.spline.design/YjKP74MlhtyCYk-6/scene.splinecode"
-                        className="w-full h-full"
-                    />
-                </div>
+            {/* Hero Section */}
+            <section className="relative z-10 min-h-[85vh] flex flex-col items-center justify-center max-w-5xl mx-auto px-6 text-center pt-20">
+                <motion.div
+                    custom={1}
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeUp}
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8"
+                >
+                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                    Military-grade encryption for your digital assets
+                </motion.div>
 
-                {/* Semi-transparent overlay to ensure text readability */}
-                <div className="absolute inset-0 bg-black bg-opacity-40 -z-5"></div>
+                <motion.h1
+                    custom={2}
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeUp}
+                    className="text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] mb-8 text-white"
+                >
+                    Your Legacy, <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-violet-400">
+                        Locked & Secured.
+                    </span>
+                </motion.h1>
 
-                {/* Content - maintaining original flex layout */}
-                <div className="relative z-10 h-full flex flex-col md:flex-row items-center justify-between gap-12">
-                    <motion.div
-                        variants={fadeUp}
-                        initial="hidden"
-                        animate="visible"
-                        className="flex-1 text-center md:text-left"
-                    >
-                        <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-purple-400 to-blue-400 text-transparent bg-clip-text">
-                            Your Legacy, <br /> Locked & Secured
-                        </h1>
-                        <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md mx-auto md:mx-0">
-                            Manage, protect and pass on your digital life with
-                            confidence.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                            <button className="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all duration-300 shadow-md">
-                                Get Started
-                            </button>
-                            <button className="border border-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all duration-300 shadow-md">
-                                Learn More
-                            </button>
+                <motion.p
+                    custom={3}
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeUp}
+                    className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed"
+                >
+                    The ultimate zero-knowledge platform to manage, protect, and pass on your digital life to the people who matter most. 
+                </motion.p>
+
+                <motion.div
+                    custom={4}
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeUp}
+                    className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
+                >
+                    <Link href="/login" className="px-8 py-4 rounded-full bg-white text-slate-950 font-bold hover:bg-slate-200 transition-colors shadow-[0_0_40px_rgba(255,255,255,0.1)]">
+                        Create Your Vault
+                    </Link>
+                    <button className="px-8 py-4 rounded-full bg-slate-900/50 border border-slate-700 backdrop-blur-md text-white font-medium hover:bg-slate-800 transition-colors">
+                        Learn How It Works
+                    </button>
+                </motion.div>
+                
+                {/* Visual element representing a vault/shield */}
+                <motion.div 
+                    variants={floatingAnimation}
+                    animate="animate"
+                    className="mt-24 relative w-64 h-64 mx-auto"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-3xl opacity-20 blur-2xl"></div>
+                    <div className="relative w-full h-full bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 shadow-2xl flex flex-col items-center justify-center gap-4 overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"></div>
+                        <div className="w-20 h-20 rounded-full border border-indigo-500/30 flex items-center justify-center bg-indigo-500/10">
+                            <svg className="w-10 h-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
                         </div>
-                    </motion.div>
-
-                    <motion.div
-                        variants={fadeUp}
-                        initial="hidden"
-                        animate="visible"
-                        custom={2}
-                        className="flex-1"
-                    >
-                        {/* This is an empty div that preserves the original layout spacing */}
-                    </motion.div>
-                </div>
+                        <div className="h-2 w-32 bg-slate-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 w-2/3"></div>
+                        </div>
+                        <p className="text-xs text-slate-500 font-mono">End-to-End Encrypted</p>
+                    </div>
+                </motion.div>
             </section>
 
             {/* Features Section */}
-            <section className="py-24 bg-gradient-to-b from-black to-gray-950">
-                <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {["Secure Storage", "Easy Management", "24/7 Support"].map(
-                        (title, i) => (
-                            <motion.div
-                                key={title}
-                                custom={i + 1}
-                                variants={fadeUp}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true }}
-                                className="p-6 border border-gray-700 rounded-xl bg-white/5 backdrop-blur-md text-white transform-gpu transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl"
-                            >
-                                <h3 className="text-xl font-semibold mb-2">
-                                    {title}
-                                </h3>
-                                <p className="text-sm text-gray-300">
-                                    {title === "Secure Storage"
-                                        ? "Encrypted vaults to keep your data safe forever."
-                                        : title === "Easy Management"
-                                        ? "User-friendly dashboard for peace of mind."
-                                        : "Our team is here to help anytime, anywhere."}
-                                </p>
-                            </motion.div>
-                        )
-                    )}
-                </div>
-            </section>
-
-            {/* How It Works Section with Spline Background */}
-            <section className="relative py-24 bg-gray-950">
-                {/* Spline Viewer as background for How It Works section */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden opacity-60">
-                    <Spline
-                        scene="https://prod.spline.design/wTCpAdDX34stWPdK/scene.splinecode"
-                        className="w-full h-full"
-                    />
-                </div>
-
-                {/* Semi-transparent overlay to ensure text readability */}
-                <div className="absolute inset-0 bg-gray-950 bg-opacity-70"></div>
-
-                <div className="relative z-10 max-w-5xl mx-auto px-6">
-                    <motion.h2
-                        className="text-3xl md:text-4xl font-bold mb-14 text-center"
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                    >
-                        How It Works
-                    </motion.h2>
-                    <div className="space-y-12">
-                        {[
-                            {
-                                step: "Create your digital locker",
-                                desc: "Sign up and build your personal legacy vault.",
-                            },
-                            {
-                                step: "Add digital assets",
-                                desc: "Upload important documents, files, and notes.",
-                            },
-                            {
-                                step: "Assign legacy recipients",
-                                desc: "Set trusted people to access your legacy securely.",
-                            },
-                        ].map((item, index) => (
-                            <motion.div
-                                key={index}
-                                variants={fadeUp}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true }}
-                                custom={index + 1}
-                                className="flex flex-col md:flex-row items-start gap-6"
-                            >
-                                <div className="text-4xl font-bold text-purple-500">
-                                    {index + 1}
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-2">
-                                        {item.step}
-                                    </h3>
-                                    <p className="text-gray-400">{item.desc}</p>
-                                </div>
-                            </motion.div>
-                        ))}
+            <section className="relative z-10 py-32 bg-slate-950/50 backdrop-blur-3xl border-y border-slate-800/50 mt-12">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Zero-Knowledge Architecture</h2>
+                        <p className="text-slate-400 max-w-2xl mx-auto">Your private keys never leave your device. We couldn't read your data even if we tried.</p>
                     </div>
-                </div>
-            </section>
-
-            {/* Testimonials */}
-            <section className="py-24 bg-black text-white">
-                <div className="max-w-6xl mx-auto px-6 text-center">
-                    <motion.h2
-                        className="text-3xl md:text-4xl font-bold mb-12"
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                    >
-                        What Our Users Say
-                    </motion.h2>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {[
                             {
-                                name: "Sarah Johnson",
-                                quote: "Legacy Locker gave me peace of mind knowing my digital life is in safe hands.",
+                                title: "AES-256 GCM",
+                                desc: "Military-grade symmetric encryption secures all vault contents locally before transmission.",
+                                icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                             },
                             {
-                                name: "David Chen",
-                                quote: "A simple and secure way to plan ahead for my family's digital access.",
+                                title: "Dead Man's Switch",
+                                desc: "Automated triggers release your vaults to trusted nominees based on inactivity limits you define.",
+                                icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                             },
                             {
-                                name: "Amina Malik",
-                                quote: "The interface is beautiful, and support is top-notch. Highly recommended!",
-                            },
-                        ].map((t, i) => (
+                                title: "Client-Side Cryptography",
+                                desc: "RSA-OAEP wrapping ensures your nominees are the only ones who can ever decrypt your payloads.",
+                                icon: "M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                            }
+                        ].map((feature, i) => (
                             <motion.div
-                                key={i}
-                                className="p-6 bg-gray-900 border border-gray-700 rounded-xl text-left shadow-md hover:shadow-lg transition-shadow duration-300"
+                                key={feature.title}
+                                custom={i}
                                 variants={fadeUp}
                                 initial="hidden"
                                 whileInView="visible"
-                                viewport={{ once: true }}
-                                custom={i + 1}
+                                viewport={{ once: true, margin: "-100px" }}
+                                className="group relative p-8 bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden hover:bg-slate-800/60 transition-all duration-300"
                             >
-                                <p className="text-gray-300 italic mb-4">
-                                    {t.quote}
-                                </p>
-                                <div className="flex items-center">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-sm font-bold text-white mr-3">
-                                        {t.name
-                                            .split(" ")
-                                            .map((n) => n[0])
-                                            .join("")}
-                                    </div>
-                                    <span className="text-sm font-medium">
-                                        {t.name}
-                                    </span>
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/0 to-transparent group-hover:via-indigo-500/50 transition-all duration-500"></div>
+                                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-6">
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={feature.icon} />
+                                    </svg>
                                 </div>
+                                <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                                <p className="text-slate-400 leading-relaxed text-sm">
+                                    {feature.desc}
+                                </p>
                             </motion.div>
                         ))}
                     </div>
@@ -235,9 +183,11 @@ export default function Landing() {
             </section>
 
             {/* Footer */}
-            <footer className="py-10 text-center text-gray-500 border-t border-gray-800 text-sm">
-                &copy; {new Date().getFullYear()} Legacy Locker. All rights
-                reserved.
+            <footer className="relative z-10 py-12 bg-slate-950 text-center border-t border-slate-900">
+                <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="text-xl font-bold tracking-tighter text-slate-300">LegacyLocker</div>
+                    <p className="text-slate-500 text-sm">&copy; {new Date().getFullYear()} Legacy Locker. All rights reserved.</p>
+                </div>
             </footer>
         </div>
     );

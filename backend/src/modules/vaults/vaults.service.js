@@ -1,6 +1,6 @@
 import vaultsRepository from './vaults.repository.js';
-import db from '../db/index.js';
-import { vaults, vaultRecipients } from '../db/schema.js';
+import db from '../../db/index.js';
+import { vaults, vaultRecipients } from '../../db/schema.js';
 import { eq, and } from 'drizzle-orm';
 
 class VaultsService {
