@@ -1,18 +1,20 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useAuth } from "@/components/AuthProvider";
+import api from "@/utils/api";
+import { decryptVaultContent } from "@/utils/crypto";
 
 export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
   const router = useRouter();
   const [hasManualTrigger, setHasManualTrigger] = useState(false);
-  const { user, isLoaded } = useUser();
+  const [decryptedContent, setDecryptedContent] = useState("Decrypting...");
+  const { user, masterPassword } = useAuth();
 
   const handleManualTrigger = async () => {
     try {
-      await axios.post("/api/vault/manual-trigger", {
+      await api.post("/vault/manual-trigger", {
         vaultId: vault.id,
         clerkUserId: user.id,
       });
@@ -26,7 +28,7 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
   useEffect(() => {
     const checkManualTrigger = async () => {
       try {
-        const res = await axios.post("/api/vault/check-trigger/", {
+        const res = await api.post("/vaults/check-trigger", {
           vaultId: vault.id,
         });
 
@@ -40,7 +42,19 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
     checkManualTrigger();
   }, [vault.id]);
 
-  if (!isLoaded) return null;
+  useEffect(() => {
+    if (selectedId === vault.id) {
+        if (!masterPassword || !user) {
+            setDecryptedContent("Error: Master Password missing. Please re-login.");
+            return;
+        }
+        decryptVaultContent(vault, user, masterPassword).then(content => {
+            setDecryptedContent(content);
+        });
+    }
+  }, [selectedId, vault.id, vault, user, masterPassword]);
+
+  if (!user) return null;
 
   return (
     <motion.div
@@ -65,7 +79,7 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
       {selectedId === vault.id && (
         <div className="mt-4 space-y-4">
           <div className="bg-[#0c1119] rounded-lg p-4 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap border border-gray-800">
-            {vault.content}
+            {decryptedContent}
           </div>
 
           <div className="flex flex-wrap gap-3">

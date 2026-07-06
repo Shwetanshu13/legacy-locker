@@ -5,7 +5,8 @@ let transporter;
 const getTransporter = () => {
     if (!transporter) {
         transporter = nodemailer.createTransport({
-            service: 'gmail', // Can be configured via environment variables
+            service: process.env.EMAIL_SERVICE,
+            port: process.env.EMAIL_PORT,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
@@ -24,7 +25,7 @@ export const sendEmail = async ({ to, subject, text, html }) => {
         }
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: "no-reply@legacylocker.com",
             to,
             subject,
             text,

@@ -42,6 +42,10 @@ class AuthRepository {
     async verifyUser(id) {
         await db.update(users).set({ isVerified: true }).where(eq(users.id, id));
     }
+
+    async updateUserKeys(id, { publicKey, encryptedPrivateKey, salt }) {
+        await db.update(users).set({ publicKey, encryptedPrivateKey, salt }).where(eq(users.id, id));
+    }
 }
 
 export default new AuthRepository();

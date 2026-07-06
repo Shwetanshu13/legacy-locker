@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import disposableDomains from 'disposable-email-domains';
+import disposableDomains from 'disposable-email-domains' with { type: 'json' };
 import authRepository from './auth.repository.js';
 import { sendEmail } from '../../utils/email.util.js';
 import { getOtpEmailTemplate } from '../../templates/otp.template.js';
@@ -74,7 +74,20 @@ class AuthService {
             { expiresIn: '7d' }
         );
 
-        return { token, user: { id: user.id, email: user.email } };
+        return { 
+            token, 
+            user: { 
+                id: user.id, 
+                email: user.email,
+                publicKey: user.publicKey,
+                encryptedPrivateKey: user.encryptedPrivateKey,
+                salt: user.salt
+            } 
+        };
+    }
+
+    async updateUserKeys(userId, { publicKey, encryptedPrivateKey, salt }) {
+        await authRepository.updateUserKeys(userId, { publicKey, encryptedPrivateKey, salt });
     }
 }
 

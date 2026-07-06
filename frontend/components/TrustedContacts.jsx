@@ -1,39 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i = 1) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.1 },
-    }),
-};
+import { fadeUp } from "@/utils/animations";
+import { useContacts } from "@/hooks/useContacts";
 
 export default function TrustedContacts({ clerkUserId }) {
-    const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        const fetchContacts = async () => {
-            try {
-                const response = await axios.post("/api/get/trusted-contacts", {
-                    clerkUserId,
-                });
-                setContacts(response.data.contacts);
-            } catch (err) {
-                setError(err.response?.data?.message || "Something went wrong");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchContacts();
-    }, [clerkUserId]);
+    const { contacts, loading, error } = useContacts(clerkUserId, true);
 
     if (loading)
         return (

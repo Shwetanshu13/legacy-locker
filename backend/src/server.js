@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
+import './env.js';
 import app from './app.js';
-
-dotenv.config({ path: '../.env' }); // Adjust if .env is inside backend/
 
 const port = process.env.PORT || 5000;
 

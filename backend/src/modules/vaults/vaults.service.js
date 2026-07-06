@@ -6,13 +6,13 @@ class VaultsService {
     }
 
     async addVault(userId, vaultData) {
-        // Ideally we would encrypt the content here using a utility
-        const encryptedContent = vaultData.content; 
-        
+        // Vault data is now encrypted strictly on the client side
         return await vaultsRepository.createVault({
             userId,
             title: vaultData.title,
-            content: encryptedContent,
+            ciphertext: vaultData.ciphertext,
+            iv: vaultData.iv,
+            encryptedDekOwner: vaultData.encryptedDekOwner,
             visibility: vaultData.visibility
         });
     }

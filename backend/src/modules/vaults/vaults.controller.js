@@ -14,14 +14,14 @@ class VaultsController {
 
     async addVault(req, res) {
         try {
-            const { title, content, visibility } = req.body;
+            const { title, ciphertext, iv, encryptedDekOwner, visibility } = req.body;
             const userId = req.user.id;
             
-            if (!title || !content || !visibility) {
+            if (!title || !ciphertext || !iv || !encryptedDekOwner || !visibility) {
                 return res.status(400).json({ message: 'Missing required fields' });
             }
             
-            const newVault = await vaultsService.addVault(userId, { title, content, visibility });
+            const newVault = await vaultsService.addVault(userId, { title, ciphertext, iv, encryptedDekOwner, visibility });
             res.status(201).json({ message: 'Vault added successfully', data: newVault });
         } catch (error) {
             console.error('Add Vault Error:', error);

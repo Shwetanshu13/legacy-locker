@@ -5,6 +5,9 @@ export const users = pgTable("users", {
     email: text("email").notNull().unique(),
     isVerified: boolean("is_verified").default(false),
     fullName: text("full_name"),
+    publicKey: text("public_key"),
+    encryptedPrivateKey: text("encrypted_private_key"),
+    salt: text("salt"),
     lastActiveAt: timestamp("last_active_at").defaultNow(),
     createdAt: timestamp("created_at").defaultNow(),
 });
@@ -14,7 +17,9 @@ export const vaults = pgTable("vaults", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
-    content: text("content").notNull(), // consider encrypting before saving
+    ciphertext: text("ciphertext").notNull(),
+    iv: text("iv").notNull(),
+    encryptedDekOwner: text("encrypted_dek_owner").notNull(),
     visibility: text("visibility").default("private"), // or public/private/trusted_only
     createdAt: timestamp("created_at").defaultNow(),
 });
@@ -35,6 +40,8 @@ export const vaultRecipients = pgTable("vault_recipients", {
     vaultId: uuid("vault_id").notNull().references(() => vaults.id, { onDelete: "cascade" }),
     contactId: uuid("contact_id").notNull().references(() => trustedContacts.id, { onDelete: "cascade" }),
     customMessage: text("custom_message"), // optional final note for that person
+    encryptedDekNominee: text("encrypted_dek_nominee"),
+    isUnlocked: boolean("is_unlocked").default(false),
 });
 
 

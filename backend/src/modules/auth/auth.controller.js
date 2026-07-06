@@ -17,6 +17,23 @@ class AuthController {
         }
     }
 
+    async setupKeys(req, res) {
+        try {
+            const { publicKey, encryptedPrivateKey, salt } = req.body;
+            const userId = req.user.id;
+
+            if (!publicKey || !encryptedPrivateKey || !salt) {
+                return res.status(400).json({ message: 'Missing key materials' });
+            }
+
+            await authService.updateUserKeys(userId, { publicKey, encryptedPrivateKey, salt });
+            return res.status(200).json({ message: 'Keys setup successfully' });
+        } catch (error) {
+            console.error('Setup Keys Error:', error);
+            return res.status(500).json({ message: 'Failed to setup keys' });
+        }
+    }
+
     async verifyOtp(req, res) {
         try {
             const { email, otp } = req.body;

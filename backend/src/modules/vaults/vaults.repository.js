@@ -7,9 +7,9 @@ class VaultsRepository {
         return await db.select().from(vaults).where(eq(vaults.userId, userId));
     }
 
-    async createVault({ userId, title, content, visibility }) {
+    async createVault({ userId, title, ciphertext, iv, encryptedDekOwner, visibility }) {
         const [newVault] = await db.insert(vaults)
-            .values({ userId, title, content, visibility })
+            .values({ userId, title, ciphertext, iv, encryptedDekOwner, visibility })
             .returning();
         return newVault;
     }
