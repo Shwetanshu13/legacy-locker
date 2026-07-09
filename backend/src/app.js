@@ -8,7 +8,7 @@ import statsRoutes from './modules/stats/stats.routes.js';
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(express.json());
 
 // Load modules
