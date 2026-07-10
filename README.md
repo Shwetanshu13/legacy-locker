@@ -115,7 +115,3 @@ npm run dev
 - **Brute Force Protection:** Authentication endpoints are strictly rate-limited and delayed to protect against spam.
 
 ---
-
-## 💡 Inspiration
-
-This project was built during HackBMU to solve the problem of digital legacy and secure vault handovers — ensuring loved ones can access critical digital assets in an emergency, while maintaining absolute mathematical privacy from the platform providers themselves.
