@@ -57,12 +57,10 @@ const releaseVault = async (recipient, vault, owner, contact) => {
     });
 };
 
-export const startTriggerChecker = () => {
-    // Run every minute for testing, or daily in prod
-    cron.schedule('* * * * *', async () => {
-        console.log('[Cron] Checking triggers...');
-        try {
-            // Fetch all locked recipients with their triggers, vaults, and contacts
+export const runTriggerChecks = async () => {
+    console.log('[Cron] Checking triggers...');
+    try {
+        // Fetch all locked recipients with their triggers, vaults, and contacts
             const lockedRecipients = await db
                 .select({
                     recipient: vaultRecipients,
@@ -103,8 +101,14 @@ export const startTriggerChecker = () => {
                     }
                 }
             }
-        } catch (error) {
-            console.error('[Cron] Error in trigger checker:', error);
-        }
+    } catch (error) {
+        console.error('[Cron] Error in trigger checker:', error);
+    }
+};
+
+export const startTriggerChecker = () => {
+    // Run every minute for testing, or daily in prod
+    cron.schedule('* * * * *', async () => {
+        await runTriggerChecks();
     });
 };
