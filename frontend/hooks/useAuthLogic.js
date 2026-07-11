@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import api from "@/utils/api";
 import { useAuth } from "@/components/AuthProvider";
 import { 
     deriveKeyFromPassword, 
@@ -29,7 +30,7 @@ export function useAuthLogic() {
         setLoading(true);
 
         try {
-            await axios.post("http://localhost:5000/api/auth/send-otp", { email });
+            await api.post("/auth/send-otp", { email });
             setStep(2);
         } catch (err) {
             setError(err.response?.data?.message || "Failed to send OTP");
@@ -44,7 +45,7 @@ export function useAuthLogic() {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/verify-otp", { email, otp });
+            const response = await api.post("/auth/verify-otp", { email, otp });
             const user = response.data.user;
             const token = response.data.token;
             
@@ -75,7 +76,7 @@ export function useAuthLogic() {
                 const { ciphertext, iv } = await encryptSymmetric(kek, privateKeyB64);
                 const encryptedPrivateKey = `${iv}:${ciphertext}`;
 
-                await axios.post("http://localhost:5000/api/auth/setup-keys", 
+                await api.post("/auth/setup-keys", 
                     { publicKey: publicKeyB64, encryptedPrivateKey, salt: saltBase64 },
                     { headers: { Authorization: `Bearer ${tempToken}` } }
                 );

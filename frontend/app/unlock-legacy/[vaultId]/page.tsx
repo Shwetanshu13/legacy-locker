@@ -22,7 +22,7 @@ export default function UnlockLegacy() {
 
         try {
             // Fetch the public payload from backend
-            const res = await fetch(`http://localhost:5000/api/vaults/unlock/${vaultId}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vaults/unlock/${vaultId}`);
             if (!res.ok) {
                 const data = await res.json();
                 throw new Error(data.message || "Failed to fetch vault data");
