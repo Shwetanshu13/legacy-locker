@@ -9,6 +9,9 @@ import { runTriggerChecks } from './cron/triggerChecker.js';
 
 const app = express();
 
+// Trust the first proxy (Render's load balancer) for express-rate-limit
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(express.json());
 
