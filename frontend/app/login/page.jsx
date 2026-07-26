@@ -17,13 +17,14 @@ export default function Login() {
 
     const {
         email, setEmail,
-        otp, setOtp,
+        password, setPassword,
         masterPassword, setMasterPassword,
+        isLoginMode, setIsLoginMode,
         step, resetStep,
         error, loading,
         tempUser,
-        handleSendOtp,
-        handleVerifyOtp,
+        handleAuth,
+        handleBiometricAuth,
         handleMasterPassword
     } = useAuthLogic();
 
@@ -32,7 +33,7 @@ export default function Login() {
             <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        {step === 1 ? "Sign in to your account" : step === 2 ? "Enter Verification Code" : "Master Password"}
+                        {step === 1 ? (isLoginMode ? "Sign in to your account" : "Create a new account") : "Master Password"}
                     </h2>
                 </div>
                 
@@ -43,7 +44,7 @@ export default function Login() {
                 )}
 
                 {step === 1 ? (
-                    <form className="mt-8 space-y-6" onSubmit={handleSendOtp}>
+                    <form className="mt-8 space-y-6" onSubmit={handleAuth}>
                         <div className="rounded-md shadow-sm -space-y-px">
                             <div>
                                 <label htmlFor="email-address" className="sr-only">Email address</label>
@@ -52,38 +53,22 @@ export default function Login() {
                                     name="email"
                                     type="email"
                                     required
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                            >
-                                {loading ? "Sending..." : "Send Verification Code"}
-                            </button>
-                        </div>
-                    </form>
-                ) : step === 2 ? (
-                    <form className="mt-8 space-y-6" onSubmit={handleVerifyOtp}>
-                        <div className="rounded-md shadow-sm -space-y-px">
                             <div>
-                                <label htmlFor="otp" className="sr-only">Verification Code</label>
+                                <label htmlFor="password" className="sr-only">Password</label>
                                 <input
-                                    id="otp"
-                                    name="otp"
-                                    type="text"
-                                    required
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                    placeholder="6-digit code"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Account Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -94,17 +79,40 @@ export default function Login() {
                                 disabled={loading}
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                             >
-                                {loading ? "Verifying..." : "Verify"}
+                                {loading ? "Processing..." : (isLoginMode ? "Sign In with Password" : "Sign Up with Password")}
+                            </button>
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                type="button"
+                                disabled={loading || !email}
+                                onClick={handleBiometricAuth}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            >
+                                {loading ? "Processing..." : "Biometrics / Passkey (TouchID, FaceID)"}
                             </button>
                         </div>
                         
                         <div className="text-center">
                             <button 
                                 type="button" 
-                                onClick={() => resetStep(1)}
+                                onClick={() => {
+                                    setIsLoginMode(!isLoginMode);
+                                    setError("");
+                                }}
                                 className="text-sm text-indigo-600 hover:text-indigo-500"
                             >
-                                Use a different email
+                                {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
                             </button>
                         </div>
                     </form>

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "^13.3.0",
     "argon2-browser": "^1.18.0",
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",

@@ -1,22 +1,11 @@
 import { Worker } from 'bullmq';
 import redisConnection from '../utils/redis.util.js';
 import { sendEmail, sendLegacyReleaseEmail, sendInactivityWarningEmail } from '../utils/email.util.js';
-import { getOtpEmailTemplate } from '../templates/otp.template.js';
 
 export const emailWorker = new Worker('email-queue', async (job) => {
     console.log(`[EmailWorker] Processing job ${job.id} of type ${job.name}`);
     
     switch (job.name) {
-        case 'send-otp': {
-            const { to, otp } = job.data;
-            await sendEmail({
-                to,
-                subject: 'Legacy Locker - Your OTP Code',
-                text: `Your OTP code is ${otp}. It will expire in 10 minutes.`,
-                html: getOtpEmailTemplate(otp),
-            });
-            break;
-        }
         case 'send-legacy-release': {
             const { to, contactName, ownerName, vaultTitle, customMessage, unlockLink } = job.data;
             await sendLegacyReleaseEmail({ to, contactName, ownerName, vaultTitle, customMessage, unlockLink });

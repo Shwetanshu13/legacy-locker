@@ -9,12 +9,14 @@ import {
     decryptSymmetric, 
     exportKeyToBase64 
 } from "@/utils/crypto";
+import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 
 export function useAuthLogic() {
     const [email, setEmail] = useState("");
-    const [otp, setOtp] = useState("");
+    const [password, setPassword] = useState("");
     const [masterPassword, setMasterPassword] = useState("");
-    const [step, setStep] = useState(1);
+    const [isLoginMode, setIsLoginMode] = useState(true);
+    const [step, setStep] = useState(1); // 1 = Login/Signup, 2 = Master Password
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     
@@ -24,28 +26,15 @@ export function useAuthLogic() {
     
     const { login } = useAuth();
 
-    const handleSendOtp = async (e) => {
+    const handleAuth = async (e) => {
         if (e) e.preventDefault();
         setError("");
         setLoading(true);
 
         try {
-            await api.post("/auth/send-otp", { email });
-            setStep(2);
-        } catch (err) {
-            setError(err.response?.data?.message || "Failed to send OTP");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleVerifyOtp = async (e) => {
-        if (e) e.preventDefault();
-        setError("");
-        setLoading(true);
-
-        try {
-            const response = await api.post("/auth/verify-otp", { email, otp });
+            const endpoint = isLoginMode ? "/auth/login" : "/auth/register";
+            const response = await api.post(endpoint, { email, password });
+            
             const user = response.data.user;
             const token = response.data.token;
             
@@ -53,9 +42,51 @@ export function useAuthLogic() {
             setTempToken(token);
             
             // Move to Master Password step
-            setStep(3);
+            setStep(2);
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to verify OTP");
+            setError(err.response?.data?.message || `Failed to ${isLoginMode ? 'login' : 'register'}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleBiometricAuth = async () => {
+        if (!email) {
+            setError("Please enter your email first");
+            return;
+        }
+        setError("");
+        setLoading(true);
+
+        try {
+            if (isLoginMode) {
+                // Login Flow
+                const optRes = await api.get(`/auth/webauthn/login-options?email=${encodeURIComponent(email)}`);
+                const options = optRes.data;
+                
+                const asseResp = await startAuthentication(options);
+                
+                const verifyRes = await api.post("/auth/webauthn/login-verify", { email, body: asseResp });
+                
+                setTempUser(verifyRes.data.user);
+                setTempToken(verifyRes.data.token);
+                setStep(2);
+            } else {
+                // Register Flow
+                const optRes = await api.get(`/auth/webauthn/register-options?email=${encodeURIComponent(email)}`);
+                const options = optRes.data;
+                
+                const attResp = await startRegistration(options);
+                
+                const verifyRes = await api.post("/auth/webauthn/register-verify", { email, body: attResp });
+                
+                setTempUser(verifyRes.data.user);
+                setTempToken(verifyRes.data.token);
+                setStep(2);
+            }
+        } catch (err) {
+            console.error('Biometric Auth Error:', err);
+            setError(err.response?.data?.message || err.message || "Failed biometric authentication");
         } finally {
             setLoading(false);
         }
@@ -111,13 +142,14 @@ export function useAuthLogic() {
 
     return {
         email, setEmail,
-        otp, setOtp,
+        password, setPassword,
         masterPassword, setMasterPassword,
+        isLoginMode, setIsLoginMode,
         step, resetStep,
         error, loading,
         tempUser,
-        handleSendOtp,
-        handleVerifyOtp,
+        handleAuth,
+        handleBiometricAuth,
         handleMasterPassword
     };
 }

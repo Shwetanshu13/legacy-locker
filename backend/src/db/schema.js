@@ -3,6 +3,7 @@ import { date, pgTable, text, timestamp, uuid, boolean } from "drizzle-orm/pg-co
 export const users = pgTable("users", {
     id: uuid("id").primaryKey().defaultRandom(),
     email: text("email").notNull().unique(),
+    passwordHash: text("password_hash"), // newly added for password auth
     isVerified: boolean("is_verified").default(false),
     fullName: text("full_name"),
     publicKey: text("public_key"),
@@ -54,11 +55,12 @@ export const triggers = pgTable("triggers", {
     createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const otps = pgTable("otps", {
+export const passkeys = pgTable("passkeys", {
     id: uuid("id").primaryKey().defaultRandom(),
-    email: text("email").notNull(),
-    otp: text("otp").notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    credentialId: text("credential_id").notNull(),
+    publicKey: text("public_key").notNull(),
+    counter: text("counter").notNull().default("0"),
+    transports: text("transports"),
     createdAt: timestamp("created_at").defaultNow(),
 });
-
