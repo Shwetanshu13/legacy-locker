@@ -41,22 +41,35 @@ class AuthService {
         const passwordHash = await bcrypt.hash(password, 10);
         const user = await authRepository.createUser(email, passwordHash);
 
-        const token = jwt.sign(
-            { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'fallback_secret',
-            { expiresIn: '7d' }
-        );
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await authRepository.createOtp(email, otp);
 
-        return {
-            token,
-            user: {
-                id: user.id,
-                email: user.email,
-                publicKey: user.publicKey,
-                encryptedPrivateKey: user.encryptedPrivateKey,
-                salt: user.salt
-            }
-        };
+        const { sendOtpEmail } = await import('../../utils/email.util.js');
+        await sendOtpEmail({ to: email, otp });
+
+        return { message: 'Verification code sent to email', email };
+    }
+
+    async verifyEmailOtp(email, otp) {
+        const existingOtp = await authRepository.getOtp(email, otp);
+
+        if (!existingOtp) {
+            throw new Error('Invalid or expired verification code');
+        }
+
+        if (new Date() > new Date(existingOtp.expiresAt)) {
+            throw new Error('Verification code has expired');
+        }
+
+        const user = await authRepository.getUserByEmail(email);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        await authRepository.setUserVerified(user.id);
+        await authRepository.deleteOtpsByEmail(email);
+
+        return { message: 'Email verified successfully', email };
     }
 
     async login(email, password) {
@@ -99,10 +112,12 @@ class AuthService {
         if (!this._isValidEmailFormat(email)) throw new Error('Invalid email format');
         if (this._isDisposableEmail(email)) throw new Error('Disposable email addresses are not allowed');
 
-        let user = await authRepository.getUserByEmail(email);
+        const user = await authRepository.getUserByEmail(email);
         if (!user) {
-            // Create user placeholder to get an ID
-            user = await authRepository.createUser(email, null);
+            throw new Error('User not found. Please complete the first step of registration.');
+        }
+        if (!user.isVerified) {
+            throw new Error('Email not verified. Please verify your email first.');
         }
 
         const userPasskeys = await authRepository.getPasskeysByUserId(user.id);

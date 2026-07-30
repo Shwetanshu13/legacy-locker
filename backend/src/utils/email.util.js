@@ -65,3 +65,21 @@ export const sendInactivityWarningEmail = async ({ to, ownerName, vaultTitle }) 
         html,
     });
 };
+
+export const sendOtpEmail = async ({ to, otp }) => {
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2>Verify Your Legacy Locker Account</h2>
+            <p>Your one-time verification code is:</p>
+            <h1 style="color: #4f46e5; font-size: 32px; letter-spacing: 5px;">${otp}</h1>
+            <p>This code will expire in 10 minutes.</p>
+        </div>
+    `;
+    const subject = `Your Verification Code: ${otp}`;
+    
+    return await sendEmail({
+        to,
+        subject,
+        html,
+    });
+};

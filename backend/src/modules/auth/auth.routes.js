@@ -6,6 +6,7 @@ import { generalAuthLimiter } from '../../middleware/rateLimiter.js';
 const router = express.Router();
 
 router.post('/register', generalAuthLimiter, authController.register);
+router.post('/verify-email-otp', generalAuthLimiter, authController.verifyEmailOtp);
 router.post('/login', generalAuthLimiter, authController.login);
 router.get('/webauthn/register-options', generalAuthLimiter, authController.getWebAuthnRegisterOptions);
 router.post('/webauthn/register-verify', generalAuthLimiter, authController.verifyWebAuthnRegister);

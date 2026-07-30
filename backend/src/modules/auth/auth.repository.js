@@ -1,6 +1,6 @@
 import { eq, desc } from 'drizzle-orm';
 import db from '../../db/index.js';
-import { users, passkeys } from '../../db/schema.js';
+import { users, passkeys, otps } from '../../db/schema.js';
 
 class AuthRepository {
     async getUserByEmail(email) {
@@ -12,9 +12,31 @@ class AuthRepository {
         const [user] = await db.insert(users).values({
             email,
             passwordHash,
-            isVerified: true,
+            isVerified: false,
         }).returning();
         return user;
+    }
+
+    async setUserVerified(userId) {
+        await db.update(users).set({ isVerified: true }).where(eq(users.id, userId));
+    }
+
+    async createOtp(email, otp) {
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        await db.insert(otps).values({ email, otp, expiresAt });
+    }
+
+    async getOtp(email, otp) {
+        const results = await db.select().from(otps)
+            .where(eq(otps.email, email))
+            .orderBy(desc(otps.createdAt));
+        // Return latest OTP for email matching the given one
+        const match = results.find(r => r.otp === otp);
+        return match || null;
+    }
+
+    async deleteOtpsByEmail(email) {
+        await db.delete(otps).where(eq(otps.email, email));
     }
 
     async updateUserKeys(id, { publicKey, encryptedPrivateKey, salt }) {

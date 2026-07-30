@@ -13,7 +13,13 @@ export const users = pgTable("users", {
     createdAt: timestamp("created_at").defaultNow(),
 });
 
-
+export const otps = pgTable("otps", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    otp: text("otp").notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+});
 export const vaults = pgTable("vaults", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),

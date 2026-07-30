@@ -14,9 +14,9 @@ import { startRegistration, startAuthentication } from '@simplewebauthn/browser'
 export function useAuthLogic() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [masterPassword, setMasterPassword] = useState("");
+    const [otp, setOtp] = useState("");
     const [isLoginMode, setIsLoginMode] = useState(true);
-    const [step, setStep] = useState(1); // 1 = Login/Signup, 2 = Master Password
+    const [step, setStep] = useState(1); // 1: Creds, 2: OTP (signup), 3: Biometrics (signup), 4: Master Password
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     
@@ -35,16 +35,33 @@ export function useAuthLogic() {
             const endpoint = isLoginMode ? "/auth/login" : "/auth/register";
             const response = await api.post(endpoint, { email, password });
             
-            const user = response.data.user;
-            const token = response.data.token;
-            
-            setTempUser(user);
-            setTempToken(token);
-            
-            // Move to Master Password step
-            setStep(2);
+            if (isLoginMode) {
+                const user = response.data.user;
+                const token = response.data.token;
+                setTempUser(user);
+                setTempToken(token);
+                setStep(4);
+            } else {
+                // Register mode returns success message and needs OTP
+                setStep(2);
+            }
         } catch (err) {
             setError(err.response?.data?.message || `Failed to ${isLoginMode ? 'login' : 'register'}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleVerifyOtp = async (e) => {
+        if (e) e.preventDefault();
+        setError("");
+        setLoading(true);
+
+        try {
+            await api.post("/auth/verify-email-otp", { email, otp });
+            setStep(3); // Move to compulsory biometrics
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to verify OTP');
         } finally {
             setLoading(false);
         }
@@ -70,9 +87,9 @@ export function useAuthLogic() {
                 
                 setTempUser(verifyRes.data.user);
                 setTempToken(verifyRes.data.token);
-                setStep(2);
+                setStep(4);
             } else {
-                // Register Flow
+                // Register Flow (Called from Step 3)
                 const optRes = await api.get(`/auth/webauthn/register-options?email=${encodeURIComponent(email)}`);
                 const options = optRes.data;
                 
@@ -82,7 +99,7 @@ export function useAuthLogic() {
                 
                 setTempUser(verifyRes.data.user);
                 setTempToken(verifyRes.data.token);
-                setStep(2);
+                setStep(4);
             }
         } catch (err) {
             console.error('Biometric Auth Error:', err);
@@ -143,12 +160,14 @@ export function useAuthLogic() {
     return {
         email, setEmail,
         password, setPassword,
+        otp, setOtp,
         masterPassword, setMasterPassword,
         isLoginMode, setIsLoginMode,
         step, resetStep,
         error, loading,
         tempUser,
         handleAuth,
+        handleVerifyOtp,
         handleBiometricAuth,
         handleMasterPassword
     };

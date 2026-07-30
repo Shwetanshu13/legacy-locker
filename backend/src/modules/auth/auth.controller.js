@@ -38,6 +38,21 @@ class AuthController {
         }
     }
 
+    async verifyEmailOtp(req, res) {
+        try {
+            const { email, otp } = req.body;
+            if (!email || !otp) {
+                return res.status(400).json({ message: 'Email and OTP are required' });
+            }
+
+            const result = await authService.verifyEmailOtp(email, otp);
+            return res.status(200).json(result);
+        } catch (error) {
+            console.error('Verify Email OTP Error:', error);
+            return res.status(400).json({ message: error.message || 'Failed to verify email' });
+        }
+    }
+
     async login(req, res) {
         try {
             const { email, password } = req.body;
