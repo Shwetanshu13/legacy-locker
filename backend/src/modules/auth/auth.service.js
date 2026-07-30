@@ -3,7 +3,7 @@ import disposableDomains from 'disposable-email-domains' with { type: 'json' };
 import authRepository from './auth.repository.js';
 import bcrypt from 'bcryptjs';
 import { generateRegistrationOptions, verifyRegistrationResponse, generateAuthenticationOptions, verifyAuthenticationResponse } from '@simplewebauthn/server';
-import redisConnection from '../utils/redis.util.js';
+import redisConnection from '../../utils/redis.util.js';
 
 const rpName = 'Legacy Locker';
 const origin = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -47,15 +47,15 @@ class AuthService {
             { expiresIn: '7d' }
         );
 
-        return { 
-            token, 
-            user: { 
-                id: user.id, 
+        return {
+            token,
+            user: {
+                id: user.id,
                 email: user.email,
                 publicKey: user.publicKey,
                 encryptedPrivateKey: user.encryptedPrivateKey,
                 salt: user.salt
-            } 
+            }
         };
     }
 
@@ -77,15 +77,15 @@ class AuthService {
             { expiresIn: '7d' }
         );
 
-        return { 
-            token, 
-            user: { 
-                id: user.id, 
+        return {
+            token,
+            user: {
+                id: user.id,
                 email: user.email,
                 publicKey: user.publicKey,
                 encryptedPrivateKey: user.encryptedPrivateKey,
                 salt: user.salt
-            } 
+            }
         };
     }
 
