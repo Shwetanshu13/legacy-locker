@@ -6,13 +6,14 @@ import contactsRoutes from './modules/contacts/contacts.routes.js';
 import triggersRoutes from './modules/triggers/triggers.routes.js';
 import statsRoutes from './modules/stats/stats.routes.js';
 import { runTriggerChecks } from './cron/triggerChecker.js';
+import { env } from './config/env.js';
 
 const app = express();
 
 // Trust the first proxy (Render's load balancer) for express-rate-limit
 app.set('trust proxy', 1);
 
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(cors({ origin: env.FRONTEND_URL }));
 app.use(express.json());
 
 // Load modules

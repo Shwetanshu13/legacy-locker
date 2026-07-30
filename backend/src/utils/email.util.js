@@ -2,18 +2,19 @@ import nodemailer from 'nodemailer';
 import { getLegacyReleaseEmailTemplate } from '../templates/legacyRelease.template.js';
 import { getInactivityWarningEmailTemplate } from '../templates/inactivityWarning.template.js';
 import { getLoginOtpEmailTemplate } from '../templates/loginOtp.template.js';
+import { env } from '../config/env.js';
 
 let transporter;
 
 const getTransporter = () => {
     if (!transporter) {
         transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_SERVICE,
-            port: process.env.EMAIL_PORT,
-            secure: Number(process.env.EMAIL_PORT) === 465, // true for 465, false for other ports
+            host: env.EMAIL_SERVICE,
+            port: env.EMAIL_PORT,
+            secure: Number(env.EMAIL_PORT) === 465, // true for 465, false for other ports
             auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                user: env.EMAIL_USER,
+                pass: env.EMAIL_PASS,
             },
         });
     }
@@ -22,14 +23,14 @@ const getTransporter = () => {
 
 export const sendEmail = async ({ to, subject, text, html }) => {
     try {
-        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        if (!env.EMAIL_USER || !env.EMAIL_PASS) {
             console.log(`[DEV MODE Email] To: ${to} | Subject: ${subject}`);
             console.log(`[DEV MODE Email] Content: ${text || html}`);
             return true;
         }
 
         const mailOptions = {
-            from: `"Legacy Locker" <${process.env.EMAIL_USER}>`,
+            from: `"Legacy Locker" <${env.EMAIL_USER}>`,
             to,
             subject,
             text,

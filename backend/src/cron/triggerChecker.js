@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import db from '../db/index.js';
 import { triggers, vaultRecipients, vaults, users, trustedContacts } from '../db/schema.js';
 import { sendLegacyReleaseEmail, sendInactivityWarningEmail } from '../utils/email.util.js';
+import { env } from '../config/env.js';
 
 const warnedVaults = new Set();
 
@@ -45,7 +46,7 @@ const releaseVault = async (recipient, vault, owner, contact) => {
         .where(eq(vaultRecipients.id, recipient.id));
 
     // Send email to nominee directly
-    const unlockLink = `${process.env.NEXT_PUBLIC_API_URL}/unlock-legacy/${vault.id}`;
+    const unlockLink = `${env.FRONTEND_URL}/unlock-legacy/${vault.id}`;
 
     await sendLegacyReleaseEmail({
         to: contact.email,

@@ -1,3 +1,5 @@
+import { env } from '../config/env.js';
+
 export const getInactivityWarningEmailTemplate = ({ ownerName, vaultTitle }) => {
     return `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-w-2xl mx-auto p-4">
@@ -8,7 +10,7 @@ export const getInactivityWarningEmailTemplate = ({ ownerName, vaultTitle }) => 
         <p>The vault is currently <strong>1 day away</strong> from being released. If you wish to prevent this, please log into your account immediately to reset your inactivity timer.</p>
         
         <div style="margin: 30px 0;">
-            <a href="${process.env.NEXT_PUBLIC_API_URL}/login" style="background-color: #0d9488; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            <a href="${env.FRONTEND_URL}/login" style="background-color: #0d9488; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
                 Login to Legacy Locker
             </a>
         </div>

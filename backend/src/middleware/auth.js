@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import db from '../db/index.js';
 import { users } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
+import { env } from '../config/env.js';
 
 const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -12,7 +13,7 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
+        const decoded = jwt.verify(token, env.JWT_SECRET || 'fallback_secret');
         req.user = decoded; // { id, email }
         
         // Asynchronously update last active timestamp

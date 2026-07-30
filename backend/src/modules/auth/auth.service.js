@@ -4,9 +4,10 @@ import authRepository from './auth.repository.js';
 import bcrypt from 'bcryptjs';
 import { generateRegistrationOptions, verifyRegistrationResponse, generateAuthenticationOptions, verifyAuthenticationResponse } from '@simplewebauthn/server';
 import redisConnection from '../../utils/redis.util.js';
+import { env } from '../../config/env.js';
 
 const rpName = 'Legacy Locker';
-const origin = process.env.FRONTEND_URL || 'http://localhost:3000';
+const origin = env.FRONTEND_URL || 'http://localhost:3000';
 const rpID = new URL(origin).hostname;
 
 class AuthService {
@@ -86,7 +87,7 @@ class AuthService {
 
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'fallback_secret',
+            env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '7d' }
         );
 
@@ -143,7 +144,7 @@ class AuthService {
 
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'fallback_secret',
+            env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '7d' }
         );
 
@@ -236,7 +237,7 @@ class AuthService {
 
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'fallback_secret',
+            env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '7d' }
         );
 
@@ -294,7 +295,7 @@ class AuthService {
 
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'fallback_secret',
+            env.JWT_SECRET || 'fallback_secret',
             { expiresIn: '7d' }
         );
 

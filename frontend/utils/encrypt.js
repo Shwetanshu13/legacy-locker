@@ -1,8 +1,8 @@
 import crypto from "crypto";
+import { env } from "./env";
 
 const algorithm = "aes-256-cbc";
-const secretKey = process.env.SECRET_KEY || "";
-// console.log("Secret key is ", secretKey);
+const secretKey = env.SECRET_KEY;
 
 // Decode from base64 instead of hex
 const key = Buffer.from(secretKey, "base64");
