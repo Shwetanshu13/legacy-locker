@@ -15,6 +15,7 @@ export function useAuthLogic() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [otp, setOtp] = useState("");
+    const [masterPassword, setMasterPassword] = useState("");
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [step, setStep] = useState(1); // 1: Email, 1.5: Fallback Password, 1.6: Fallback OTP, 2: OTP (signup), 3: Biometrics (signup), 4: Master Password
     const [error, setError] = useState("");
