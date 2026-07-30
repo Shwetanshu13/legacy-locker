@@ -28,7 +28,12 @@ export default function Navbar() {
         {
             name: "Trusted Contacts",
             href: "/add-new-legacy/trustedcontact",
-            icon: <Users size={24} />,
+            icon: <Users size={18} />,
+        },
+        {
+            name: "Profile",
+            href: "/profile",
+            icon: <Settings size={18} />,
         },
     ];
 

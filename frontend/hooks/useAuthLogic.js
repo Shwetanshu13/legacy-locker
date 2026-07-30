@@ -16,7 +16,7 @@ export function useAuthLogic() {
     const [password, setPassword] = useState("");
     const [otp, setOtp] = useState("");
     const [isLoginMode, setIsLoginMode] = useState(true);
-    const [step, setStep] = useState(1); // 1: Creds, 2: OTP (signup), 3: Biometrics (signup), 4: Master Password
+    const [step, setStep] = useState(1); // 1: Email, 1.5: Fallback Password, 1.6: Fallback OTP, 2: OTP (signup), 3: Biometrics (signup), 4: Master Password
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     
@@ -32,16 +32,14 @@ export function useAuthLogic() {
         setLoading(true);
 
         try {
-            const endpoint = isLoginMode ? "/auth/login" : "/auth/register";
-            const response = await api.post(endpoint, { email, password });
-            
             if (isLoginMode) {
-                const user = response.data.user;
-                const token = response.data.token;
-                setTempUser(user);
-                setTempToken(token);
-                setStep(4);
+                // In the new flow, this is only called for the initial step.
+                // We should trigger biometric auth instead of traditional login.
+                await handleBiometricAuth();
             } else {
+                const endpoint = "/auth/register";
+                await api.post(endpoint, { email, password });
+                
                 // Register mode returns success message and needs OTP
                 setStep(2);
             }
@@ -103,7 +101,47 @@ export function useAuthLogic() {
             }
         } catch (err) {
             console.error('Biometric Auth Error:', err);
-            setError(err.response?.data?.message || err.message || "Failed biometric authentication");
+            
+            if (isLoginMode) {
+                // Fallback to password + OTP mechanism
+                setStep(1.5);
+            } else {
+                setError(err.response?.data?.message || err.message || "Failed biometric authentication");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleLoginFallbackInit = async (e) => {
+        if (e) e.preventDefault();
+        setError("");
+        setLoading(true);
+
+        try {
+            await api.post("/auth/login-fallback-init", { email, password });
+            setStep(1.6); // Move to OTP
+        } catch (err) {
+            setError(err.response?.data?.message || 'Invalid email or password');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleLoginFallbackVerify = async (e) => {
+        if (e) e.preventDefault();
+        setError("");
+        setLoading(true);
+
+        try {
+            const response = await api.post("/auth/login-fallback-verify", { email, otp });
+            const user = response.data.user;
+            const token = response.data.token;
+            setTempUser(user);
+            setTempToken(token);
+            setStep(4);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to verify OTP');
         } finally {
             setLoading(false);
         }
@@ -169,6 +207,8 @@ export function useAuthLogic() {
         handleAuth,
         handleVerifyOtp,
         handleBiometricAuth,
+        handleLoginFallbackInit,
+        handleLoginFallbackVerify,
         handleMasterPassword
     };
 }

@@ -27,6 +27,8 @@ export default function Login() {
         handleAuth,
         handleVerifyOtp,
         handleBiometricAuth,
+        handleLoginFallbackInit,
+        handleLoginFallbackVerify,
         handleMasterPassword
     } = useAuthLogic();
 
@@ -36,7 +38,8 @@ export default function Login() {
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                         {step === 1 ? (isLoginMode ? "Sign in to your account" : "Create a new account") 
-                        : step === 2 ? "Verify Email" 
+                        : step === 1.5 ? "Verify Account Password"
+                        : (step === 2 || step === 1.6) ? "Verify Email" 
                         : step === 3 ? "Setup Passkey" 
                         : "Master Password"}
                     </h2>
@@ -58,24 +61,26 @@ export default function Login() {
                                     name="email"
                                     type="email"
                                     required
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    className={`appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${(!isLoginMode) ? "rounded-t-md rounded-none" : "rounded-md"}`}
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="password" className="sr-only">Password</label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                    placeholder="Account Password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
+                            {!isLoginMode && (
+                                <div>
+                                    <label htmlFor="password" className="sr-only">Password</label>
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Account Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         <div>
@@ -84,33 +89,9 @@ export default function Login() {
                                 disabled={loading}
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                             >
-                                {loading ? "Processing..." : (isLoginMode ? "Sign In with Password" : "Sign Up with Password")}
+                                {loading ? "Processing..." : (isLoginMode ? "Continue" : "Sign Up with Password")}
                             </button>
                         </div>
-
-                        {isLoginMode && (
-                            <>
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <div className="w-full border-t border-gray-300"></div>
-                                    </div>
-                                    <div className="relative flex justify-center text-sm">
-                                        <span className="px-2 bg-white text-gray-500">Or continue with</span>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <button
-                                        type="button"
-                                        disabled={loading || !email}
-                                        onClick={handleBiometricAuth}
-                                        className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                                    >
-                                        {loading ? "Processing..." : "Biometrics / Passkey (TouchID, FaceID)"}
-                                    </button>
-                                </div>
-                            </>
-                        )}
                         
                         <div className="text-center">
                             <button 
@@ -122,6 +103,67 @@ export default function Login() {
                                 className="text-sm text-indigo-600 hover:text-indigo-500"
                             >
                                 {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                            </button>
+                        </div>
+                    </form>
+                ) : step === 1.5 ? (
+                    <form className="mt-8 space-y-6" onSubmit={handleLoginFallbackInit}>
+                        <div className="text-sm text-gray-600 text-center mb-4">
+                            Biometric authentication failed. Please enter your account password to proceed.
+                        </div>
+                        <div className="rounded-md shadow-sm -space-y-px">
+                            <div>
+                                <label htmlFor="fallback-password" className="sr-only">Password</label>
+                                <input
+                                    id="fallback-password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Account Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={loading || !password}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            >
+                                {loading ? "Processing..." : "Verify Password"}
+                            </button>
+                        </div>
+                    </form>
+                ) : step === 1.6 ? (
+                    <form className="mt-8 space-y-6" onSubmit={handleLoginFallbackVerify}>
+                        <div className="text-sm text-gray-600 text-center mb-4">
+                            Please enter the 6-digit login verification code sent to {email}.
+                        </div>
+                        <div className="rounded-md shadow-sm -space-y-px">
+                            <div>
+                                <label htmlFor="login-otp" className="sr-only">Verification Code</label>
+                                <input
+                                    id="login-otp"
+                                    name="otp"
+                                    type="text"
+                                    required
+                                    maxLength="6"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
+                                    placeholder="••••••"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={loading || otp.length !== 6}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            >
+                                {loading ? "Verifying..." : "Verify Login Code"}
                             </button>
                         </div>
                     </form>

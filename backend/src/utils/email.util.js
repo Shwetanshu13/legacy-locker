@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import { getLegacyReleaseEmailTemplate } from '../templates/legacyRelease.template.js';
 import { getInactivityWarningEmailTemplate } from '../templates/inactivityWarning.template.js';
+import { getLoginOtpEmailTemplate } from '../templates/loginOtp.template.js';
 
 let transporter;
 
@@ -76,6 +77,17 @@ export const sendOtpEmail = async ({ to, otp }) => {
         </div>
     `;
     const subject = `Your Verification Code: ${otp}`;
+    
+    return await sendEmail({
+        to,
+        subject,
+        html,
+    });
+};
+
+export const sendLoginOtpEmail = async ({ to, otp }) => {
+    const html = getLoginOtpEmailTemplate({ otp });
+    const subject = `Login Verification Code: ${otp}`;
     
     return await sendEmail({
         to,
