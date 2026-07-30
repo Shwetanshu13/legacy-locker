@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:server": "node --watch src/server.js",
-    "dev:worker": "node --watch src/workers/email.worker.js",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:worker\"",
-    "start:server": "node src/server.js",
-    "start:worker": "node src/workers/email.worker.js",
-    "start": "concurrently \"npm run start:server\" \"npm run start:worker\""
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
