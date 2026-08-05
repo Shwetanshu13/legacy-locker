@@ -1,18 +1,25 @@
 import { AuthProvider } from "@/components/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import localFont from "next/font/local";
+import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-    src: "./fonts/GeistVF.woff",
-    variable: "--font-geist-sans",
-    weight: "100 900",
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-inter",
+    weight: ["400", "500", "600"],
 });
-const geistMono = localFont({
-    src: "./fonts/GeistMonoVF.woff",
-    variable: "--font-geist-mono",
-    weight: "100 900",
+
+const fraunces = Fraunces({
+    subsets: ["latin"],
+    variable: "--font-fraunces",
+    weight: ["400", "600"],
+});
+
+const plexMono = IBM_Plex_Mono({
+    subsets: ["latin"],
+    variable: "--font-plex-mono",
+    weight: ["400", "500"],
 });
 
 export const metadata = {
@@ -22,9 +29,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="en" className={`${inter.variable} ${fraunces.variable} ${plexMono.variable}`}>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-emerald-50 text-emerald-950`}
+                className={`antialiased bg-bg text-ink font-sans selection:bg-emerald-soft`}
             >
                 <AuthProvider>
                     <Toaster position="bottom-right" />

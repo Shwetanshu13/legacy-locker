@@ -89,26 +89,26 @@ const TriggerNow = () => {
 
   if (sharingPin) {
       return (
-          <div className="min-h-screen flex items-center justify-center bg-[#020617] text-white p-4">
+          <div className="min-h-screen flex items-center justify-center bg-bg text-ink p-4">
               <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-slate-900/80 p-8 rounded-xl border border-cyan-500 shadow-2xl text-center max-w-lg w-full relative overflow-hidden"
+                  className="bg-surface p-8 rounded-xl border border-emerald-200 shadow-sm text-center max-w-lg w-full relative overflow-hidden"
               >
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
-                  <h2 className="text-3xl font-bold mb-4 text-cyan-400">Trigger Created!</h2>
-                  <p className="text-slate-300 mb-6">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald to-transparent"></div>
+                  <h2 className="text-3xl font-display font-semibold mb-4 text-forest tracking-tight">Trigger Created</h2>
+                  <p className="text-ink-muted mb-6">
                       Your vault has been successfully linked to the trigger and selected nominees. 
                       Since we use End-to-End Encryption, we cannot read your vault. 
                       You must give this secure PIN to your nominees so they can decrypt it when the time comes.
                   </p>
-                  <div className="bg-black/50 p-6 rounded-lg border border-slate-700 mb-8 shadow-inner">
-                      <p className="text-sm text-cyan-500 font-bold tracking-wider mb-2">SHARING PIN</p>
-                      <p className="text-5xl font-mono tracking-widest text-white">{sharingPin}</p>
+                  <div className="bg-bg p-6 rounded-lg border border-emerald-100 mb-8 shadow-inner">
+                      <p className="text-sm text-emerald font-bold tracking-wider mb-2">SHARING PIN</p>
+                      <p className="text-5xl font-mono tracking-widest text-ink">{sharingPin}</p>
                   </div>
                   <button
                       onClick={() => router.push("/home")}
-                      className="bg-cyan-600 text-white px-8 py-3 rounded-full font-bold hover:bg-cyan-500 transition shadow-lg shadow-cyan-600/20"
+                      className="bg-forest text-white px-8 py-3 rounded-md font-medium hover:bg-ink transition shadow-sm w-full"
                   >
                       I have saved the PIN securely
                   </button>
@@ -118,12 +118,12 @@ const TriggerNow = () => {
   }
 
   return (
-    <div className="bg-[#020617]">
+    <div className="bg-bg min-h-screen">
       {!masterPassword ? (
         <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="bg-slate-900/40 backdrop-blur-xl border border-red-500/30 p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
-                <h2 className="text-2xl font-bold text-red-400 mb-4">Master Password Required</h2>
-                <p className="text-slate-300 mb-6 text-sm">
+            <div className="bg-surface border border-emerald-200 p-8 rounded-xl shadow-sm max-w-md w-full text-center">
+                <h2 className="text-2xl font-display font-semibold text-forest mb-4">Master Password Required</h2>
+                <p className="text-ink-muted mb-6 text-sm">
                     Your Master Password is required in memory to generate secure sharing PINs for your nominees. 
                     Please enter it below to continue setting up your trigger.
                 </p>
@@ -133,19 +133,19 @@ const TriggerNow = () => {
                         value={passwordInput}
                         onChange={(e) => setPasswordInput(e.target.value)}
                         placeholder="Enter Master Password"
-                        className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className="w-full px-4 py-3 bg-surface border border-emerald-200 rounded-md text-ink focus:outline-none focus:ring-1 focus:ring-emerald focus:border-emerald"
                     />
                     <button 
                         onClick={() => {
                             if (passwordInput) setMasterPassword(passwordInput);
                         }}
-                        className="w-full bg-cyan-600 text-white font-bold py-3 rounded-xl hover:bg-cyan-500 transition shadow-lg shadow-cyan-600/20"
+                        className="w-full bg-forest text-white font-medium py-3 rounded-md hover:bg-ink transition shadow-sm"
                     >
                         Unlock Session
                     </button>
                     <button
                         onClick={() => router.push("/home")}
-                        className="text-slate-400 text-sm hover:text-white transition mt-2"
+                        className="text-emerald text-sm hover:text-forest transition mt-2 font-medium"
                     >
                         Cancel & Return Home
                     </button>
@@ -156,9 +156,9 @@ const TriggerNow = () => {
         <Trigger vaultId={vaultId} setTriggerSet={setTriggerData} />
       ) : (
         <div className="min-h-screen flex flex-col items-center justify-center p-4">
-            <h2 className="text-3xl font-bold mb-8 text-white tracking-tight">Select Recipients</h2>
+            <h2 className="text-3xl font-display font-semibold mb-8 text-forest tracking-tight">Select Recipients</h2>
             {loading ? (
-                <div className="text-xl text-cyan-400 font-medium">Encrypting payload and saving...</div>
+                <div className="text-xl text-emerald font-medium">Encrypting payload and saving...</div>
             ) : (
                 <div className="w-full max-w-2xl">
                     <VaultRecipientForm

@@ -41,17 +41,16 @@ export default function Navbar() {
         <motion.div
             initial="hidden"
             animate="visible"
-            className="backdrop-blur-xl bg-slate-900/50 text-white rounded-2xl mx-auto my-6 max-w-6xl border border-slate-800 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden relative"
+            className="bg-forest text-white mx-auto w-full transition-all duration-300 ease-in-out relative"
         >
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
-            
-            <nav className="flex justify-between items-center p-4 px-6 relative z-10">
-                <motion.div
-                    variants={fadeIn}
-                    className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400"
-                >
-                    <Link href="/home">LegacyLocker</Link>
-                </motion.div>
+            <div className="max-w-6xl mx-auto px-6">
+                <nav className="flex justify-between items-center py-5 relative z-10">
+                    <motion.div
+                        variants={fadeIn}
+                        className="text-2xl font-display font-semibold tracking-tight text-white"
+                    >
+                        <Link href="/home">LegacyLocker</Link>
+                    </motion.div>
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-6">
@@ -63,7 +62,7 @@ export default function Navbar() {
                         >
                             <Link
                                 href={item.href}
-                                className="text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200"
+                                className="text-sm font-medium text-emerald-soft/70 hover:text-white border-b-2 border-transparent hover:border-brass pb-1 transition-colors duration-200"
                             >
                                 {item.name}
                             </Link>
@@ -73,7 +72,7 @@ export default function Navbar() {
                         {user ? (
                             <button
                                 onClick={logout}
-                                className="flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                                className="flex items-center space-x-2 text-sm font-medium text-emerald-soft/70 hover:text-white transition-colors duration-200"
                             >
                                 <LogOut size={16} />
                                 <span>Logout</span>
@@ -136,6 +135,7 @@ export default function Navbar() {
                         )}
                     </motion.div>
                 </div>
+            </div>
             </div>
         </motion.div>
     );
