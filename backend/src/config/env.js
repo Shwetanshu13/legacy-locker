@@ -9,9 +9,7 @@ const requiredEnvVars = [
     'JWT_SECRET',
     'SECRET_KEY',
     'EMAIL_USER',
-    'EMAIL_PASS',
-    'EMAIL_SERVICE',
-    'EMAIL_PORT'
+    'RESEND_API_KEY'
 ];
 
 for (const envVar of requiredEnvVars) {
@@ -27,9 +25,7 @@ export const env = {
     JWT_SECRET: process.env.JWT_SECRET,
     SECRET_KEY: process.env.SECRET_KEY,
     EMAIL_USER: process.env.EMAIL_USER,
-    EMAIL_PASS: process.env.EMAIL_PASS,
-    EMAIL_SERVICE: process.env.EMAIL_SERVICE,
-    EMAIL_PORT: process.env.EMAIL_PORT,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     PORT: process.env.PORT || 5000,
     NODE_ENV: process.env.NODE_ENV || 'development'
 };

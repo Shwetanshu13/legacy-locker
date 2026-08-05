@@ -1,57 +1,38 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { getLegacyReleaseEmailTemplate } from '../templates/legacyRelease.template.js';
 import { getInactivityWarningEmailTemplate } from '../templates/inactivityWarning.template.js';
 import { getLoginOtpEmailTemplate } from '../templates/loginOtp.template.js';
 import { env } from '../config/env.js';
 
-let transporter;
-
-const getTransporter = () => {
-    if (!transporter) {
-        const isGmail = env.EMAIL_SERVICE === 'gmail' || env.EMAIL_SERVICE === 'smtp.gmail.com';
-        
-        const config = isGmail ? {
-            service: 'gmail',
-            auth: {
-                user: env.EMAIL_USER,
-                pass: env.EMAIL_PASS,
-            }
-        } : {
-            host: env.EMAIL_SERVICE,
-            port: env.EMAIL_PORT,
-            secure: Number(env.EMAIL_PORT) === 465, // true for 465, false for other ports
-            auth: {
-                user: env.EMAIL_USER,
-                pass: env.EMAIL_PASS,
-            },
-        };
-
-        transporter = nodemailer.createTransport(config);
-    }
-    return transporter;
-};
+const resend = new Resend(env.RESEND_API_KEY);
 
 export const sendEmail = async ({ to, subject, text, html }) => {
     try {
-        if (!env.EMAIL_USER || !env.EMAIL_PASS) {
+        if (!env.RESEND_API_KEY) {
             console.log(`[DEV MODE Email] To: ${to} | Subject: ${subject}`);
             console.log(`[DEV MODE Email] Content: ${text || html}`);
             return true;
         }
 
-        const mailOptions = {
+        const payload = {
             from: `"Legacy Locker" <${env.EMAIL_USER}>`,
-            to,
+            to: Array.isArray(to) ? to : [to],
             subject,
-            text,
-            html,
         };
 
-        const mailTransporter = getTransporter();
-        await mailTransporter.sendMail(mailOptions);
+        if (html) payload.html = html;
+        if (text) payload.text = text;
+
+        const { data, error } = await resend.emails.send(payload);
+
+        if (error) {
+            console.error('Error sending email via Resend:', error);
+            throw new Error(error.message);
+        }
+
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Failed to send email:', error);
         throw new Error('Failed to send email');
     }
 };
