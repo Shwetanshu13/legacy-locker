@@ -14,14 +14,14 @@ class ContactsController {
 
     async addContact(req, res) {
         try {
-            const { name, email, relationship } = req.body;
+            const { name, email } = req.body;
             const userId = req.user.id;
             
             if (!name || !email) {
                 return res.status(400).json({ message: 'Missing required fields' });
             }
             
-            const newContact = await contactsService.addContact(userId, { name, email, relationship });
+            const newContact = await contactsService.addContact(userId, { name, email });
             res.status(201).json({ message: 'Contact added successfully', contact: newContact });
         } catch (error) {
             console.error('Add Contact Error:', error);

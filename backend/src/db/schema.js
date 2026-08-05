@@ -39,7 +39,6 @@ export const trustedContacts = pgTable("trusted_contacts", {
     userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     email: text("email").notNull(),
-    relationship: text("relationship"), // friend, sibling, etc.
     createdAt: timestamp("created_at").defaultNow(),
 });
 

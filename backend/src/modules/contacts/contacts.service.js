@@ -10,14 +10,13 @@ class ContactsService {
             .where(eq(trustedContacts.userId, userId));
     }
 
-    async addContact(userId, { name, email, relationship }) {
+    async addContact(userId, { name, email }) {
         const [newContact] = await db
             .insert(trustedContacts)
             .values({
                 userId,
                 name,
-                email,
-                relationship
+                email
             })
             .returning();
         return newContact;

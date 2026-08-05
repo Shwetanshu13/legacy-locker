@@ -175,8 +175,12 @@ export default function Password() {
                 >
                   <option value="private">Private (Only You)</option>
                   <option value="trusted">Trusted Contacts</option>
-                  <option value="public">Public</option>
                 </select>
+                {formData.visibility === 'private' && (
+                  <p className="mt-2 text-xs text-amber-600 font-medium">
+                    Note: Private vaults cannot have triggers attached to them. You must change visibility to 'Trusted Contacts' to add a trigger.
+                  </p>
+                )}
               </motion.div>
 
               {/* Buttons */}

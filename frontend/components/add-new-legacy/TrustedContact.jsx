@@ -19,20 +19,17 @@ const fadeUp = {
 function TrustedContactForm({ onSubmit }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [relationship, setRelationship] = useState("Private");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ name, email, relationship });
+        onSubmit({ name, email });
         setName("");
         setEmail("");
-        setRelationship("Private");
     };
 
     const handleReset = () => {
         setName("");
         setEmail("");
-        setRelationship("Private");
     };
 
     return (
@@ -106,28 +103,6 @@ function TrustedContactForm({ onSubmit }) {
                             required
                             className="w-full px-4 py-3 bg-white/80 border border-emerald-300 rounded-lg text-emerald-950 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-inner"
                         />
-                    </motion.div>
-
-                    <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={4} className="relative">
-                        <label className="block text-emerald-700 text-sm font-medium mb-2">Relationship</label>
-                        <select
-                            value={relationship}
-                            onChange={(e) => setRelationship(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/80 border border-emerald-300 rounded-lg text-emerald-950 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all appearance-none shadow-inner"
-                            style={{
-                                backgroundImage:
-                                    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
-                                backgroundRepeat: "no-repeat",
-                                backgroundPosition: "right 1rem center",
-                                backgroundSize: "1.2rem",
-                            }}
-                        >
-                            <option value="Private">Private</option>
-                            <option value="Family">Family</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Colleague">Colleague</option>
-                            <option value="Other">Other</option>
-                        </select>
                     </motion.div>
 
                     <motion.div

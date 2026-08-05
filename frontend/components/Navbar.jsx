@@ -19,7 +19,7 @@ export default function Navbar() {
     };
 
     const navItems = [
-        { name: "Home", href: "/", icon: <Home size={18} /> },
+        { name: "Home", href: "/home", icon: <Home size={18} /> },
         {
             name: "Passwords",
             href: "/add-new-legacy/password",

@@ -1,9 +1,16 @@
 import db from '../../db/index.js';
-import { triggers, vaultRecipients } from '../../db/schema.js';
+import { triggers, vaultRecipients, vaults } from '../../db/schema.js';
 import { eq } from 'drizzle-orm';
 
 class TriggersService {
     async addTrigger(vaultId, { type, triggerDate, inactivityDays, recipients }) {
+        // Check if vault is private
+        const [vault] = await db.select().from(vaults).where(eq(vaults.id, vaultId));
+        if (!vault) throw new Error("Vault not found.");
+        if (vault.visibility === "private") {
+            throw new Error("Private vaults cannot be triggered. Please change the visibility to 'trusted' first.");
+        }
+
         // Since neon-http driver doesn't support transactions, execute sequentially
         
         // Add the trigger
