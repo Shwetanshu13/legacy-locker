@@ -91,7 +91,12 @@ export function useAuthLogic() {
         } catch (err) {
             console.error('Biometric Auth Error:', err);
             if (isLoginMode) {
-                setStep(1.5);
+                const errorMessage = err.response?.data?.message || err.message;
+                if (errorMessage === 'User not found') {
+                    setError('Account not found. Please sign up first.');
+                } else {
+                    setStep(1.5);
+                }
             } else {
                 setError(err.response?.data?.message || err.message || "Failed biometric authentication");
             }
@@ -188,7 +193,7 @@ export function useAuthLogic() {
         masterPassword, setMasterPassword,
         isLoginMode, setIsLoginMode,
         step, resetStep,
-        error, loading,
+        error, setError, loading,
         tempUser,
         handleAuth,
         handleVerifyOtp,

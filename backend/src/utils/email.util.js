@@ -8,7 +8,15 @@ let transporter;
 
 const getTransporter = () => {
     if (!transporter) {
-        transporter = nodemailer.createTransport({
+        const isGmail = env.EMAIL_SERVICE === 'gmail' || env.EMAIL_SERVICE === 'smtp.gmail.com';
+        
+        const config = isGmail ? {
+            service: 'gmail',
+            auth: {
+                user: env.EMAIL_USER,
+                pass: env.EMAIL_PASS,
+            }
+        } : {
             host: env.EMAIL_SERVICE,
             port: env.EMAIL_PORT,
             secure: Number(env.EMAIL_PORT) === 465, // true for 465, false for other ports
@@ -16,7 +24,9 @@ const getTransporter = () => {
                 user: env.EMAIL_USER,
                 pass: env.EMAIL_PASS,
             },
-        });
+        };
+
+        transporter = nodemailer.createTransport(config);
     }
     return transporter;
 };

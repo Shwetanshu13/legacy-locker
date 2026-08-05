@@ -246,7 +246,7 @@ class AuthService {
 
     async generateWebAuthnLoginOptions(email) {
         const user = await authRepository.getUserByEmail(email);
-        if (!user) throw new Error('Invalid email');
+        if (!user) throw new Error('User not found');
 
         const userPasskeys = await authRepository.getPasskeysByUserId(user.id);
         if (userPasskeys.length === 0) throw new Error('No passkeys registered for this user');

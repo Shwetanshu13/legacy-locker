@@ -22,7 +22,7 @@ export default function Login() {
         masterPassword, setMasterPassword,
         isLoginMode, setIsLoginMode,
         step, resetStep,
-        error, loading,
+        error, setError, loading,
         tempUser,
         handleAuth,
         handleVerifyOtp,

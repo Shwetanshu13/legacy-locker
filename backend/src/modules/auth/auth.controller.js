@@ -180,7 +180,8 @@ class AuthController {
             return res.status(200).json(options);
         } catch (error) {
             console.error('getWebAuthnLoginOptions Error:', error);
-            return res.status(400).json({ message: error.message || 'Failed to get login options' });
+            const statusCode = error.message === 'User not found' ? 404 : 400;
+            return res.status(statusCode).json({ message: error.message || 'Failed to get login options' });
         }
     }
 
