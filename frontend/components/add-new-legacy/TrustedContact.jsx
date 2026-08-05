@@ -141,7 +141,7 @@ export default function TrustedContact() {
     if (!user) return null;
 
     return (
-        <div className="bg-bg text-ink min-h-screen flex items-center justify-center p-6 relative">
+        <div className="flex justify-center relative">
             <motion.div
                 variants={fadeUp}
                 initial="hidden"

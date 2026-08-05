@@ -7,31 +7,31 @@ export default function StatsSummary({ stats }) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center">
-                <div className="mr-4 bg-emerald-900/30 p-3 rounded-lg">
-                    <Lock size={24} className="text-emerald-400" />
+            <div className="bg-surface border border-emerald-200 rounded-xl p-4 flex items-center shadow-sm">
+                <div className="mr-4 bg-emerald-soft p-3 rounded-lg">
+                    <Lock size={24} className="text-emerald" />
                 </div>
                 <div>
-                    <p className="text-gray-400 text-sm">Total Vaults</p>
-                    <p className="text-xl font-semibold">{stats.totalVaults || 0}</p>
+                    <p className="text-ink-muted text-sm font-medium">Total Vaults</p>
+                    <p className="text-xl font-display font-semibold text-ink">{stats.totalVaults || 0}</p>
                 </div>
             </div>
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center">
-                <div className="mr-4 bg-teal-900/30 p-3 rounded-lg">
-                    <Users size={24} className="text-teal-400" />
+            <div className="bg-surface border border-emerald-200 rounded-xl p-4 flex items-center shadow-sm">
+                <div className="mr-4 bg-emerald-soft p-3 rounded-lg">
+                    <Users size={24} className="text-emerald" />
                 </div>
                 <div>
-                    <p className="text-gray-400 text-sm">Saved Contacts</p>
-                    <p className="text-xl font-semibold">{stats.totalContacts || 0}</p>
+                    <p className="text-ink-muted text-sm font-medium">Saved Contacts</p>
+                    <p className="text-xl font-display font-semibold text-ink">{stats.totalContacts || 0}</p>
                 </div>
             </div>
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center">
-                <div className="mr-4 bg-purple-900/30 p-3 rounded-lg">
-                    <Clock size={24} className="text-purple-400" />
+            <div className="bg-surface border border-emerald-200 rounded-xl p-4 flex items-center shadow-sm">
+                <div className="mr-4 bg-emerald-soft p-3 rounded-lg">
+                    <Clock size={24} className="text-emerald" />
                 </div>
                 <div>
-                    <p className="text-gray-400 text-sm">Last Activity</p>
-                    <p className="text-xl font-semibold">
+                    <p className="text-ink-muted text-sm font-medium">Last Activity</p>
+                    <p className="text-xl font-display font-semibold text-ink">
                         {formatDate(stats.lastActivity)}
                     </p>
                 </div>

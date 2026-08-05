@@ -87,15 +87,13 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
+      onClick={() => onSelect(vault.id)}
       className={`relative bg-surface rounded-xl overflow-hidden transition-shadow hover:shadow-md cursor-pointer border ${isUnlocked ? 'border-emerald shadow-emerald/10' : 'border-emerald-200'} group`}
     >
       {/* Left edge accent */}
       <div className={`absolute top-0 left-0 w-1.5 h-full transition-colors duration-300 ${isUnlocked ? 'bg-emerald' : isSelected ? 'bg-brass' : 'bg-transparent group-hover:bg-emerald-200'}`} />
 
-      <div
-        className="flex items-center justify-between p-6"
-        onClick={() => onSelect(vault.id)}
-      >
+      <div className="flex items-center justify-between p-6">
         <div className="flex items-center gap-4 pl-3">
             {isUnlocked ? (
                 <svg className="w-5 h-5 text-emerald flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

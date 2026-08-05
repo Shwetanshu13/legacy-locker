@@ -19,15 +19,17 @@ function Page() {
   };
 
   return (
-    <div className="bg-black text-white min-h-screen p-4 pt-8">
+    <div className="bg-bg text-ink min-h-screen p-4 pt-8">
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-6xl mx-auto"
+        className="w-full max-w-6xl mx-auto space-y-8"
       >
         <TrustedContacts clerkUserId={user.id} />
-        <TrustedContact onSubmit={TrustedContact} />
+        <div className="w-full">
+            <TrustedContact onSubmit={TrustedContact} />
+        </div>
       </motion.div>
     </div>
   );

@@ -54,35 +54,35 @@ export default function ProfilePage() {
     };
 
     if (authLoading || !user) {
-        return <div className="min-h-screen bg-[#020617] text-slate-200 p-8 pt-24 text-center">Loading Profile...</div>;
+        return <div className="min-h-screen bg-bg text-ink-muted p-8 pt-24 text-center font-medium">Loading Profile...</div>;
     }
 
     return (
-        <div className="min-h-screen bg-[#020617] text-slate-200 p-8 pt-24">
+        <div className="min-h-screen bg-bg text-ink p-8 pt-24">
             <div className="max-w-4xl mx-auto space-y-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 shadow-xl backdrop-blur-xl relative overflow-hidden"
+                    className="p-8 rounded-2xl bg-surface border border-emerald-200 shadow-sm relative overflow-hidden"
                 >
-                    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+                    <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald to-transparent"></div>
                     
                     <div className="flex items-center space-x-4 mb-8">
-                        <div className="p-3 bg-cyan-500/10 rounded-xl text-cyan-400">
+                        <div className="p-3 bg-emerald-soft rounded-xl text-emerald">
                             <User size={32} />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-white">Your Profile</h1>
-                            <p className="text-slate-400">Manage your account settings and security.</p>
+                            <h1 className="text-2xl font-display font-semibold text-forest">Your Profile</h1>
+                            <p className="text-ink-muted">Manage your account settings and security.</p>
                         </div>
                     </div>
 
-                    <div className="bg-slate-950/50 p-6 rounded-xl border border-slate-800/50 flex flex-col md:flex-row md:items-center justify-between">
+                    <div className="bg-bg p-6 rounded-xl border border-emerald-100 flex flex-col md:flex-row md:items-center justify-between">
                         <div>
-                            <p className="text-sm text-slate-400 mb-1">Email Address</p>
-                            <p className="text-lg font-medium text-white">{user.email}</p>
+                            <p className="text-sm text-ink-muted mb-1">Email Address</p>
+                            <p className="text-lg font-medium text-ink">{user.email}</p>
                         </div>
-                        <div className="mt-4 md:mt-0 flex items-center space-x-2 text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-lg text-sm font-medium">
+                        <div className="mt-4 md:mt-0 flex items-center space-x-2 text-emerald bg-emerald-soft px-4 py-2 rounded-lg text-sm font-medium">
                             <Key size={16} />
                             <span>E2EE Keys Configured</span>
                         </div>
@@ -93,17 +93,17 @@ export default function ProfilePage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="p-8 rounded-2xl bg-slate-900/50 border border-slate-800 shadow-xl backdrop-blur-xl relative overflow-hidden"
+                    className="p-8 rounded-2xl bg-surface border border-emerald-200 shadow-sm relative overflow-hidden"
                 >
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center space-x-3">
-                            <Fingerprint className="text-cyan-400" size={28} />
-                            <h2 className="text-xl font-bold text-white">Biometric Passkeys</h2>
+                            <Fingerprint className="text-emerald" size={28} />
+                            <h2 className="text-xl font-display font-semibold text-forest">Biometric Passkeys</h2>
                         </div>
                         <button
                             onClick={handleAddPasskey}
                             disabled={loading}
-                            className="flex items-center space-x-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-2 rounded-xl font-medium transition-colors disabled:opacity-50"
+                            className="flex items-center space-x-2 bg-forest hover:bg-ink text-white px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50 shadow-sm"
                         >
                             <Plus size={18} />
                             <span>Add New Device</span>
@@ -111,34 +111,34 @@ export default function ProfilePage() {
                     </div>
 
                     {error && (
-                        <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm">
+                        <div className="mb-6 bg-danger/10 border border-danger/20 text-danger px-4 py-3 rounded-md text-sm font-medium">
                             {error}
                         </div>
                     )}
                     {success && (
-                        <div className="mb-6 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-3 rounded-xl text-sm">
+                        <div className="mb-6 bg-emerald-soft border border-emerald text-emerald px-4 py-3 rounded-md text-sm font-medium">
                             {success}
                         </div>
                     )}
 
                     <div className="space-y-4">
                         {passkeys.length === 0 ? (
-                            <p className="text-slate-400 text-center py-8 bg-slate-950/30 rounded-xl border border-slate-800/30">
+                            <p className="text-ink-muted text-center py-8 bg-bg rounded-xl border border-emerald-100">
                                 No passkeys found. Add one to secure your account.
                             </p>
                         ) : (
                             passkeys.map((pk, idx) => (
-                                <div key={pk.id} className="flex items-center justify-between p-4 bg-slate-950/50 rounded-xl border border-slate-800/50 hover:border-cyan-500/30 transition-colors">
+                                <div key={pk.id} className="flex items-center justify-between p-4 bg-bg rounded-xl border border-emerald-100 hover:border-emerald/50 transition-colors">
                                     <div className="flex items-center space-x-4">
-                                        <div className="p-2 bg-slate-800 rounded-lg text-slate-300">
+                                        <div className="p-2 bg-emerald-soft rounded-lg text-emerald">
                                             <Fingerprint size={20} />
                                         </div>
                                         <div>
-                                            <p className="text-white font-medium">Passkey {idx + 1}</p>
-                                            <p className="text-sm text-slate-400">Added on {new Date(pk.createdAt).toLocaleDateString()}</p>
+                                            <p className="text-ink font-medium">Passkey {idx + 1}</p>
+                                            <p className="text-sm text-ink-muted">Added on {new Date(pk.createdAt).toLocaleDateString()}</p>
                                         </div>
                                     </div>
-                                    <div className="text-xs text-slate-500 px-3 py-1 bg-slate-900 rounded-full border border-slate-800">
+                                    <div className="text-xs text-ink-muted px-3 py-1 bg-surface rounded-full border border-emerald-200 font-medium">
                                         Active
                                     </div>
                                 </div>

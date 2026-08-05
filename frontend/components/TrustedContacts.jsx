@@ -9,13 +9,13 @@ export default function TrustedContacts({ userId }) {
 
     if (loading)
         return (
-            <div className="text-center mt-4 text-gray-400 text-sm">
+            <div className="text-center mt-4 text-ink-muted text-sm font-medium">
                 Loading contacts...
             </div>
         );
     if (error)
         return (
-            <div className="text-center mt-4 text-red-500 text-sm">{error}</div>
+            <div className="text-center mt-4 text-danger text-sm font-medium">{error}</div>
         );
 
     return (
@@ -26,39 +26,36 @@ export default function TrustedContacts({ userId }) {
                 animate="visible"
                 className="w-full"
             >
-                <h3 className="text-xl font-semibold mb-4 text-white border-b border-gray-700 pb-2">
+                <h3 className="text-2xl font-display font-semibold mb-6 text-forest border-b border-emerald-100 pb-2">
                     Saved Trusted Contacts
                 </h3>
 
                 {contacts.length === 0 ? (
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-ink-muted text-sm">
                         No trusted contacts found.
                     </p>
                 ) : (
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {contacts.map((contact, index) => (
                             <motion.div
                                 key={contact.id}
-                                className="p-4 bg-gray-900/70 border border-gray-700 rounded-xl shadow hover:shadow-lg transition backdrop-blur h-full flex flex-col justify-between"
+                                className="p-6 bg-surface border border-emerald-200 rounded-xl shadow-sm hover:shadow-md hover:border-emerald transition h-full flex flex-col justify-between"
                                 variants={fadeUp}
                                 custom={index + 1}
                                 initial="hidden"
                                 animate="visible"
                             >
                                 <div>
-                                    <h4 className="text-lg font-semibold text-white mb-1">
+                                    <h4 className="text-lg font-display font-semibold text-ink mb-2">
                                         {contact.name}
                                     </h4>
-                                    <p className="text-gray-300 text-sm">
-                                        📞 {contact.phone}
+                                    <p className="text-ink text-sm mb-1">
+                                        <span className="text-emerald mr-2">📞</span> {contact.phone || "Not provided"}
                                     </p>
-                                    <p className="text-gray-300 text-sm">
-                                        📧 {contact.email}
+                                    <p className="text-ink text-sm">
+                                        <span className="text-emerald mr-2">📧</span> {contact.email}
                                     </p>
                                 </div>
-                                <p className="text-gray-500 italic text-xs mt-4">
-                                    Relationship: {contact.relationship}
-                                </p>
                             </motion.div>
                         ))}
                     </div>
