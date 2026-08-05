@@ -144,7 +144,7 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
                 <h4 className="text-ink font-semibold mb-2 text-center">Unlock Vault</h4>
                 <p className="text-ink-muted text-sm text-center mb-6 max-w-xs">Enter your master password to unlock this vault.</p>
                 
-                <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+                <div className="flex flex-col gap-3 w-full max-w-sm">
                   <input
                     type="password"
                     id={`vault-pw-${vault.id}`}
@@ -152,11 +152,11 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
                     onChange={(e) => setPasswordInput(e.target.value)}
                     onKeyDown={(e) => { if(e.key === 'Enter') handleUnlockAttempt(); }}
                     placeholder="Master Password"
-                    className={`flex-1 px-4 py-2 bg-surface border rounded-md text-ink focus:outline-none focus:ring-1 transition-colors ${errorState ? 'border-danger focus:ring-danger' : 'border-emerald-200 focus:border-emerald focus:ring-emerald'}`}
+                    className={`w-full px-4 py-2 bg-surface border rounded-md text-ink focus:outline-none focus:ring-1 transition-colors ${errorState ? 'border-danger focus:ring-danger' : 'border-emerald-200 focus:border-emerald focus:ring-emerald'}`}
                   />
                   <button 
                     onClick={handleUnlockAttempt}
-                    className="bg-forest text-white px-6 py-2 rounded-md font-medium hover:bg-ink transition flex-shrink-0"
+                    className="w-full bg-forest text-white px-6 py-2 rounded-md font-medium hover:bg-ink transition"
                   >
                     Unlock
                   </button>
