@@ -1,10 +1,15 @@
-const publicEnv = {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_SOMETHING_ELSE: process.env.NEXT_PUBLIC_SOMETHING_ELSE,
-};
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-for (const [key, value] of Object.entries(publicEnv)) {
-    if (!value) throw new Error(`FATAL: Missing required frontend environment variable: ${key}`);
+if (!NEXT_PUBLIC_API_URL) {
+    throw new Error('FATAL: Missing required frontend environment variable: NEXT_PUBLIC_API_URL');
 }
 
-export { publicEnv as env };
+export const publicEnv = { NEXT_PUBLIC_API_URL };
+
+const SECRET_KEY = process.env.SECRET_KEY;
+
+if (!SECRET_KEY) {
+    throw new Error('FATAL: Missing required server environment variable: SECRET_KEY');
+}
+
+export const serverEnv = { SECRET_KEY };
