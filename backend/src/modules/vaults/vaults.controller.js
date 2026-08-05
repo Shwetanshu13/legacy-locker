@@ -8,10 +8,26 @@ class VaultsController {
             if (!payload) {
                 return res.status(404).json({ message: 'Vault not found or not unlocked yet' });
             }
+            if (payload.status === 'opened_and_purged') {
+                 return res.status(410).json({ message: 'Vault has been permanently deleted as it was already opened.' });
+            }
             res.status(200).json({ data: payload });
         } catch (error) {
             console.error('Get Unlock Payload Error:', error);
             res.status(500).json({ message: 'Error fetching unlock payload' });
+        }
+    }
+
+    async markVaultOpened(req, res) {
+        try {
+            const vaultId = req.params.id;
+            // No user auth required here because the nominee is unauthenticated, they only have the link
+            // But they proved they decrypted it.
+            const result = await vaultsService.markVaultOpened(vaultId);
+            res.status(200).json(result);
+        } catch (error) {
+            console.error('Mark Vault Opened Error:', error);
+            res.status(500).json({ message: error.message || 'Error purging vault' });
         }
     }
 

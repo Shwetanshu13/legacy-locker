@@ -21,7 +21,7 @@ export default function HowItWorks() {
     return (
         <div className="relative bg-[#020617] text-slate-200 overflow-hidden font-sans min-h-screen">
             {/* Background Orbs */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-emerald-600/20 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
             <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-cyan-600/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
             
             {/* Subtle Grid overlay */}
@@ -49,7 +49,7 @@ export default function HowItWorks() {
                     className="text-center mb-16"
                 >
                     <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-white">
-                        How <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Legacy Locker</span> Works
+                        How <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Legacy Locker</span> Works
                     </h1>
                     <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                         We built a system where even we cannot read your data. Here is exactly how your digital assets are secured from end-to-end.
@@ -72,7 +72,7 @@ export default function HowItWorks() {
 
                     {/* Step 2 */}
                     <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#020617] bg-slate-800 text-indigo-400 font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#020617] bg-slate-800 text-emerald-400 font-bold shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_20px_rgba(99,102,241,0.2)]">
                             <Shield size={20} />
                         </div>
                         <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-6 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm shadow-xl">

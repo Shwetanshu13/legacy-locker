@@ -1,10 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { UserCircle, Lock } from "lucide-react";
+import { UserCircle, Lock, History } from "lucide-react";
 
 export default function ActionCards() {
     const router = useRouter();
-    const buttonClass = "bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm w-full transition duration-200 flex items-center justify-center gap-2";
+    const buttonClass = "bg-emerald-600 hover:bg-emerald-500 text-emerald-950 font-medium px-4 py-2 rounded-lg text-sm w-full transition duration-200 flex items-center justify-center gap-2";
 
     return (
         <>
@@ -21,7 +21,7 @@ export default function ActionCards() {
                 </p>
                 <button
                     onClick={() => router.push("/add-new-legacy/trustedcontact")}
-                    className={buttonClass.replace("bg-indigo-600 hover:bg-indigo-500", "bg-purple-600 hover:bg-purple-500")}
+                    className={buttonClass.replace("bg-emerald-600 hover:bg-emerald-500", "bg-purple-600 hover:bg-purple-500")}
                 >
                     Manage Contacts
                 </button>
@@ -40,9 +40,28 @@ export default function ActionCards() {
                 </p>
                 <button
                     onClick={() => router.push("/add-new-legacy/password")}
-                    className={buttonClass.replace("bg-indigo-600 hover:bg-indigo-500", "bg-teal-600 hover:bg-teal-500")}
+                    className={buttonClass.replace("bg-emerald-600 hover:bg-emerald-500", "bg-teal-600 hover:bg-teal-500")}
                 >
                     Go to Passwords
+                </button>
+            </div>
+
+            {/* History Card */}
+            <div className="bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition h-64 flex flex-col">
+                <div className="mb-4 p-3 bg-amber-900/30 rounded-lg w-fit">
+                    <History size={24} className="text-amber-400" />
+                </div>
+                <h2 className="text-xl font-semibold mb-2">
+                    Trigger History
+                </h2>
+                <p className="text-sm text-gray-400 mb-4 flex-grow">
+                    View a log of all automated triggers and accessed vaults.
+                </p>
+                <button
+                    onClick={() => router.push("/history")}
+                    className={buttonClass.replace("bg-emerald-600 hover:bg-emerald-500", "bg-amber-600 hover:bg-amber-500")}
+                >
+                    View History
                 </button>
             </div>
         </>

@@ -18,7 +18,8 @@
     "react-native-passkey": "^3.5.0",
     "react-native-quick-crypto": "^1.1.6",
     "react-native-safe-area-context": "^5.8.0",
-    "react-native-screens": "^4.26.2"
+    "react-native-screens": "^4.26.2",
+    "react-native-toast-message": "^2.4.0"
   },
   "scripts": {
     "start": "expo start",

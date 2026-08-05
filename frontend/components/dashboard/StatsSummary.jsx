@@ -8,8 +8,8 @@ export default function StatsSummary({ stats }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center">
-                <div className="mr-4 bg-indigo-900/30 p-3 rounded-lg">
-                    <Lock size={24} className="text-indigo-400" />
+                <div className="mr-4 bg-emerald-900/30 p-3 rounded-lg">
+                    <Lock size={24} className="text-emerald-400" />
                 </div>
                 <div>
                     <p className="text-gray-400 text-sm">Total Vaults</p>

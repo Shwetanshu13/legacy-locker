@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import VaultCard from "@/components/vault/VaultCard";
-import ActionCards from "./ActionCards";
 
 export default function VaultsGrid({ vaults, onDelete }) {
     const router = useRouter();
@@ -20,10 +19,10 @@ export default function VaultsGrid({ vaults, onDelete }) {
                 onClick={handleCreateVault}
                 className="bg-gray-800 hover:bg-gray-750 border-2 border-dashed border-gray-700 p-6 rounded-xl cursor-pointer transition-all group flex flex-col items-center justify-center h-64"
             >
-                <div className="mb-4 p-4 bg-indigo-900/30 rounded-full">
+                <div className="mb-4 p-4 bg-emerald-900/30 rounded-full">
                     <PlusCircle
                         size={32}
-                        className="text-indigo-400 group-hover:text-indigo-300"
+                        className="text-emerald-400 group-hover:text-emerald-300"
                     />
                 </div>
                 <h3 className="text-lg font-medium mb-1">Create New Vault</h3>
@@ -42,8 +41,6 @@ export default function VaultsGrid({ vaults, onDelete }) {
                     onDelete={onDelete}
                 />
             ))}
-
-            <ActionCards />
         </div>
     );
 }

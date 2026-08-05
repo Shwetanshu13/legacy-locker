@@ -4,6 +4,7 @@ import { useAuthLogic } from "@/hooks/useAuthLogic";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function Login() {
     const { user, loading: authLoading } = useAuth();
@@ -61,7 +62,7 @@ export default function Login() {
                                     name="email"
                                     type="email"
                                     required
-                                    className={`appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${(!isLoginMode) ? "rounded-t-md rounded-none" : "rounded-md"}`}
+                                    className={`appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm ${(!isLoginMode) ? "rounded-t-md rounded-none" : "rounded-md"}`}
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -70,11 +71,10 @@ export default function Login() {
                             {!isLoginMode && (
                                 <div>
                                     <label htmlFor="password" className="sr-only">Password</label>
-                                    <input
+                                    <PasswordInput
                                         id="password"
                                         name="password"
-                                        type="password"
-                                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
                                         placeholder="Account Password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -87,7 +87,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : (isLoginMode ? "Continue" : "Sign Up with Password")}
                             </button>
@@ -100,7 +100,7 @@ export default function Login() {
                                     setIsLoginMode(!isLoginMode);
                                     setError("");
                                 }}
-                                className="text-sm text-indigo-600 hover:text-indigo-500"
+                                className="text-sm text-emerald-600 hover:text-emerald-500"
                             >
                                 {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
                             </button>
@@ -114,12 +114,11 @@ export default function Login() {
                         <div className="rounded-md shadow-sm -space-y-px">
                             <div>
                                 <label htmlFor="fallback-password" className="sr-only">Password</label>
-                                <input
+                                <PasswordInput
                                     id="fallback-password"
                                     name="password"
-                                    type="password"
                                     required
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
                                     placeholder="Account Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -130,7 +129,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || !password}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : "Verify Password"}
                             </button>
@@ -150,7 +149,7 @@ export default function Login() {
                                     type="text"
                                     required
                                     maxLength="6"
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
                                     placeholder="••••••"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
@@ -161,7 +160,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || otp.length !== 6}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Verifying..." : "Verify Login Code"}
                             </button>
@@ -181,7 +180,7 @@ export default function Login() {
                                     type="text"
                                     required
                                     maxLength="6"
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
                                     placeholder="••••••"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
@@ -192,7 +191,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || otp.length !== 6}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Verifying..." : "Verify Email"}
                             </button>
@@ -208,7 +207,7 @@ export default function Login() {
                                 type="button"
                                 disabled={loading}
                                 onClick={handleBiometricAuth}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : "Register Biometrics"}
                             </button>
@@ -226,12 +225,11 @@ export default function Login() {
                         <div className="rounded-md shadow-sm -space-y-px">
                             <div>
                                 <label htmlFor="master-password" className="sr-only">Master Password</label>
-                                <input
+                                <PasswordInput
                                     id="master-password"
                                     name="masterPassword"
-                                    type="password"
                                     required
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
                                     placeholder="Master Password"
                                     value={masterPassword}
                                     onChange={(e) => setMasterPassword(e.target.value)}
@@ -243,7 +241,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : (!tempUser?.publicKey ? "Create Master Password" : "Unlock & Sign In")}
                             </button>

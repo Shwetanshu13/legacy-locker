@@ -84,9 +84,16 @@ export function useAuthLogic() {
                 
                 const verifyRes = await api.post("/auth/webauthn/login-verify", { email, body: asseResp });
                 
-                setTempUser(verifyRes.data.user);
-                setTempToken(verifyRes.data.token);
-                setStep(4);
+                const user = verifyRes.data.user;
+                const token = verifyRes.data.token;
+                
+                if (!user.publicKey) {
+                    setTempUser(user);
+                    setTempToken(token);
+                    setStep(4);
+                } else {
+                    login(token, user, null);
+                }
             } else {
                 // Register Flow (Called from Step 3)
                 const optRes = await api.get(`/auth/webauthn/register-options?email=${encodeURIComponent(email)}`);
@@ -143,9 +150,13 @@ export function useAuthLogic() {
             const response = await api.post("/auth/login-fallback-verify", { email, otp });
             const user = response.data.user;
             const token = response.data.token;
-            setTempUser(user);
-            setTempToken(token);
-            setStep(4);
+            if (!user.publicKey) {
+                setTempUser(user);
+                setTempToken(token);
+                setStep(4);
+            } else {
+                login(token, user, null);
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to verify OTP');
         } finally {

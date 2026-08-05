@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { unwrapDekWithPin, decryptSymmetric } from "@/utils/crypto";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function UnlockLegacy() {
     const params = useParams();
@@ -42,10 +43,23 @@ export default function UnlockLegacy() {
                 content: decryptedContent,
             });
             setStatus("unlocked");
+
+            // Mark vault as opened and purged
+            try {
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vaults/unlock/${vaultId}/mark-opened`, {
+                    method: 'POST'
+                });
+            } catch (err) {
+                console.error("Failed to mark vault as opened", err);
+            }
         } catch (error: any) {
             console.error("Unlock error:", error);
             setStatus("error");
-            setErrorMessage(error.message || "Incorrect PIN or corrupted data.");
+            if (error.message && error.message.includes("permanently deleted")) {
+                setErrorMessage("This vault has already been opened and permanently deleted.");
+            } else {
+                setErrorMessage(error.message || "Incorrect PIN or corrupted data.");
+            }
         }
     };
 
@@ -64,9 +78,10 @@ export default function UnlockLegacy() {
 
                     {status === "unlocked" && vaultData ? (
                         <div className="space-y-6">
-                            <div className="bg-green-900/30 border border-green-500 rounded-lg p-4">
-                                <h3 className="text-green-400 font-semibold mb-2">Decryption Successful</h3>
-                                <p className="text-sm text-green-200">The vault has been decrypted locally on your device.</p>
+                            <div className="bg-emerald-900/30 border border-emerald-500 rounded-lg p-4">
+                                <h3 className="text-emerald-400 font-semibold mb-2">Decryption Successful</h3>
+                                <p className="text-sm text-emerald-200">The vault has been decrypted locally on your device.</p>
+                                <p className="text-sm text-yellow-300 font-semibold mt-2">IMPORTANT: Save this content now. The vault has been permanently deleted from the servers for security purposes.</p>
                             </div>
 
                             <div>
@@ -92,13 +107,14 @@ export default function UnlockLegacy() {
                         <form onSubmit={handleUnlock} className="space-y-6">
                             <div>
                                 <label className="block text-gray-400 text-sm mb-2">Sharing PIN</label>
-                                <input
-                                    type="text"
+                                <PasswordInput
+                                    id="pin"
+                                    name="pin"
                                     value={pin}
-                                    onChange={(e) => setPin(e.target.value)}
+                                    onChange={(e: any) => setPin(e.target.value)}
                                     placeholder="Enter PIN"
-                                    required
-                                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white font-mono tracking-widest text-center text-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                                    required={true}
+                                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white font-mono tracking-widest text-center text-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                                 />
                             </div>
 

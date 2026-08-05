@@ -110,7 +110,7 @@ export default function LoginScreen() {
                         <TouchableOpacity 
                             onPress={() => handleMasterPassword()}
                             disabled={loading}
-                            className={`w-full p-4 rounded-lg items-center ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+                            className={`w-full p-4 rounded-lg items-center ${loading ? 'bg-emerald-400' : 'bg-emerald-600'}`}
                         >
                             {loading ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Unlock Vaults</Text>}
                         </TouchableOpacity>

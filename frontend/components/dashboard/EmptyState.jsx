@@ -21,7 +21,7 @@ export default function EmptyState() {
             </p>
             <button
                 onClick={handleCreateVault}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition duration-200"
+                className="bg-emerald-600 hover:bg-emerald-500 text-emerald-950 font-medium px-4 py-2 rounded-lg text-sm transition duration-200"
             >
                 Create Your First Vault
             </button>

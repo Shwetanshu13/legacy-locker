@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/components/AuthProvider";
+import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -23,10 +24,10 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#020617] text-slate-200`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-emerald-50 text-emerald-950`}
             >
                 <AuthProvider>
-
+                    <Toaster position="bottom-right" />
                     {children}
                 </AuthProvider>
             </body>

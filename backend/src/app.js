@@ -5,6 +5,7 @@ import vaultsRoutes from './modules/vaults/vaults.routes.js';
 import contactsRoutes from './modules/contacts/contacts.routes.js';
 import triggersRoutes from './modules/triggers/triggers.routes.js';
 import statsRoutes from './modules/stats/stats.routes.js';
+import historyRoutes from './modules/history/history.routes.js';
 import { runTriggerChecks } from './cron/triggerChecker.js';
 import { env } from './config/env.js';
 
@@ -22,6 +23,7 @@ app.use('/vaults', vaultsRoutes);
 app.use('/contacts', contactsRoutes);
 app.use('/triggers', triggersRoutes);
 app.use('/stats', statsRoutes);
+app.use('/history', historyRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', message: 'Backend is running' });

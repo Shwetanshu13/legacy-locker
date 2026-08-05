@@ -28,6 +28,8 @@ export const vaults = pgTable("vaults", {
     iv: text("iv").notNull(),
     encryptedDekOwner: text("encrypted_dek_owner").notNull(),
     visibility: text("visibility").default("private"), // or public/private/trusted_only
+    status: text("status").default("active"), // active, opened_and_purged
+    openedAt: timestamp("opened_at"),
     createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -69,4 +71,15 @@ export const passkeys = pgTable("passkeys", {
     counter: text("counter").notNull().default("0"),
     transports: text("transports"),
     createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const triggerHistory = pgTable("trigger_history", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    vaultId: uuid("vault_id"), // Not a strict foreign key because vault might be deleted conceptually, but we can keep it since we don't delete rows
+    vaultTitle: text("vault_title").notNull(),
+    nomineeEmail: text("nominee_email").notNull(),
+    status: text("status").notNull(), // "TRIGGERED", "OPENED_AND_PURGED"
+    triggeredAt: timestamp("triggered_at").defaultNow(),
+    openedAt: timestamp("opened_at"),
 });

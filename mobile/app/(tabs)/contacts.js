@@ -67,7 +67,7 @@ export default function ContactsScreen() {
                 <TouchableOpacity 
                     onPress={handleAddContact}
                     disabled={adding}
-                    className={`w-full p-3 rounded-lg items-center ${adding ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+                    className={`w-full p-3 rounded-lg items-center ${adding ? 'bg-emerald-400' : 'bg-emerald-600'}`}
                 >
                     {adding ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">Add Contact</Text>}
                 </TouchableOpacity>

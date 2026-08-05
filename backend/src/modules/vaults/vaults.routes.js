@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Public route for nominees to fetch vault payload
 router.get('/unlock/:id', vaultsController.getUnlockPayload);
+router.post('/unlock/:id/mark-opened', vaultsController.markVaultOpened);
 
 // Protect all other vaults routes
 router.use(authMiddleware);

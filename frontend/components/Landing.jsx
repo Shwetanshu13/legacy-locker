@@ -32,7 +32,7 @@ export default function Landing() {
     return (
         <div className="relative bg-[#020617] text-slate-200 overflow-hidden font-sans min-h-screen">
             {/* Dark Midnight Background Orbs */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-emerald-600/20 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
             <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-cyan-600/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
             <div className="absolute bottom-[-20%] left-[20%] w-[700px] h-[700px] bg-violet-600/15 blur-[180px] rounded-full mix-blend-screen pointer-events-none" />
             
@@ -48,7 +48,7 @@ export default function Landing() {
                 <div className="flex gap-4 items-center">
                     <Link 
                         href="/home"
-                        className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-slate-900 px-8 font-medium text-slate-200 border border-slate-700/50 shadow-lg transition-all hover:border-indigo-500/50 hover:bg-slate-800"
+                        className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-slate-900 px-8 font-medium text-slate-200 border border-slate-700/50 shadow-lg transition-all hover:border-emerald-500/50 hover:bg-slate-800"
                     >
                         <span className="relative z-10">{useAuth()?.user ? "Dashboard" : "Log In"}</span>
                         <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
@@ -65,9 +65,9 @@ export default function Landing() {
                     initial="hidden"
                     animate="visible"
                     variants={fadeUp}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8"
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm font-medium mb-8"
                 >
-                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     Military-grade encryption for your digital assets
                 </motion.div>
 
@@ -79,7 +79,7 @@ export default function Landing() {
                     className="text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] mb-8 text-white"
                 >
                     Your Legacy, <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-violet-400">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-400">
                         Locked & Secured.
                     </span>
                 </motion.h1>
@@ -115,16 +115,16 @@ export default function Landing() {
                     animate="animate"
                     className="mt-24 relative w-64 h-64 mx-auto"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-3xl opacity-20 blur-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500 to-cyan-400 rounded-3xl opacity-20 blur-2xl"></div>
                     <div className="relative w-full h-full bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 shadow-2xl flex flex-col items-center justify-center gap-4 overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"></div>
-                        <div className="w-20 h-20 rounded-full border border-indigo-500/30 flex items-center justify-center bg-indigo-500/10">
+                        <div className="w-20 h-20 rounded-full border border-emerald-500/30 flex items-center justify-center bg-emerald-500/10">
                             <svg className="w-10 h-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </div>
                         <div className="h-2 w-32 bg-slate-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 w-2/3"></div>
+                            <div className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 w-2/3"></div>
                         </div>
                         <p className="text-xs text-slate-500 font-mono">End-to-End Encrypted</p>
                     </div>
@@ -166,8 +166,8 @@ export default function Landing() {
                                 viewport={{ once: true, margin: "-100px" }}
                                 className="group relative p-8 bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden hover:bg-slate-800/60 transition-all duration-300"
                             >
-                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/0 to-transparent group-hover:via-indigo-500/50 transition-all duration-500"></div>
-                                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-6">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/0 to-transparent group-hover:via-emerald-500/50 transition-all duration-500"></div>
+                                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-6">
                                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={feature.icon} />
                                     </svg>

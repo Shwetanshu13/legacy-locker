@@ -1,6 +1,7 @@
 import '../global.css';
 import { Stack } from 'expo-router';
 import { AuthProvider } from '../context/AuthContext';
+import Toast from 'react-native-toast-message';
 
 export default function Layout() {
   return (
@@ -12,6 +13,7 @@ export default function Layout() {
         <Stack.Screen name="vaults" options={{ title: 'Vaults' }} />
         <Stack.Screen name="+not-found" options={{ title: 'Oops!' }} />
       </Stack>
+      <Toast />
     </AuthProvider>
   );
 }
