@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import VaultCard from "@/components/vault/VaultCard";
 
-export default function VaultsGrid({ vaults, onDelete }) {
+export default function VaultsGrid({ vaults, onDelete, globalShowPasswords }) {
     const router = useRouter();
     const [selectedId, setSelectedId] = useState(null);
 

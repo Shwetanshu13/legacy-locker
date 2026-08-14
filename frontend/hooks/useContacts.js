@@ -1,30 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
+import useSWR from 'swr';
 import api from '@/utils/api';
 
+const fetcher = url => api.get(url).then(res => res.data);
+
 export function useContacts(userId, fetchOnMount = false) {
-    const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const fetchContacts = useCallback(async () => {
-        if (!userId) return;
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await api.get("/contacts");
-            setContacts(response.data.contacts);
-        } catch (err) {
-            setError(err.response?.data?.message || "Failed to fetch contacts");
-        } finally {
-            setLoading(false);
-        }
-    }, [userId]);
-
-    useEffect(() => {
-        if (fetchOnMount) {
-            fetchContacts();
-        }
-    }, [fetchContacts, fetchOnMount]);
-
-    return { contacts, loading, error, fetchContacts };
+    const { data, error, isLoading, mutate } = useSWR(userId ? '/contacts' : null, fetcher);
+    
+    return {
+        contacts: data?.contacts || [],
+        loading: isLoading,
+        error: error?.response?.data?.message || error?.message,
+        fetchContacts: mutate
+    };
 }

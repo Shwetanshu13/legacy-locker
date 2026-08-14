@@ -1,34 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
+import useSWR from 'swr';
 import api from '@/utils/api';
 
+const fetcher = url => api.get(url).then(res => res.data);
+
 export function useStats(userId, fetchOnMount = false) {
-    const [stats, setStats] = useState({
-        totalVaults: 0,
-        totalContacts: 0,
-        lastActivity: null,
-    });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const fetchStats = useCallback(async () => {
-        if (!userId) return;
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await api.get("/stats");
-            setStats(response.data);
-        } catch (err) {
-            setError(err.response?.data?.message || "Failed to fetch stats");
-        } finally {
-            setLoading(false);
-        }
-    }, [userId]);
-
-    useEffect(() => {
-        if (fetchOnMount) {
-            fetchStats();
-        }
-    }, [fetchStats, fetchOnMount]);
-
-    return { stats, loading, error, fetchStats, setStats };
+    const { data, error, isLoading, mutate } = useSWR(userId ? '/stats' : null, fetcher);
+    
+    return {
+        stats: data || { totalVaults: 0, totalContacts: 0, lastActivity: null },
+        loading: isLoading,
+        error: error?.response?.data?.message || error?.message,
+        fetchStats: mutate
+    };
 }

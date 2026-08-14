@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'rea
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+import Toast from 'react-native-toast-message';
 import { unwrapKey, decryptSymmetric, importKeyFromBase64 } from '../../utils/crypto';
 
 export default function VaultDetailScreen() {
@@ -11,6 +12,7 @@ export default function VaultDetailScreen() {
     const [decryptedContent, setDecryptedContent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [decrypting, setDecrypting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     
     const router = useRouter();
@@ -22,7 +24,7 @@ export default function VaultDetailScreen() {
                 const res = await api.get(`/vaults/${id}`);
                 setVault(res.data);
             } catch (err) {
-                setError("Failed to load vault details.");
+                Toast.show({ type: 'error', text1: 'Error', text2: 'Failed to load vault details.' });
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -33,7 +35,7 @@ export default function VaultDetailScreen() {
 
     const handleDecrypt = async () => {
         if (!rsaPrivateKey) {
-            setError("Your encryption key is not loaded. Please log in again.");
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Your encryption key is not loaded. Please log in again.' });
             return;
         }
 
@@ -53,7 +55,7 @@ export default function VaultDetailScreen() {
             setDecryptedContent(plaintext);
         } catch (err) {
             console.error("Decryption error:", err);
-            setError("Failed to decrypt vault content. The data might be corrupted or keys are mismatched.");
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Failed to decrypt vault content.' });
         } finally {
             setDecrypting(false);
         }
@@ -87,8 +89,16 @@ export default function VaultDetailScreen() {
                 </Text>
 
                 {decryptedContent !== null ? (
-                    <View className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
-                        <Text className="text-slate-800 font-mono text-base">{decryptedContent}</Text>
+                    <View className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4 relative">
+                        <TouchableOpacity 
+                            className="absolute top-2 right-2 px-2 py-1 bg-slate-200 rounded z-10" 
+                            onPress={() => setShowPassword(!showPassword)}
+                        >
+                            <Text className="text-xs font-bold text-slate-600">{showPassword ? 'Hide' : 'Show'}</Text>
+                        </TouchableOpacity>
+                        <Text className="text-slate-800 font-mono text-base mt-6">
+                            {showPassword ? decryptedContent : '••••••••••••••••••••'}
+                        </Text>
                     </View>
                 ) : (
                     <View className="bg-slate-100 border border-slate-200 rounded-lg p-6 mb-6 items-center justify-center">

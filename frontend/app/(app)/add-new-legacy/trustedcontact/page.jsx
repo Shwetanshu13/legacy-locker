@@ -26,7 +26,7 @@ function Page() {
         animate="visible"
         className="w-full max-w-6xl mx-auto space-y-8"
       >
-        <TrustedContacts clerkUserId={user.id} />
+        <TrustedContacts userId={user.id} />
         <div className="w-full">
             <TrustedContact onSubmit={TrustedContact} />
         </div>

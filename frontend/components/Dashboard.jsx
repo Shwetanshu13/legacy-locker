@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { useVaults } from "@/hooks/useVaults";
 import { useStats } from "@/hooks/useStats";
@@ -10,6 +11,7 @@ import ActionCards from "./dashboard/ActionCards";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [globalShowPasswords, setGlobalShowPasswords] = useState(false);
 
   const { vaults, loading: vaultsLoading, deleteVault } = useVaults(user?.id, true);
   const { stats } = useStats(user?.id, true);
@@ -59,7 +61,7 @@ export default function Dashboard() {
           ) : vaults.length === 0 ? (
             <EmptyState />
           ) : (
-            <VaultsGrid vaults={vaults} onDelete={deleteVault} />
+            <VaultsGrid vaults={vaults} onDelete={deleteVault} globalShowPasswords={globalShowPasswords} />
           )}
         </div>
       </div>

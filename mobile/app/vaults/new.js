@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'reac
 import { useRouter } from 'expo-router';
 import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+import Toast from 'react-native-toast-message';
 import { generateVaultDek, encryptSymmetric, wrapKey, importKeyFromBase64 } from '../../utils/crypto';
 
 export default function NewVaultScreen() {
@@ -16,7 +17,7 @@ export default function NewVaultScreen() {
 
     const handleCreateVault = async () => {
         if (!title.trim() || !content.trim()) {
-            setError("Title and content are required.");
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Title and content are required.' });
             return;
         }
 
@@ -45,7 +46,7 @@ export default function NewVaultScreen() {
             router.back();
         } catch (err) {
             console.error("Vault creation error:", err);
-            setError("Failed to create vault securely.");
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Failed to create vault securely.' });
         } finally {
             setLoading(false);
         }

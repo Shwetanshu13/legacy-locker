@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Toast from "react-native-toast-message";
 import { Passkey } from "react-native-passkey";
 import api from "../utils/api";
 import { useAuth } from "../context/AuthContext";
@@ -16,7 +17,8 @@ export function useAuthLogic() {
     const [otp, setOtp] = useState("");
     const [masterPassword, setMasterPassword] = useState("");
     const [isLoginMode, setIsLoginMode] = useState(true);
-    const [step, setStep] = useState(1); 
+    const [step, setStep] = useState(1);
+    const [masterPasswordAttempts, setMasterPasswordAttempts] = useState(0); 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     
@@ -186,7 +188,7 @@ export function useAuthLogic() {
                 throw new Error("Invalid Master Password");
             }
         } catch (err) {
-            setError(err.message || "Failed to process Master Password");
+            Toast.show({ type: "error", text1: "Error", text2: err.message || "Failed to process Master Password" }); setError(err.message || "Failed to process Master Password");
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 export default function VoiceCommand() {
@@ -10,7 +11,7 @@ export default function VoiceCommand() {
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Speech recognition is not supported in this browser.");
+      toast.error("Speech recognition is not supported in this browser.");
       return;
     }
 
@@ -30,7 +31,7 @@ export default function VoiceCommand() {
 
     recognition.onerror = (event) => {
       console.error("Speech recognition error:", event.error);
-      alert("Error with speech recognition");
+      toast.error("Error with speech recognition");
       setListening(false);
     };
 
@@ -55,13 +56,13 @@ export default function VoiceCommand() {
   const handleAction = (data) => {
     if (data.action === "edit") {
       // Execute Edit Action
-      alert("Editing item");
+      toast.success("Editing item");
     } else if (data.action === "delete") {
       // Execute Delete Action
-      alert("Deleting item");
+      toast.success("Deleting item");
     } else if (data.action === "view") {
       // Execute View Action
-      alert("Viewing item");
+      toast.success("Viewing item");
     }
   };
 

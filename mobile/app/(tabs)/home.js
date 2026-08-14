@@ -1,28 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import useSWR from 'swr';
+import Toast from 'react-native-toast-message';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
+const fetcher = url => api.get(url).then(res => res.data.vaults || res.data.data || res.data || []);
+
 export default function HomeScreen() {
-    const [vaults, setVaults] = useState([]);
-    const [loading, setLoading] = useState(true);
     const router = useRouter();
+    const { data: vaults = [], error, isLoading: loading } = useSWR('/vaults', fetcher);
 
-    useEffect(() => {
-        fetchVaults();
-    }, []);
-
-    const fetchVaults = async () => {
-        try {
-            const res = await api.get('/vaults');
-            setVaults(res.data);
-        } catch (error) {
-            console.error("Failed to fetch vaults:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (error) {
+        console.error("Failed to fetch vaults:", error);
+        // Toast.show({ type: 'error', text1: 'Error', text2: 'Failed to fetch vaults' });
+    }
 
     return (
         <View className="flex-1 bg-slate-50 p-4">

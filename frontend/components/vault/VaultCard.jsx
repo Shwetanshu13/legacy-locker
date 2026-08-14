@@ -7,11 +7,15 @@ import api from "@/utils/api";
 import { decryptVaultContent } from "@/utils/crypto";
 import toast from "react-hot-toast";
 
-export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
+import { Eye, EyeOff } from "lucide-react";
+
+export default function VaultCard({ vault, selectedId, onSelect, onDelete, globalShowPasswords }) {
   const router = useRouter();
   const [decryptedContent, setDecryptedContent] = useState("Decrypting...");
   const [passwordInput, setPasswordInput] = useState("");
-  const { user, masterPassword, setMasterPassword } = useAuth();
+  const { user, masterPassword, setMasterPassword, logout } = useAuth();
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [localShowPassword, setLocalShowPassword] = useState(false);
   
   // Animation states
   const sealControls = useAnimation();
@@ -69,7 +73,14 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
                 });
             }, 300);
         });
-        toast.error("That password didn't match. Try again, or reset access from Settings.");
+        const newAttempts = failedAttempts + 1;
+        setFailedAttempts(newAttempts);
+        if (newAttempts >= 3) {
+            toast.error("Too many failed attempts. Logging out.");
+            logout();
+            return;
+        }
+        toast.error("That password didn't match. Try again (" + (3 - newAttempts) + " attempts left).");
     }
   };
 
@@ -169,8 +180,15 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete }) {
                 transition={{ duration: 0.3, delay: 0.1 }}
                 className="space-y-6"
               >
-                <div className="bg-surface rounded-lg p-5 text-ink text-sm leading-relaxed whitespace-pre-wrap border border-emerald-100 font-mono">
-                    {decryptedContent}
+                <div className="relative bg-surface rounded-lg p-5 text-ink text-sm leading-relaxed whitespace-pre-wrap border border-emerald-100 font-mono">
+                  <button 
+                      onClick={(e) => { e.stopPropagation(); setLocalShowPassword(!localShowPassword); }}
+                      className="absolute top-2 right-2 p-1.5 text-ink-muted hover:text-ink transition"
+                      title={localShowPassword || globalShowPasswords ? "Hide Password" : "Show Password"}
+                  >
+                      {localShowPassword || globalShowPasswords ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                    {localShowPassword || globalShowPasswords ? decryptedContent : "••••••••••••••••••••"}
                 </div>
 
                 <div className="flex flex-wrap gap-3">

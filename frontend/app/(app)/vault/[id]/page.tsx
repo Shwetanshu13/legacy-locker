@@ -1,4 +1,5 @@
 "use client";
+import toast from "react-hot-toast";
 import Trigger from "@/components/add-new-legacy/Trigger";
 import VaultRecipientForm from "@/components/add-new-legacy/VaultRecipientForm";
 import { useAuth } from "@/components/AuthProvider";
@@ -38,7 +39,7 @@ const TriggerNow = () => {
 
   const assignVaultAndTrigger = async (selectedRecipients: any[]) => {
     if (!triggerData || !user || !masterPassword) {
-        alert("Missing trigger data or master password. Please log in again.");
+        toast.error("Missing trigger data or master password. Please log in again.");
         return;
     }
 
@@ -81,7 +82,7 @@ const TriggerNow = () => {
       setSharingPin(pin); // Show the PIN to the user
     } catch (error) {
       console.error(error);
-      alert("Failed to setup trigger.");
+      toast.error("Failed to setup trigger.");
     } finally {
       setLoading(false);
     }

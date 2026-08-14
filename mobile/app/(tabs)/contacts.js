@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import useSWR from 'swr';
+import Toast from 'react-native-toast-message';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Alert, TextInput } from 'react-native';
 import api from '../../utils/api';
 
+const fetcher = url => api.get(url).then(res => res.data.contacts || res.data || []);
+
 export default function ContactsScreen() {
-    const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: contacts = [], error, isLoading: loading, mutate } = useSWR('/contacts', fetcher);
     const [adding, setAdding] = useState(false);
     const [newEmail, setNewEmail] = useState("");
     const [newPin, setNewPin] = useState("");
 
-    useEffect(() => {
-        fetchContacts();
-    }, []);
-
-    const fetchContacts = async () => {
-        try {
-            const res = await api.get('/contacts');
-            setContacts(res.data);
-        } catch (error) {
-            console.error("Failed to fetch contacts:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (error) {
+        console.error("Failed to fetch contacts:", error);
+    }
 
     const handleAddContact = async () => {
         if (!newEmail || !newPin) {
-            Alert.alert("Error", "Please enter both email and a secure PIN");
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Please enter both email and a secure PIN' });
             return;
         }
 

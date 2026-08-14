@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
 const fadeUp = {
@@ -23,7 +24,7 @@ const VaultRecipientForm = ({ vaultId, trustedContacts, onSuccess }) => {
     
     // Prevent duplicates
     if (recipients.find(r => r.contactId === selectedContact)) {
-        alert("This contact is already added.");
+        toast.error("This contact is already added.");
         return;
     }
 
