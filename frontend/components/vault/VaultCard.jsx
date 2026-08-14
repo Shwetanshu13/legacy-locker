@@ -99,7 +99,7 @@ export default function VaultCard({ vault, selectedId, onSelect, onDelete, globa
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
       onClick={() => onSelect(vault.id)}
-      className={`relative bg-surface rounded-xl overflow-hidden transition-shadow hover:shadow-md cursor-pointer border ${isUnlocked ? 'border-emerald shadow-emerald/10' : 'border-emerald-200'} group`}
+      className={`relative bg-surface rounded-xl overflow-hidden transition-shadow hover:shadow-md cursor-pointer border flex flex-col ${isUnlocked ? "border-emerald shadow-emerald/10" : "border-emerald-200"} group ${isSelected ? "min-h-[16rem] h-auto" : "h-64"}`}
     >
       {/* Left edge accent */}
       <div className={`absolute top-0 left-0 w-1.5 h-full transition-colors duration-300 ${isUnlocked ? 'bg-emerald' : isSelected ? 'bg-brass' : 'bg-transparent group-hover:bg-emerald-200'}`} />
