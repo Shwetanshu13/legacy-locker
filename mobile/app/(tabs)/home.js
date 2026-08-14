@@ -10,7 +10,7 @@ const fetcher = url => api.get(url).then(res => res.data.vaults || res.data.data
 
 export default function HomeScreen() {
     const router = useRouter();
-    const { data: vaults = [], error, isLoading: loading } = useSWR('/vaults', fetcher);
+    const { data: vaults = [], error, isLoading: loading } = useSWR('/vaults', fetcher, { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false });
 
     if (error) {
         console.error("Failed to fetch vaults:", error);

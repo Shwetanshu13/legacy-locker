@@ -1,4 +1,5 @@
 import contactsService from './contacts.service.js';
+import { invalidateCache } from '../../middleware/cache.js';
 
 class ContactsController {
     async getContacts(req, res) {
@@ -22,6 +23,8 @@ class ContactsController {
             }
             
             const newContact = await contactsService.addContact(userId, { name, email });
+            await invalidateCache('contacts', userId);
+            await invalidateCache('stats', userId);
             res.status(201).json({ message: 'Contact added successfully', contact: newContact });
         } catch (error) {
             console.error('Add Contact Error:', error);

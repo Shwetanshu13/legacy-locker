@@ -1,4 +1,5 @@
 import triggersService from './triggers.service.js';
+import { invalidateCache } from '../../middleware/cache.js';
 
 class TriggersController {
     async addTrigger(req, res) {
@@ -15,6 +16,10 @@ class TriggersController {
                 inactivityDays, 
                 recipients
             });
+            if (req.user && req.user.id) {
+                await invalidateCache('vaults', req.user.id);
+                await invalidateCache('stats', req.user.id);
+            }
             
             res.status(201).json({ message: 'Trigger and recipients added successfully', data: result });
         } catch (error) {

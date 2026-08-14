@@ -1,6 +1,7 @@
 import express from 'express';
 import vaultsController from './vaults.controller.js';
 import authMiddleware from '../../middleware/auth.js';
+import { cacheMiddleware } from '../../middleware/cache.js';
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post('/unlock/:id/mark-opened', vaultsController.markVaultOpened);
 // Protect all other vaults routes
 router.use(authMiddleware);
 
-router.get('/', vaultsController.getVaults);
+router.get('/', cacheMiddleware('vaults'), vaultsController.getVaults);
 router.get('/:id', vaultsController.getVaultById);
 router.post('/add', vaultsController.addVault);
 router.delete('/:id', vaultsController.deleteVault);

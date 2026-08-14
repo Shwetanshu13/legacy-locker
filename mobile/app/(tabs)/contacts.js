@@ -7,7 +7,7 @@ import api from '../../utils/api';
 const fetcher = url => api.get(url).then(res => res.data.contacts || res.data || []);
 
 export default function ContactsScreen() {
-    const { data: contacts = [], error, isLoading: loading, mutate } = useSWR('/contacts', fetcher);
+    const { data: contacts = [], error, isLoading: loading, mutate } = useSWR('/contacts', fetcher, { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false });
     const [adding, setAdding] = useState(false);
     const [newEmail, setNewEmail] = useState("");
     const [newPin, setNewPin] = useState("");

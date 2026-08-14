@@ -3,12 +3,13 @@ import authMiddleware from '../../middleware/auth.js';
 import db from '../../db/index.js';
 import { vaults, trustedContacts, users } from '../../db/schema.js';
 import { eq, sql } from 'drizzle-orm';
+import { cacheMiddleware } from '../../middleware/cache.js';
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/', async (req, res) => {
+router.get('/', cacheMiddleware('stats'), async (req, res) => {
     try {
         const userId = req.user.id;
         

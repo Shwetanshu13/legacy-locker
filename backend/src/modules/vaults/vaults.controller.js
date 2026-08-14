@@ -1,4 +1,5 @@
 import vaultsService from './vaults.service.js';
+import { invalidateCache } from '../../middleware/cache.js';
 
 class VaultsController {
     async getUnlockPayload(req, res) {
@@ -67,6 +68,8 @@ class VaultsController {
             }
             
             const newVault = await vaultsService.addVault(userId, { title, ciphertext, iv, encryptedDekOwner, visibility });
+            await invalidateCache('vaults', userId);
+            await invalidateCache('stats', userId);
             res.status(201).json({ message: 'Vault added successfully', data: newVault });
         } catch (error) {
             console.error('Add Vault Error:', error);
@@ -80,6 +83,7 @@ class VaultsController {
             const userId = req.user.id;
             
             const deletedVault = await vaultsService.deleteVault(userId, vaultId);
+            if (deletedVault) { await invalidateCache('vaults', userId); await invalidateCache('stats', userId); }
             if (!deletedVault) {
                 return res.status(404).json({ message: 'Vault not found or not authorized' });
             }
@@ -102,6 +106,7 @@ class VaultsController {
             }
 
             const updatedVault = await vaultsService.editVault(userId, vaultId, { title, ciphertext, iv });
+            if (updatedVault) { await invalidateCache('vaults', userId); await invalidateCache('stats', userId); }
             if (!updatedVault) {
                 return res.status(404).json({ message: 'Vault not found or not authorized' });
             }
