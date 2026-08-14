@@ -109,7 +109,7 @@ export const runTriggerChecks = async () => {
 
 export const startTriggerChecker = () => {
     // Run every minute for testing, or daily in prod
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('*/15 * * * *', async () => {
         await runTriggerChecks();
     });
 };

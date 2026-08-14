@@ -34,10 +34,10 @@ export default function Login() {
     } = useAuthLogic();
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+        <div className="min-h-screen flex items-center justify-center bg-bg py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 bg-surface p-10 rounded-xl shadow-lg">
                 <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    <h2 className="mt-6 text-center text-3xl font-extrabold text-forest">
                         {step === 1 ? (isLoginMode ? "Sign in to your account" : "Create a new account") 
                         : step === 1.5 ? "Verify Account Password"
                         : (step === 2 || step === 1.6) ? "Verify Email" 
@@ -47,7 +47,7 @@ export default function Login() {
                 </div>
                 
                 {error && (
-                    <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm text-center">
+                    <div className="bg-danger/10 text-danger font-medium border border-danger/20 p-3 rounded-md text-sm text-center">
                         {error}
                     </div>
                 )}
@@ -62,7 +62,7 @@ export default function Login() {
                                     name="email"
                                     type="email"
                                     required
-                                    className={`appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm ${(!isLoginMode) ? "rounded-t-md rounded-none" : "rounded-md"}`}
+                                    className={`appearance-none relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm ${(!isLoginMode) ? "rounded-t-md rounded-none" : "rounded-md"}`}
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +74,7 @@ export default function Login() {
                                     <PasswordInput
                                         id="password"
                                         name="password"
-                                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest rounded-b-md focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm"
                                         placeholder="Account Password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -87,7 +87,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : (isLoginMode ? "Continue" : "Sign Up with Password")}
                             </button>
@@ -100,7 +100,7 @@ export default function Login() {
                                     setIsLoginMode(!isLoginMode);
                                     setError("");
                                 }}
-                                className="text-sm text-emerald-600 hover:text-emerald-500"
+                                className="text-sm text-emerald hover:text-forest"
                             >
                                 {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
                             </button>
@@ -108,7 +108,7 @@ export default function Login() {
                     </form>
                 ) : step === 1.5 ? (
                     <form className="mt-8 space-y-6" onSubmit={handleLoginFallbackInit}>
-                        <div className="text-sm text-gray-600 text-center mb-4">
+                        <div className="text-sm text-ink-muted text-center mb-4">
                             Biometric authentication failed. Please enter your account password to proceed.
                         </div>
                         <div className="rounded-md shadow-sm -space-y-px">
@@ -118,7 +118,7 @@ export default function Login() {
                                     id="fallback-password"
                                     name="password"
                                     required
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm"
                                     placeholder="Account Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -129,7 +129,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || !password}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : "Verify Password"}
                             </button>
@@ -137,7 +137,7 @@ export default function Login() {
                     </form>
                 ) : step === 1.6 ? (
                     <form className="mt-8 space-y-6" onSubmit={handleLoginFallbackVerify}>
-                        <div className="text-sm text-gray-600 text-center mb-4">
+                        <div className="text-sm text-ink-muted text-center mb-4">
                             Please enter the 6-digit login verification code sent to {email}.
                         </div>
                         <div className="rounded-md shadow-sm -space-y-px">
@@ -149,7 +149,7 @@ export default function Login() {
                                     type="text"
                                     required
                                     maxLength="6"
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm text-center tracking-widest text-lg"
                                     placeholder="••••••"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
@@ -160,7 +160,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || otp.length !== 6}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Verifying..." : "Verify Login Code"}
                             </button>
@@ -168,7 +168,7 @@ export default function Login() {
                     </form>
                 ) : step === 2 ? (
                     <form className="mt-8 space-y-6" onSubmit={handleVerifyOtp}>
-                        <div className="text-sm text-gray-600 text-center mb-4">
+                        <div className="text-sm text-ink-muted text-center mb-4">
                             Please enter the 6-digit verification code sent to {email}.
                         </div>
                         <div className="rounded-md shadow-sm -space-y-px">
@@ -180,7 +180,7 @@ export default function Login() {
                                     type="text"
                                     required
                                     maxLength="6"
-                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm text-center tracking-widest text-lg"
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm text-center tracking-widest text-lg"
                                     placeholder="••••••"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
@@ -191,7 +191,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading || otp.length !== 6}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Verifying..." : "Verify Email"}
                             </button>
@@ -199,7 +199,7 @@ export default function Login() {
                     </form>
                 ) : step === 3 ? (
                     <div className="mt-8 space-y-6">
-                        <div className="text-sm text-gray-600 text-center mb-4">
+                        <div className="text-sm text-ink-muted text-center mb-4">
                             Secure your account by registering a compulsory biometric passkey (TouchID, FaceID, or Windows Hello).
                         </div>
                         <div>
@@ -207,7 +207,7 @@ export default function Login() {
                                 type="button"
                                 disabled={loading}
                                 onClick={handleBiometricAuth}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : "Register Biometrics"}
                             </button>
@@ -215,7 +215,7 @@ export default function Login() {
                     </div>
                 ) : (
                     <form className="mt-8 space-y-6" onSubmit={handleMasterPassword}>
-                        <div className="text-sm text-gray-600 text-center mb-4">
+                        <div className="text-sm text-ink-muted text-center mb-4">
                             {!tempUser?.publicKey ? (
                                 "Welcome! Please create a Master Password to encrypt your vaults. Do not forget this password, or you will lose access forever."
                             ) : (
@@ -229,7 +229,7 @@ export default function Login() {
                                     id="master-password"
                                     name="masterPassword"
                                     required
-                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-emerald-200 placeholder-gray-500 text-forest rounded-md focus:outline-none focus:ring-emerald focus:border-emerald focus:z-10 sm:text-sm"
                                     placeholder="Master Password"
                                     value={masterPassword}
                                     onChange={(e) => setMasterPassword(e.target.value)}
@@ -241,7 +241,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-forest hover:bg-ink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald disabled:opacity-50"
                             >
                                 {loading ? "Processing..." : (!tempUser?.publicKey ? "Create Master Password" : "Unlock & Sign In")}
                             </button>
